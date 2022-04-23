@@ -1,0 +1,7 @@
+function __CollageGetName(_string) {
+	var _stringStartPos = string_last_pos("\\", _string)+1;
+	
+	var _stringEndPos = string_last_pos(".", _string);
+	
+	return string_copy(_string, _stringStartPos, _stringEndPos-_stringStartPos);
+}
