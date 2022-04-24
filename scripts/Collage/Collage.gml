@@ -485,6 +485,7 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 		var _surf = surface_create(_width, _height);
 		var _sprite = -1;
 		
+		CollageSterlizeGPUState();
 		repeat(_offset) {
 			surface_set_target(_surf);
 			draw_clear_alpha(0, 0);
@@ -497,6 +498,7 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 				sprite_add_from_surface(_sprite, _surf, 0, 0, _width, _height, _removeBack, _smooth);
 			}
 		}
+		CollageRestoreGPUState();
 		
 		var _spriteData = new __CollageSpriteFileData(_identifier, _sprite, _offset, _xOrigin, _yOrigin, _is3D, true);
 		sprite_delete(_spriteSheet);
