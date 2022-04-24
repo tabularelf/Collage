@@ -1,4 +1,4 @@
-texPage = new Collage(,,false);
+texPage = new Collage();
 texPage.startBatch();
 var _file = file_find_first("*.png", 0);
 while (_file != "") {
