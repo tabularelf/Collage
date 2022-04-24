@@ -1,3 +1,4 @@
+/// @func CollageRestoreGPUState()
 function CollageRestoreGPUState() {
 			var _instance = __CollageGPUStateSingleton();
 			if (!_instance.isSteralized) {

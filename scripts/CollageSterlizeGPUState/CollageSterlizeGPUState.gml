@@ -1,3 +1,4 @@
+/// @func CollageSterlizeGPUState()
 function CollageSterlizeGPUState() {
 			var _instance = __CollageGPUStateSingleton()
 			if (_instance.isSteralized) {

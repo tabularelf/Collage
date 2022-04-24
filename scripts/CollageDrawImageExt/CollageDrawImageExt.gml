@@ -1,5 +1,5 @@
 /// @func CollageDrawImageExt(image, image_index, x, y, xscale, yscale, rot, col, alpha);
-/// @param collage_sprite_index
+/// @param image
 /// @param image_index
 /// @param x
 /// @param y

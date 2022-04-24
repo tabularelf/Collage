@@ -1,4 +1,4 @@
-/// @func draw_image(sprite_index/collage_sprite_index, image_index, x, y);
+/// @func draw_image(sprite_index/image, image_index, x, y);
 /// @param sprite_index/image
 /// @param image_index
 /// @param x
