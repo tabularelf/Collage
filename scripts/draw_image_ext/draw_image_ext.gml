@@ -1,5 +1,5 @@
-/// @func draw_image_ext(sprite_index/collage_sprite_index, image_index, x, y, xscale, yscale, rot, col, alpha);
-/// @param sprite_index/collage_sprite_index
+/// @func draw_image_ext(sprite_index/image, image_index, x, y, xscale, yscale, rot, col, alpha);
+/// @param sprite_index/image
 /// @param image_index
 /// @param x
 /// @param y
@@ -16,6 +16,6 @@ function draw_image_ext(_sprite, _sub, _x, _y, _xscale, _yscale, _rot, _col, _al
 	} else if (is_struct(_sprite)) {
 		CollageDrawImageExt(_sprite, _sub, _x, _y, _xscale, _yscale, _rot, _col, _alpha);	
 	} else {
-		show_error(string(_sprite) + " is not a valid sprite or Collage image!", true);	
+		__CollageThrow(string(_sprite) + " is not a valid sprite or Collage image!");	
 	}
 } 

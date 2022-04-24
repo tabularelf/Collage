@@ -536,6 +536,12 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 		}
 		
 		texPageCount = 0;
+		var _i = 0;
+		repeat(imageCount) {
+			variable_struct_remove(global.__CollageImageMap, imageList[_i++].name);
+		}
+		imageList = [];
+		imageMap = {};
 	}
 	
 	static getPage = function(_index) {
