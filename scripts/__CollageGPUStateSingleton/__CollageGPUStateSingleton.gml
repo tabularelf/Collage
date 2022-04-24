@@ -16,7 +16,8 @@ function __CollageGPUStateSingleton() {
 		matrixWorld: undefined,
 		matrixView: undefined,
 		matrixProj: undefined,
-		shader: -1
+		shader: -1,
+		isSteralized: false,
 	}
 	
 	return _instance;

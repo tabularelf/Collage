@@ -1,8 +1,8 @@
-/// @func Collage(width, height, [crop], [sep], [identifier])
+/// @func Collage(width, height, [crop], [separation], [identifier])
 /// @param width
 /// @param height
 /// @param [crop]
-/// @param [sep]
+/// @param [separation]
 /// @param [identitifer]
 function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DEFAULT_TEXTURE_SIZE, _crop = __COLLAGE_DEFAULT_CROP, _sep = __COLLAGE_DEFAULT_SEPARATION, _identifier = undefined) constructor {
 	#region Methods
@@ -67,7 +67,9 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 					if (_drawW > _texWidth || _drawH > _texHeight) {
 						if (!__COLLAGE_SCALE_TO_TEXTURES_ON_PAGE) {
 							__CollageTrace("Sprite " + string(_spriteData.name) + " is too big! Skipping...");
-							sprite_delete(_spriteID);
+							if (_spriteData.isCopy) {
+								sprite_delete(_spriteID);
+							}
 							array_delete(_spriteList, _i, 1);
 							--_i;
 						} else {

@@ -1,5 +1,9 @@
 function CollageSterlizeGPUState() {
 			var _instance = __CollageGPUStateSingleton()
+			if (_instance.isSteralized) {
+				__CollageThrow("GPU has been already sterlized! Please call CollageRestoreGPUState()!")
+			}
+			_instance.isSteralized = true;
 			// Get GPU state
 			_instance.gpuBlendEnable =		gpu_get_blendenable();
 			_instance.gpuBlendMode =		gpu_get_blendmode_ext_sepalpha();
