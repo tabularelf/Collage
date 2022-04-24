@@ -21,3 +21,9 @@
 // Whether Collage should bake coloured boxes around all of the images or not.
 // This is mostly used to determine that images are correctly fitting on the texture page, and otherwise serve no real purpose.
 #macro __COLLAGE_RENDER_DEBUG_LINES false
+
+// Whether Collage should autocrop any texture pages that weren't given a crop true/false value.
+#macro __COLLAGE_DEFAULT_CROP true
+
+// Separation value that Collage will respect across the board if no sep value was passed.
+#macro __COLLAGE_DEFAULT_SEPARATION 0

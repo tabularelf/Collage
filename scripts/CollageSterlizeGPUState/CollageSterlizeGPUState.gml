@@ -1,4 +1,4 @@
-function CollageSanitizeGPU() {
+function CollageSterlizeGPUState() {
 			var _instance = __CollageGPUStateSingleton()
 			// Get GPU state
 			_instance.gpuBlendEnable =		gpu_get_blendenable();

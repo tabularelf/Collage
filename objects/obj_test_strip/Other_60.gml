@@ -1,1 +1,0 @@
-spr = cropSprite(sprID);

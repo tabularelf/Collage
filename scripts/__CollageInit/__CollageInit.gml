@@ -4,21 +4,14 @@ enum __collageStates {
 }
 
 #macro __COLLAGE_CREDITS "@TabularElf - https://tabelf.link/"
-#macro __COLLAGE_VERSION "v0.0.1"
+#macro __COLLAGE_VERSION "v0.1.0"
 show_debug_message("Collage " + __COLLAGE_VERSION + " Initalized! Created by " + __COLLAGE_CREDITS);
 
-function __CollageInit() {
-	static _init = false;
-	if (!_init) {
-		global.__CollageTexturePagesMap = {};
-		global.__CollageTexturePagesList = [];
-		global.__CollageImageMap = {};
-		global.__CollageImageList = [];		
-		_init = true;
-	}
-}
+global.__CollageTexturePagesMap = {};
+global.__CollageTexturePagesList = [];
+global.__CollageImageMap = {};
+global.__CollageImageList = [];		
 
-__CollageInit();
 
 function __CollageTrace(_string) {
 	show_debug_message("Collage: " + _string);
@@ -26,12 +19,4 @@ function __CollageTrace(_string) {
 
 function __CollageThrow(_string) {
 	show_error("Collage: Error!: " + _string, true);	
-}
-
-function CollageCheckTexturePages() {
-	var _len = array_length(global.__CollageTexturePagesList);
-	var _i = 0;
-	repeat(_len) {
-		global.__CollageTexturePagesList[_i++].checkSurface();	
-	}
 }
