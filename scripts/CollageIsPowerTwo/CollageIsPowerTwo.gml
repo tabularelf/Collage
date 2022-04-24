@@ -1,4 +1,4 @@
-/// @function CollageIsPowerTwo
+/// @function CollageIsPowerTwo(number)
 /// @param number
 function CollageIsPowerTwo(_num) {
 	gml_pragma("forceinline");
