@@ -4,6 +4,6 @@ if keyboard_check_released(vk_space) {
 
 if (CollageImageExists("cathehehe")) {
 	if (texPage.getStatus() == __CollageStatus.READY) {
-		image = texPage.imagesToArray()[0];	
+		image = CollageGetImageInfo("cathehehe");	
 	}
 }

@@ -394,7 +394,7 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 					var _ratio = _spriteStruct.ratio;
 					
 					var _subStart = 0;
-					if (variable_struct_exists(global.__CollageImageMap, _spriteData.name)) {
+					if (CollageImageExists(_spriteData.name)) {
 						switch(COLLAGE_IMAGE_NAME_COLLISION_HANDLE) {
 							case 0:
 								__CollageTrace(_spriteData.name + " already exists! Skipping...");

@@ -1,5 +1,5 @@
 /// @func CollageGetImageInfo(identifier)
 /// @param identifier
-function CollageGetImageInfo(_spriteName) {
-	return global.__CollageImageMap[$ _spriteName];
+function CollageGetImageInfo(_identifier) {
+	return __CollageImageFetchPointer(_identifier);
 }

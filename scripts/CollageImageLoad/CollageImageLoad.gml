@@ -1,4 +1,4 @@
-/// @func CollageIsImageLoaded(identifier, subImage)
+/// @func CollageImageLoad(identifier, subImage)
 /// @param identifier
 /// @param subImage
 function CollageImageLoad(_identifier, _subImage) {
