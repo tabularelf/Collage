@@ -27,3 +27,11 @@
 
 // Separation value that Collage will respect across the board if no sep value was passed.
 #macro __COLLAGE_DEFAULT_SEPARATION 0
+
+// How Collage should handle image name collisions
+/*
+    0: Reject all duplicate image names.
+    1: Allow replacing of existing images if they meet certain criteria (non-crop: width & height. crop: width & height & general minimal box area) or otherwise add as new image.
+    2: Add as new image.
+*/
+#macro __COLLAGE_IMAGE_NAME_COLLISION_HANDLE 0

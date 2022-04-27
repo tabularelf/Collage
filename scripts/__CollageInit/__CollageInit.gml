@@ -10,7 +10,6 @@ show_debug_message("Collage " + __COLLAGE_VERSION + " Initalized! Created by " +
 global.__CollageTexturePagesMap = {};
 global.__CollageTexturePagesList = [];
 global.__CollageImageMap = {};
-global.__CollageImageList = [];		
 
 
 function __CollageTrace(_string) {

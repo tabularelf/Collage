@@ -26,6 +26,7 @@
     {"id":{"name":"CollageSterlizeGPUState","path":"scripts/CollageSterlizeGPUState/CollageSterlizeGPUState.yy",},"order":2,},
     {"id":{"name":"CollageConvertPowerTwo","path":"scripts/CollageConvertPowerTwo/CollageConvertPowerTwo.yy",},"order":1,},
     {"id":{"name":"CollageImageLoad","path":"scripts/CollageImageLoad/CollageImageLoad.yy",},"order":2,},
+    {"id":{"name":"CollageImageExists","path":"scripts/CollageImageExists/CollageImageExists.yy",},"order":6,},
     {"id":{"name":"CollageIsPowerTwo","path":"scripts/CollageIsPowerTwo/CollageIsPowerTwo.yy",},"order":0,},
     {"id":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},"order":0,},
   ],
