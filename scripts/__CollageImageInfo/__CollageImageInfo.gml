@@ -21,7 +21,7 @@ function __CollageImageInfo(_spriteInfo, _name, _cropW, _cropH, _ratio) construc
 		return subImagesArray[_imageIndex % subImagesCount];
 	}
 	
-	static getPage = function(_imageIndex) {
+	static getTexturePage = function(_imageIndex) {
 		var _texPage = subImagesArray[_imageIndex % subImagesCount].texturePageStruct;
 		_texPage.checkSurface();
 		return _texPage.surface;	

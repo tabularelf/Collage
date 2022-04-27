@@ -6,7 +6,7 @@
     "path": "folders/Collage/Image.yy",
   },
   "resourceVersion": "1.0",
-  "name": "CollageGetImagePage",
+  "name": "CollageGetImageTexturePage",
   "tags": [],
   "resourceType": "GMScript",
 }

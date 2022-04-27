@@ -17,10 +17,10 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 			var _crop = owner.crop;
 			var _texWidth = owner.width;
 			var _texHeight = owner.height;
-			var _spriteList = owner.imageList;
+			var _spriteList = owner.__batchImageList;
 			var _normalSprites = array_create(array_length(_spriteList));
 			var _3DSprites = array_create(array_length(_spriteList));
-			var _texPage = array_length(owner.texPageArray) == 0 ? new __CollageTexturePage(_texWidth, _texHeight) : owner.texPageArray[array_length(owner.texPageArray)-1];
+			var _texPage = array_length(owner.__texPageArray) == 0 ? new __CollageTexturePage(_texWidth, _texHeight) : owner.__texPageArray[array_length(owner.__texPageArray)-1];
 			var _sep = owner.separation;
 			var _3DArraySize = 0;
 			var _normalArraySize = 0;
@@ -271,7 +271,8 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 						
 						var _subImages = _spriteInfo.num_subimages;
 						owner.imageCount++;
-						array_push(owner.imageList, _imageInfo)
+						array_push(owner.__imageList, _imageInfo);
+						owner.__imageMap[$ _spriteData.name] = _imageInfo;
 					}
 					for(var _sub = _subStart; _sub < _subImages; ++_sub) {
 						var _emptySpaceSize = 0xFFFFFF;
@@ -330,8 +331,8 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 							_texPage.finish();
 							
 							// Save texture page
-							if (owner.texPageCount == 0) || (owner.texPageArray[owner.texPageCount-1] != _texPage) {
-								owner.texPageArray[owner.texPageCount++] = _texPage;
+							if (owner.texPageCount == 0) || (owner.__texPageArray[owner.texPageCount-1] != _texPage) {
+								owner.__texPageArray[owner.texPageCount++] = _texPage;
 							}
 							_texPage = new __CollageTexturePage(_texWidth, _texHeight);
 							_texPage.start();
@@ -357,13 +358,13 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 			// Give texture page + safety check
 			if (array_length(_normalSprites) > 0) {
 				if (owner.texPageCount != 0) {
-					if (owner.texPageArray[owner.texPageCount-1] != _texPage) {
-						owner.texPageArray[owner.texPageCount++] = _texPage;
+					if (owner.__texPageArray[owner.texPageCount-1] != _texPage) {
+						owner.__texPageArray[owner.texPageCount++] = _texPage;
 					}
-				} else if (array_length(owner.texPageArray) > 0) && (owner.texPageArray[owner.texPageCount] == _texPage) {
+				} else if (array_length(owner.__texPageArray) > 0) && (owner.__texPageArray[owner.texPageCount] == _texPage) {
 					// Do nothing
 				} else {
-					owner.texPageArray[owner.texPageCount++] = _texPage;	
+					owner.__texPageArray[owner.texPageCount++] = _texPage;	
 				}
 			}
 			
@@ -475,7 +476,8 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 						
 						var _subImages = _spriteInfo.num_subimages;
 						owner.imageCount++;
-						array_push(owner.imageList, _imageInfo)
+						array_push(owner.__imageList, _imageInfo);
+						owner.__imageMap[$ _spriteData.name] = _imageInfo;
 					}
 					for(var _sub = _subStart; _sub < _subImages; ++_sub) {
 							_texPage = new __CollageTexturePage(_texWidth, _texHeight);
@@ -502,8 +504,8 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 							_texPage.finish();
 							
 							// Save texture page
-							if (owner.texPageCount == 0) || (owner.texPageArray[owner.texPageCount-1] != _texPage) {
-								owner.texPageArray[owner.texPageCount++] = _texPage;
+							if (owner.texPageCount == 0) || (owner.__texPageArray[owner.texPageCount-1] != _texPage) {
+								owner.__texPageArray[owner.texPageCount++] = _texPage;
 							}
 						} 
 					}			
@@ -511,13 +513,13 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 			// Give texture page + safety check
 			if (array_length(_3DSprites) > 0) {
 				if (owner.texPageCount != 0) {
-					if (owner.texPageArray[owner.texPageCount-1] != _texPage) {
-						owner.texPageArray[owner.texPageCount++] = _texPage;
+					if (owner.__texPageArray[owner.texPageCount-1] != _texPage) {
+						owner.__texPageArray[owner.texPageCount++] = _texPage;
 					}
-				} else if (array_length(owner.texPageArray) > 0) && (owner.texPageArray[owner.texPageCount] == _texPage) {
+				} else if (array_length(owner.__texPageArray) > 0) && (owner.__texPageArray[owner.texPageCount] == _texPage) {
 					// Do nothing
 				} else {
-					owner.texPageArray[owner.texPageCount++] = _texPage;	
+					owner.__texPageArray[owner.texPageCount++] = _texPage;	
 				}
 			}
 			
@@ -540,7 +542,7 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 				}
 				++_i;
 			}
-			
+			array_resize(owner.__batchImageList, 0);
 			CollageRestoreGPUState();
 			
 			return self;	
@@ -548,28 +550,28 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 	}
 	
 	static startBatch = function() {
-		if (state == __collageStates.BATCHING) {
+		if (__state == __CollageStates.BATCHING) {
 			__CollageTrace("Currently in batching mode!");
 			return self;
 		}
 		
-		state = __collageStates.BATCHING;
+		__state = __CollageStates.BATCHING;
 		return self;
 	}
 	
 	static clearBatch = function() {
-		if (state == __collageStates.BATCHING) {
-			var _len = array_length(imageList);
+		if (__state == __CollageStates.BATCHING) {
+			var _len = array_length(__batchImageList);
 			var _i = 0;
 			repeat(_len) {
-				if (imageList[_i].isCopy) {
-					sprite_delete(imageList[_i].spriteID);	
+				if (__batchImageList[_i].isCopy) {
+					sprite_delete(__batchImageList[_i].spriteID);	
 				}
 				++_i;
 			} 	
 			
 			// Clear the list
-			array_resize(imageList, 0);
+			array_resize(__batchImageList, 0);
 			return self;
 			
 		} else {
@@ -579,41 +581,72 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 	}
 	
 	static finishBatch = function(_crop = true) {
-		if (state != __collageStates.BATCHING) {
+		if (__state != __CollageStates.BATCHING) {
 			__CollageTrace("Is not in batching mode!");
 			return self;
 		} 
 		
-		builder.__build(_crop);
-		state = __collageStates.NORMAL;
+		if (!__isWaitingOnAsync) builder.__build(_crop);
+		__state = __CollageStates.NORMAL;
 		return self;
 	}
 	
-	static addFile = function(_fileName, _identifier = undefined, _subImage = 1, _removeBack = false, _smooth = false, _xOrigin = 0, _yOrigin = 0, _is3D = false) {
-		if !file_exists(_fileName) {
+	static addFile = function(_fileName, _identifierString = undefined, _subImage = 1, _removeBack = false, _smooth = false, _xOrigin = 0, _yOrigin = 0, _is3D = false) {
+		if (!__CollageFileFromWeb(_fileName)) && (!file_exists(_fileName)) {
 			// It doesn't exist, obviously!
 			__CollageTrace("File " + string(_fileName) + " doesn't exist!");
 			return -1;
 		}
 		
+		var _identifier = _identifierString;
 		if (_identifier == undefined) {
 			_identifier = __CollageGetName(_fileName);	
 		}
 		
 		var _spriteData = new __CollageSpriteFileData(_identifier, sprite_add(_fileName, _subImage, _removeBack, _smooth, _xOrigin, _yOrigin), _subImage, _xOrigin, _yOrigin, _is3D, true);
 		
-		array_push(imageList, _spriteData);
+		if (__CollageFileFromWeb(_fileName)) {
+			__isWaitingOnAsync = true;
+			__status = __CollageStatus.WAITING_ON_FILES;
+			var _i = 0;
+			repeat(array_length(global.__CollageAsyncList)) {
+				if (global.__CollageAsyncList[_i] == self) {
+					break;	
+				}
+				++_i;
+			}
+			
+			if (_i == array_length(global.__CollageAsyncList)) {
+				array_push(global.__CollageAsyncList, self);
+			}
+			
+			array_push(__asyncList, _spriteData);
+		} else {
+			array_push(__batchImageList, _spriteData);
+		}
 		
-		if (state == __collageStates.NORMAL) {
-			builder.__build();
+		if (__state == __CollageStates.NORMAL) {
+			if (!__isWaitingOnAsync) builder.__build();
 		}
 	}
 	
-	static addSprite = function(_spriteID, _identifier = undefined, _isCopy = false, _is3D = false) {
-		if (_isCopy) {
+	static addSprite = function(_spriteIdentifier, _identifierString = undefined, _isCopyBool = undefined, _is3D = false) {
+		var _spriteID = _spriteIdentifier;
+		var _isCopy = _isCopyBool;
+		
+		if (is_undefined(_isCopyBool)) {
+			if (_spriteID < global.__CollageGMSpriteCount) {
+				_isCopy = false;
+			} else {
+				_isCopy = true;
+			}
+		}
+		
+		if (_isCopy == false) {
 			_spriteID = sprite_duplicate(_spriteID);
 		}
 		
+		var _identifier = _identifierString;
 		if (_identifier == undefined) {
 			_identifier = sprite_get_name(_spriteID);
 		}
@@ -621,20 +654,21 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 		// Add sprite data
 		var _spriteData = new __CollageSpriteFileData(_identifier, _spriteID, sprite_get_number(_spriteID), sprite_get_xoffset(_spriteID), sprite_get_yoffset(_spriteID), _is3D, _isCopy);
 		
-		array_push(imageList, _spriteData);
+		array_push(__batchImageList, _spriteData);
 		
-		if (state == __collageStates.NORMAL) {
+		if (__state == __CollageStates.NORMAL) {
 			builder.__build();
 		}
 	}
 	
-	static addFileStrip = function(_fileName, _identifier = undefined, _removeBack = false, _smooth = false, _xOrigin = 0, _yOrigin = 0, _is3D = false) {
-		if !file_exists(_fileName) {
+	static addFileStrip = function(_fileName, _identifierString = undefined, _removeBack = false, _smooth = false, _xOrigin = 0, _yOrigin = 0, _is3D = false) {
+		if (!__CollageFileFromWeb(_fileName)) && (!file_exists(_fileName)) {
 			// It doesn't exist, obviously!
 			__CollageTrace("File " + string(_fileName) + " doesn't exist!");
 			return -1;
 		}
 		
+		var _identifier = _identifierString;
 		if (_identifier == undefined) {
 			_identifier = __CollageGetName(_fileName);	
 		}
@@ -667,17 +701,37 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 		
 		var _spriteData = new __CollageSpriteFileData(_identifier, _sprite, _offset, _xOrigin, _yOrigin, _is3D, true);
 		sprite_delete(_spriteSheet);
-		array_push(imageList, _spriteData);
 		
-		if (state == __collageStates.NORMAL) {
+		if (__CollageFileFromWeb(_fileName)) {
+			__isWaitingOnAsync = true;
+			__status = __CollageStatus.WAITING_ON_FILES;
+			var _i = 0;
+			repeat(array_length(global.__CollageAsyncList)) {
+				if (global.__CollageAsyncList[_i] == self) {
+					break;	
+				}
+				++_i;
+			}
+			
+			if (_i == array_length(global.__CollageAsyncList)) {
+				array_push(global.__CollageAsyncList, self);
+			}
+			
+			array_push(__asyncList, _spriteData);
+		} else {
+			array_push(__batchImageList, _spriteData);
+		}
+		
+		if (__state == __CollageStates.NORMAL) {
 			builder.__build();
 		}
 		surface_free(_surf);
 	}
 	
-	static addSurface = function(_surface, _identifier = undefined, _x = 0, _y = 0, _w = surface_get_width(_surface), _h = surface_get_height(_surface), _removeBack = false, _smooth = false, _xOrigin = 0, _yOrigin = 0, _is3D = false) {
+	static addSurface = function(_surface, _identifierString = undefined, _x = 0, _y = 0, _w = surface_get_width(_surface), _h = surface_get_height(_surface), _removeBack = false, _smooth = false, _xOrigin = 0, _yOrigin = 0, _is3D = false) {
 		var _spriteID = sprite_create_from_surface(_surface, _x, _y, _w, _h, _removeBack, _smooth, _xOrigin, _yOrigin);
 		
+		var _identifier = _identifierString;
 		if (_identifier == undefined) {
 			_identifier = "surface" + string(_surface);	
 		}
@@ -685,34 +739,34 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 		// Add sprite data
 		var _spriteData = new __CollageSpriteFileData(_identifier, _spriteID, 1, _xOrigin, _yOrigin, _is3D, true);
 		
-		array_push(imageList, _spriteData);
+		array_push(__batchImageList, _spriteData);
 		
-		if (state == __collageStates.NORMAL) {
+		if (__state == __CollageStates.NORMAL) {
 			builder.__build();
 		}
 	}
 	
 	static freePages = function() {
 		var _i = 0;
-		repeat(array_length(texPageArray)) {
-			texPageArray[_i++].free();	
+		repeat(array_length(__texPageArray)) {
+			__texPageArray[_i++].free();	
 		}
 		
 		texPageCount = 0;
 		var _i = 0;
 		repeat(imageCount) {
-			variable_struct_remove(global.__CollageImageMap, imageList[_i++].name);
+			variable_struct_remove(global.__CollageImageMap, __imageList[_i++].name);
 		}
 		
-		imageList = [];
-		imageMap = {};
-		texPageArray = [];
+		__imageList = [];
+		__imageMap = {};
+		__texPageArray = [];
 	}
 	
-	static getPage = function(_index) {
+	static getTexturePage = function(_index) {
 		if (_index < texPageCount) && (_index >= 0) {
-			texPageArray[_index].checkSurface();
-			return texPageArray[_index];
+			__texPageArray[_index].checkSurface();
+			return __texPageArray[_index];
 		}
 		
 		return undefined;
@@ -726,13 +780,13 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 		var _len = texPageCount;
 		var _i = 0;
 		repeat(_len) {
-			texPageArray[_i++].__cacheTexture();
+			__texPageArray[_i++].__cacheTexture();
 		}
 	}
 	
 	static flushPage = function(_index) {
 		if (_index >= 0 && _index < texPageCount) {
-			texPageArray[_index].__cacheTexture();
+			__texPageArray[_index].__cacheTexture();
 		}
 	}
 	
@@ -740,13 +794,13 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 		var _len = texPageCount;
 		var _i = 0;
 		repeat(_len) {
-			texPageArray[_i++].__restoreFromCache();
+			__texPageArray[_i++].__restoreFromCache();
 		}
 	}
 	
 	static prefetchPage = function(_index) {
 		if (_index >= 0 && _index < texPageCount) {
-			texPageArray[_index].__restoreFromCache();
+			__texPageArray[_index].__restoreFromCache();
 		}	
 	}
 		
@@ -760,8 +814,8 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 		// Get image names
 		var _i = 0;
 		repeat(_imageCount) {
-			_stringByte += string_byte_length(imageList[_i].name) + 1;
-			_subImagesCount +=imageList[_i]. subImagesCount;
+			_stringByte += string_byte_length(__imageList[_i].name) + 1;
+			_subImagesCount += __imageList[_i]. subImagesCount;
 			++_i;
 		}
 		
@@ -845,20 +899,45 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 			variable_struct_remove(global.__CollageTexturePagesMap, name);
 		}
 		
-		// Demolish builder
+		// Demolish states
 		builder = undefined;
+		__imageList = undefined;
+		__imageMap = undefined;
+		__texPageArray = undefined;
+	}
+	
+	static getImageInfo = function(_identifier) {
+		return __imageMap[$ _identifier];	
+	}
+	
+	static imagesToArray = function() {
+		var _array = array_create(array_length(__imageList));
+		var _i = 0;
+		repeat(array_length(_array)) {
+			_array[_i] = __imageList[_i];
+			++_i;
+		}
+		return _array;
+	}
+	
+	static getStatus = function() {
+		return __status;
 	}
 	
 	#endregion 
 	
 	// Members
 	
-	state = __collageStates.NORMAL;
-	texPageArray = [];
+	__state = __CollageStates.NORMAL;
+	__texPageArray = [];
 	texPageCount = 0;
 	imageCount = 0;
-	imagesMap = {};
-	imageList = [];
+	__batchImageList = [];
+	__imageMap = {};
+	__imageList = [];
+	__asyncList = [];
+	__isWaitingOnAsync = false;
+	__status = __CollageStatus.READY;
 	builder = new __builder();
 	separation = _sep;
 	width = _width;
