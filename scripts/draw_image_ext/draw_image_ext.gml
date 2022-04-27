@@ -13,9 +13,7 @@ function draw_image_ext(_sprite, _sub, _x, _y, _xscale, _yscale, _rot, _col, _al
 		if (sprite_exists(_sprite)) {
 			draw_sprite_ext(_sprite, _sub, _x, _y, _xscale, _yscale, _rot, _col, _alpha);
 		}
-	} else if (is_struct(_sprite)) {
-		CollageDrawImageExt(_sprite, _sub, _x, _y, _xscale, _yscale, _rot, _col, _alpha);	
 	} else {
-		__CollageThrow(string(_sprite) + " is not a valid sprite or Collage image!");	
-	}
+		CollageDrawImageExt(_sprite, _sub, _x, _y, _xscale, _yscale, _rot, _col, _alpha);	
+	} 
 } 

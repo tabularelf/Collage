@@ -4,7 +4,7 @@
 /// @param [crop]
 /// @param [separation]
 /// @param [identitifer]
-function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DEFAULT_TEXTURE_SIZE, _crop = __COLLAGE_DEFAULT_CROP, _sep = __COLLAGE_DEFAULT_SEPARATION, _identifier = undefined) constructor {
+function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAULT_TEXTURE_SIZE, _crop = COLLAGE_DEFAULT_CROP, _sep = COLLAGE_DEFAULT_SEPARATION, _identifier = undefined) constructor {
 	#region Methods
 	static __builder = function() constructor {
 		owner = other;
@@ -65,7 +65,7 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 					
 					// Exit early code
 					if (_drawW > _texWidth || _drawH > _texHeight) {
-						if (!__COLLAGE_SCALE_TO_TEXTURES_ON_PAGE) {
+						if (!COLLAGE_SCALE_TO_TEXTURES_ON_PAGE) {
 							__CollageTrace("Sprite " + string(_spriteData.name) + " is too big! Skipping...");
 							if (_spriteData.isCopy) {
 								sprite_delete(_spriteID);
@@ -104,6 +104,8 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 						drawH: _drawH,
 						wScale: _drawW * _ratio,
 						hScale: _drawH * _ratio,
+						originalWidth: _sprWidth,
+						originalHeight: _sprHeight,
 					}
 					_spriteList[_i] = _newSpriteData;
 					++_i;
@@ -171,6 +173,8 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 					var _yScale = _spriteStruct.yScale;
 					var _wScale = _spriteStruct.wScale;
 					var _hScale = _spriteStruct.hScale;
+					var _ogW = _spriteStruct.originalWidth;
+					var _ogH = _spriteStruct.originalHeight;
 					
 					
 					var _bbWidth = _spriteStruct.bbWidth;
@@ -179,7 +183,7 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 					
 					var _subStart = 0;
 					if (variable_struct_exists(global.__CollageImageMap, _spriteData.name)) {
-						switch(__COLLAGE_IMAGE_NAME_COLLISION_HANDLE) {
+						switch(COLLAGE_IMAGE_NAME_COLLISION_HANDLE) {
 							case 0:
 								__CollageTrace(_spriteData.name + " already exists! Skipping...");
 								continue;
@@ -227,7 +231,7 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 										draw_rectangle_color(_uvs.left, _uvs.top, _uvs.left+_uvs.right,_uvs.top+ _uvs.bottom, c_black, c_black, c_black, c_black, false);
 										gpu_set_blendmode(bm_normal);
 										draw_sprite_part_ext(_spriteID, _uvi-1, _drawX, _drawY, _drawW,  _drawH, _uvs.left, _uvs.top, _ratio, _ratio, c_white, 1);
-										if (__COLLAGE_RENDER_DEBUG_LINES) {
+										if (COLLAGE_RENDER_DEBUG_LINES) {
 											draw_set_colour(make_color_hsv((current_time * 5) mod 256, 255, 255));
 											draw_rectangle(_uvs.left+1,_uvs.top+1,_uvs.left+_drawW-2,_uvs.top+_drawH-2, true);
 											draw_set_colour(c_white);	
@@ -296,7 +300,7 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 								_drawW = _drawW * _ratio;
 								_drawH = _drawH * _ratio;
 							}*/
-							if (__COLLAGE_RENDER_DEBUG_LINES) {
+							if (COLLAGE_RENDER_DEBUG_LINES) {
 								draw_set_colour(make_color_hsv((current_time * 5) mod 256, 255, 255));
 								draw_rectangle(_currentPoint.left+1,_currentPoint.top+1,_currentPoint.left+_wScale-2,_currentPoint.top+_hScale-2, true);
 								draw_set_colour(c_white);	
@@ -307,7 +311,7 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 							var _uvW = _wScale;
 							var _uvH = _hScale;
 							//show_debug_message([_currentPoint.left,_currentPoint.top,_currentPoint.left+_drawW,_currentPoint.top+_drawH]);
-							var _uvs = new __CollageImageUVs(_texPage, owner.texPageCount, _uvX, _uvY, _uvW, _uvH, _drawX, _drawY, /*_sprWidth - _drawW - 2, _sprHeight - _drawH - 2,*/ _imageInfo.xoffset, _imageInfo.yoffset);
+							var _uvs = new __CollageImageUVs(_texPage, owner.texPageCount, _uvX, _uvY, _uvW, _uvH, _drawX, _drawY, _ogW, _ogH, /*_sprWidth - _drawW - 2, _sprHeight - _drawH - 2,*/ _imageInfo.xoffset, _imageInfo.yoffset);
 							_imageInfo.subImagesArray[_sub] = _uvs;
 							//if (!_forceScaled) {
 								// Store next available space
@@ -381,6 +385,8 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 					var _yScale = _spriteStruct.yScale;
 					var _wScale = _spriteStruct.wScale;
 					var _hScale = _spriteStruct.hScale;
+					var _ogW = _spriteStruct.originalWidth;
+					var _ogH = _spriteStruct.originalHeight;
 					
 					
 					var _bbWidth = _spriteStruct.bbWidth;
@@ -389,7 +395,7 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 					
 					var _subStart = 0;
 					if (variable_struct_exists(global.__CollageImageMap, _spriteData.name)) {
-						switch(__COLLAGE_IMAGE_NAME_COLLISION_HANDLE) {
+						switch(COLLAGE_IMAGE_NAME_COLLISION_HANDLE) {
 							case 0:
 								__CollageTrace(_spriteData.name + " already exists! Skipping...");
 								continue;
@@ -438,7 +444,7 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 										gpu_set_blendmode(bm_normal);
 										gpu_set_blendenable(false);
 										draw_sprite_part_ext(_spriteID, _uvi-1, _drawX, _drawY, _drawW,  _drawH, _uvs.left, _uvs.top, _ratio, _ratio, c_white, 1);
-										if (__COLLAGE_RENDER_DEBUG_LINES) {
+										if (COLLAGE_RENDER_DEBUG_LINES) {
 											draw_set_colour(make_color_hsv((current_time * 5) mod 256, 255, 255));
 											draw_rectangle(_uvs.left+1,_uvs.top+1,_uvs.left+_drawW-2,_uvs.top+_drawH-2, true);
 											draw_set_colour(c_white);	
@@ -487,7 +493,7 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 								_drawW = _drawW * _ratio;
 								_drawH = _drawH * _ratio;
 							}*/
-							if (__COLLAGE_RENDER_DEBUG_LINES) {
+							if (COLLAGE_RENDER_DEBUG_LINES) {
 								draw_set_colour(make_color_hsv((current_time * 5) mod 256, 255, 255));
 								draw_rectangle(_spriteInfo.bbox_left+1,_spriteInfo.bbox_top+1,_spriteInfo.bbox_left+_wScale-2,_spriteInfo.bbox_top+_hScale-2, true);
 								draw_set_colour(c_white);	
@@ -498,7 +504,7 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 							var _uvW = _wScale;
 							var _uvH = _hScale;
 							//show_debug_message([_currentPoint.left,_currentPoint.top,_currentPoint.left+_drawW,_currentPoint.top+_drawH]);
-							var _uvs = new __CollageImageUVs(_texPage, owner.texPageCount, _uvX, _uvY, _uvW, _uvH, _drawX, _drawY, /*_sprWidth - _drawW - 2, _sprHeight - _drawH - 2,*/ _imageInfo.xoffset, _imageInfo.yoffset);
+							var _uvs = new __CollageImageUVs(_texPage, owner.texPageCount, _uvX, _uvY, _uvW, _uvH, _drawX, _drawY, _ogW, _ogH,/*_sprWidth - _drawW - 2, _sprHeight - _drawH - 2,*/ _imageInfo.xoffset, _imageInfo.yoffset);
 							_imageInfo.subImagesArray[_sub] = _uvs;
 							// We declare this finished
 							_texPage.finish();
@@ -950,14 +956,14 @@ function Collage(_width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DE
 	}
 	
 	// Init texture settings
-	if (__COLLAGE_ENSURE_POWER_TWO) && !(CollageIsPowerTwo(width) || CollageIsPowerTwo(height)) {
+	if (COLLAGE_ENSURE_POWER_TWO) && !(CollageIsPowerTwo(width) || CollageIsPowerTwo(height)) {
 		width = CollageConvertPowerTwo(_width);
 		height = CollageConvertPowerTwo(_height);
 	} 
 	
-	if (__COLLAGE_CLAMP_TEXTURE_SIZE) {
-		width = clamp(width, __COLLAGE_MIN_TEXTURE_SIZE, __COLLAGE_MAX_TEXTURE_SIZE);
-		height = clamp(height, __COLLAGE_MIN_TEXTURE_SIZE, __COLLAGE_MAX_TEXTURE_SIZE);
+	if (COLLAGE_CLAMP_TEXTURE_SIZE) {
+		width = clamp(width, COLLAGE_MIN_TEXTURE_SIZE, COLLAGE_MAX_TEXTURE_SIZE);
+		height = clamp(height, COLLAGE_MIN_TEXTURE_SIZE, COLLAGE_MAX_TEXTURE_SIZE);
 	}
 	
 }
