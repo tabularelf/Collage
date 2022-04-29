@@ -6,7 +6,7 @@
     "path": "folders/Collage/System.yy",
   },
   "resourceVersion": "1.0",
-  "name": "__CollageImageInfo",
+  "name": "__CollageTexturePageClass",
   "tags": [],
   "resourceType": "GMScript",
 }

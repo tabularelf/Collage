@@ -1,4 +1,4 @@
-function __CollageImageInfo(_spriteInfo, _name, _cropW, _cropH, _ratio) constructor {
+function __CollageImageClass(_spriteInfo, _name, _cropW, _cropH, _ratio) constructor {
 	width = _spriteInfo.width;
 	height  = _spriteInfo.height;
 	cropWidth = _cropW;

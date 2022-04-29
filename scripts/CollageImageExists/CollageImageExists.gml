@@ -10,5 +10,5 @@ function CollageImageExists(_identifier) {
 		return variable_struct_exists(global.__CollageImageMap, _identifier);		
 	} 
 	
-	return ((instanceof(_identifier) == "__CollageImageInfo") && (variable_struct_exists(global.__CollageImageMap, _identifier.name)));
+	return ((instanceof(_identifier) == "__CollageImageClass") && (variable_struct_exists(global.__CollageImageMap, _identifier.name)));
 }

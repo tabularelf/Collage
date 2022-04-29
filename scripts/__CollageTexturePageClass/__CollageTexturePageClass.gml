@@ -1,5 +1,5 @@
 
-function __CollageTexturePage(_width, _height) constructor {
+function __CollageTexturePageClass(_width, _height) constructor {
 		width = _width;
 		height = _height;
 		surface = -1;

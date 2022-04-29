@@ -56,7 +56,7 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 			var _spriteList = owner.__batchImageList;
 			var _normalSprites = array_create(array_length(_spriteList));
 			var _3DSprites = array_create(array_length(_spriteList));
-			var _texPage = array_length(owner.__texPageArray) == 0 ? new __CollageTexturePage(_texWidth, _texHeight) : owner.__texPageArray[array_length(owner.__texPageArray)-1];
+			var _texPage = array_length(owner.__texPageArray) == 0 ? new __CollageTexturePageClass(_texWidth, _texHeight) : owner.__texPageArray[array_length(owner.__texPageArray)-1];
 			var _sep = owner.separation;
 			var _3DArraySize = 0;
 			var _normalArraySize = 0;
@@ -231,7 +231,7 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 									__CollageTrace(_collageName + _spriteData.name + " already exists! Reidentified as " + _name);
 									_spriteData.name = _name;
 									
-									var _imageInfo = new __CollageImageInfo(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio);
+									var _imageInfo = new __CollageImageClass(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio);
 									// Lets add it to database
 									__setImage(_spriteData.name, _imageInfo);
 									
@@ -293,14 +293,14 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 								__CollageTrace(_collageName + _spriteData.name + " already exists! Reidentified as " + _name);
 								_spriteData.name = _name;
 								
-								var _imageInfo = new __CollageImageInfo(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio);
+								var _imageInfo = new __CollageImageClass(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio);
 								// Lets add it to database
 								__setImage(_spriteData.name, _imageInfo);
 								var _subImages = _spriteInfo.num_subimages;
 							break;
 						}
 					} else {
-						var _imageInfo = new __CollageImageInfo(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio);
+						var _imageInfo = new __CollageImageClass(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio);
 						// Lets add it to database
 						__setImage(_spriteData.name, _imageInfo);
 						
@@ -342,7 +342,7 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 							var _uvW = _wScale;
 							var _uvH = _hScale;
 							//show_debug_message([_currentPoint.left,_currentPoint.top,_currentPoint.left+_drawW,_currentPoint.top+_drawH]);
-							var _uvs = new __CollageImageUVs(_texPage, owner.texPageCount, _uvX, _uvY, _uvW, _uvH, _drawX, _drawY, _ogW, _ogH, /*_sprWidth - _drawW - 2, _sprHeight - _drawH - 2,*/ _imageInfo.xoffset, _imageInfo.yoffset);
+							var _uvs = new __CollageImageUVsClass(_texPage, owner.texPageCount, _uvX, _uvY, _uvW, _uvH, _drawX, _drawY, _ogW, _ogH, /*_sprWidth - _drawW - 2, _sprHeight - _drawH - 2,*/ _imageInfo.xoffset, _imageInfo.yoffset);
 							_imageInfo.subImagesArray[_sub] = _uvs;
 							//if (!_forceScaled) {
 								// Store next available space
@@ -373,7 +373,7 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 							if (owner.texPageCount == 0) || (owner.__texPageArray[owner.texPageCount-1] != _texPage) {
 								owner.__texPageArray[owner.texPageCount++] = _texPage;
 							}
-							_texPage = new __CollageTexturePage(_texWidth, _texHeight);
+							_texPage = new __CollageTexturePageClass(_texWidth, _texHeight);
 							_texPage.start();
 							
 							
@@ -450,7 +450,7 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 									__CollageTrace(_collageName + _spriteData.name + " already exists! Reidentified as " + _name);
 									_spriteData.name = _name;
 									
-									var _imageInfo = new __CollageImageInfo(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio);
+									var _imageInfo = new __CollageImageClass(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio);
 									// Lets add it to database
 									__setImage(_spriteData.name, _imageInfo);
 									
@@ -506,14 +506,14 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 								__CollageTrace(_collageName + _spriteData.name + " already exists! Reidentified as " + _name);
 								_spriteData.name = _name;
 								
-								var _imageInfo = new __CollageImageInfo(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio);
+								var _imageInfo = new __CollageImageClass(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio);
 								// Lets add it to database
 								__setImage(_spriteData.name, _imageInfo);
 								var _subImages = _spriteInfo.num_subimages;
 							break;
 						}
 					} else {
-						var _imageInfo = new __CollageImageInfo(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio);
+						var _imageInfo = new __CollageImageClass(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio);
 						// Lets add it to database
 						__setImage(_spriteData.name, _imageInfo);
 						
@@ -523,7 +523,7 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 						if (COLLAGE_IMAGES_ARE_PUBLIC) owner.__imageMap[$ _spriteData.name] = _imageInfo;
 					}
 					for(var _sub = _subStart; _sub < _subImages; ++_sub) {
-							_texPage = new __CollageTexturePage(_texWidth, _texHeight);
+							_texPage = new __CollageTexturePageClass(_texWidth, _texHeight);
 							_texPage.start();
 							draw_sprite_part_ext(_spriteID , _sub , _drawX  , _drawY , _drawW, _drawH, 0, 0, _ratio, _ratio, c_white, 1);
 							/*if (_forceScaled) {
@@ -541,7 +541,7 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 							var _uvW = _wScale;
 							var _uvH = _hScale;
 							//show_debug_message([_currentPoint.left,_currentPoint.top,_currentPoint.left+_drawW,_currentPoint.top+_drawH]);
-							var _uvs = new __CollageImageUVs(_texPage, owner.texPageCount, _uvX, _uvY, _uvW, _uvH, _drawX, _drawY, _ogW, _ogH,/*_sprWidth - _drawW - 2, _sprHeight - _drawH - 2,*/ _imageInfo.xoffset, _imageInfo.yoffset);
+							var _uvs = new __CollageImageUVsClass(_texPage, owner.texPageCount, _uvX, _uvY, _uvW, _uvH, _drawX, _drawY, _ogW, _ogH,/*_sprWidth - _drawW - 2, _sprHeight - _drawH - 2,*/ _imageInfo.xoffset, _imageInfo.yoffset);
 							_imageInfo.subImagesArray[_sub] = _uvs;
 							// We declare this finished
 							_texPage.finish();
@@ -593,7 +593,7 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 			array_resize(owner.__batchImageList, 0);
 			CollageRestoreGPUState();
 			
-			__CollageTrace(_collageName + "Building finished! Packed " + string(_normalArraySize) + " images and " + string(_3DArraySize) + " images with \"3D\" texture pages.");
+			__CollageTrace(_collageName + "Building finished! Packed " + string(_normalArraySize) + " images and " + string(_3DArraySize) + " images with separate texture pages.");
 			var _finalTime = (get_timer()-_startTime)/1000;
 			if (COLLAGE_VERBOSE) __CollageTrace(_collageName + "Building took " + string(_finalTime) + "ms");
 		}
@@ -693,9 +693,15 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 		var _spriteID = _spriteIdentifier;
 		var _isCopy = _isCopyBool;
 		
+		var _identifier = _identifierString;
+		if (_identifier == undefined) {
+			_identifier = sprite_get_name(_spriteID);
+		}
+		
 		if (is_undefined(_isCopyBool)) {
 			if (_spriteID < global.__CollageGMSpriteCount) {
 				_isCopy = false;
+				if (COLLAGE_VERBOSE) __CollageTrace(__getName() + _identifier + " is a GMSprite resource added via the IDE, making a copy...")
 			} else {
 				_isCopy = true;
 			}
@@ -707,11 +713,6 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 		
 		if (_isCopy == false) {
 			_spriteID = sprite_duplicate(_spriteID);
-		}
-		
-		var _identifier = _identifierString;
-		if (_identifier == undefined) {
-			_identifier = sprite_get_name(_spriteID);
 		}
 		
 		// Add sprite data
