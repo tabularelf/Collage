@@ -46,3 +46,6 @@
 // The downside is that you can't have the same names across multiple Collages.
 // Setting this to false will allow all image names to be used privately, but not accessible via the global image database.
 #macro COLLAGE_IMAGES_ARE_PUBLIC true
+
+// Enables verbose console output to aid with debugging.
+#macro COLLAGE_VERBOSE false

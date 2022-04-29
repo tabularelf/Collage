@@ -37,6 +37,9 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 		}
 		
 		static __build = function() {	
+			// Store building time for verbose later
+			var _startTime = get_timer();
+			
 			// Separate entries
 			var _len = array_length(owner.__batchImageList);
 			var _collageName = (owner.name != undefined) ? owner.name + " - ": "";
@@ -208,10 +211,11 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 					var _ratio = _spriteStruct.ratio;
 					
 					var _subStart = 0;
+					if (COLLAGE_VERBOSE) __CollageTrace(_collageName + _spriteData.name + " is currently being processed... 0/" + string(_spriteInfo.num_subimages));
 					if (__checkImage(_spriteData.name)) {
 						switch(COLLAGE_IMAGE_NAME_COLLISION_HANDLE) {
 							case 0:
-								__CollageTrace(_spriteData.name + " already exists! Skipping...");
+								__CollageTrace(_collageName + _spriteData.name + " already exists! Skipping...");
 								--_normalArraySize;
 								continue;
 								break;
@@ -224,7 +228,7 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 									while(__checkImage(_name)) {
 											var _name = _spriteName + string(++_num);
 									}
-									__CollageTrace(_spriteData.name + " already exists! Reidentified as " + _name);
+									__CollageTrace(_collageName + _spriteData.name + " already exists! Reidentified as " + _name);
 									_spriteData.name = _name;
 									
 									var _imageInfo = new __CollageImageInfo(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio);
@@ -275,7 +279,7 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 									var _subImages = _subImageLen;
 									var _subStart = (_subImageLen > _uvsArrayLength) ? (_subImageLen - _uvsArrayLength) : _subImageLen;
 									_imageInfo.subImagesCount = _subImageLen;
-									__CollageTrace(_spriteData.name + " overwritten! (" + string(_subImageLen) + "/" + string(_uvsArrayLength) + ") Left over: " + string(max(_subImageLen - _uvsArrayLength, 0)));
+									__CollageTrace(_collageName + _spriteData.name + " overwritten! (" + string(_subImageLen) + "/" + string(_uvsArrayLength) + ") Left over: " + string(max(_subImageLen - _uvsArrayLength, 0)));
 								}
 							break;
 							
@@ -286,7 +290,7 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 								while(__checkImage(_name)) {
 										var _name = _spriteName + string(++_num);
 								}
-								__CollageTrace(_spriteData.name + " already exists! Reidentified as " + _name);
+								__CollageTrace(_collageName + _spriteData.name + " already exists! Reidentified as " + _name);
 								_spriteData.name = _name;
 								
 								var _imageInfo = new __CollageImageInfo(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio);
@@ -355,6 +359,10 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 								array_push(bboxPoints, {left: 0, right: 0, top: 0, bottom: 0});
 							}*/
 							// Remove non-empty area
+							if (COLLAGE_VERBOSE) __CollageTrace(_collageName + _spriteData.name + " is currently being processed... " + string(_sub+1) + "/" + string(_subImages));
+							if (_sub == _subImages-1) {
+								if (COLLAGE_VERBOSE) __CollageTrace(_collageName + _spriteData.name + " has been processed...");	
+							}
 							array_delete(bboxPoints, _emptySpaceID, 1);
 						} else {
 							
@@ -421,10 +429,11 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 					var _ratio = _spriteStruct.ratio;
 					
 					var _subStart = 0;
+					if (COLLAGE_VERBOSE) __CollageTrace(_collageName + _spriteData.name + " is currently being processed... 0/" + string(_spriteInfo.num_subimages));
 					if (__checkImage(_spriteData.name)) {
 						switch(COLLAGE_IMAGE_NAME_COLLISION_HANDLE) {
 							case 0:
-								__CollageTrace(_spriteData.name + " already exists! Skipping...");
+								__CollageTrace(_collageName + _spriteData.name + " already exists! Skipping...");
 								--_3DArraySize;
 								continue;
 							break;
@@ -438,7 +447,7 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 									while(__checkImage(_spriteData.name)) {
 											var _name = _spriteName + string(++_num);
 									}
-									__CollageTrace(_spriteData.name + " already exists! Reidentified as " + _name);
+									__CollageTrace(_collageName + _spriteData.name + " already exists! Reidentified as " + _name);
 									_spriteData.name = _name;
 									
 									var _imageInfo = new __CollageImageInfo(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio);
@@ -494,7 +503,7 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 								while(__checkImage(_name)) {
 										var _name = _spriteName + string(++_num);
 								}
-								__CollageTrace(_spriteData.name + " already exists! Reidentified as " + _name);
+								__CollageTrace(_collageName + _spriteData.name + " already exists! Reidentified as " + _name);
 								_spriteData.name = _name;
 								
 								var _imageInfo = new __CollageImageInfo(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio);
@@ -541,6 +550,11 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 							if (owner.texPageCount == 0) || (owner.__texPageArray[owner.texPageCount-1] != _texPage) {
 								owner.__texPageArray[owner.texPageCount++] = _texPage;
 							}
+							
+							if (COLLAGE_VERBOSE) __CollageTrace(_collageName + _spriteData.name + " is currently being processed... " + string(_sub+1) + "/" + string(_subImages));
+							if (_sub == _subImages-1) {
+								if (COLLAGE_VERBOSE) __CollageTrace(_collageName + _spriteData.name + " has been processed...");	
+							}
 						} 
 					}			
 			
@@ -580,12 +594,18 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 			CollageRestoreGPUState();
 			
 			__CollageTrace(_collageName + "Building finished! Packed " + string(_normalArraySize) + " images and " + string(_3DArraySize) + " images with \"3D\" texture pages.");
+			var _finalTime = (get_timer()-_startTime)/1000;
+			if (COLLAGE_VERBOSE) __CollageTrace(_collageName + "Building took " + string(_finalTime) + "ms");
 		}
+	}
+	
+	static __getName = function() {
+		return (is_undefined(name)) ? "" : name + " - ";	
 	}
 	
 	static startBatch = function() {
 		if (__state == __CollageStates.BATCHING) {
-			__CollageTrace("Currently in batching mode!");
+			__CollageTrace(__getName() + "Currently in batching mode!");
 			return self;
 		}
 		
@@ -609,14 +629,14 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 			return self;
 			
 		} else {
-			__CollageTrace("Is not in batching mode!");	
+			__CollageTrace(__getName() + "Is not in batching mode!");	
 			return self;
 		}
 	}
 	
 	static finishBatch = function(_crop = true) {
 		if (__state != __CollageStates.BATCHING) {
-			__CollageTrace("Is not in batching mode!");
+			__CollageTrace(__getName() + "Is not in batching mode!");
 			return self;
 		} 
 		
@@ -628,8 +648,8 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 	static addFile = function(_fileName, _identifierString = undefined, _subImage = 1, _removeBack = false, _smooth = false, _xOrigin = 0, _yOrigin = 0, _is3D = false) {
 		if (!__CollageFileFromWeb(_fileName)) && (!file_exists(_fileName)) {
 			// It doesn't exist, obviously!
-			__CollageTrace("File " + string(_fileName) + " doesn't exist!");
-			return -1;
+			__CollageTrace(__getName() + "File " + string(_fileName) + " doesn't exist!");
+			exit;
 		}
 		
 		var _identifier = _identifierString;
@@ -637,7 +657,12 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 			_identifier = __CollageGetName(_fileName);	
 		}
 		
-		var _spriteData = new __CollageSpriteFileData(_identifier, sprite_add(_fileName, _subImage, _removeBack, _smooth, _xOrigin, _yOrigin), _subImage, _xOrigin, _yOrigin, _is3D, true);
+		var _spriteID = sprite_add(_fileName, _subImage, _removeBack, _smooth, _xOrigin, _yOrigin);
+		if (_spriteID == -1) {
+			__CollageTrace(__getName() + "File " + string(_fileName) + " has an invalid formatting!");
+			exit;
+		}
+		var _spriteData = new __CollageSpriteFileData(_identifier, _spriteID, _subImage, _xOrigin, _yOrigin, _is3D, true);
 		
 		if (__CollageFileFromWeb(_fileName)) {
 			__isWaitingOnAsync = true;
@@ -674,6 +699,10 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 			} else {
 				_isCopy = true;
 			}
+		} else {
+			if ((_spriteID < global.__CollageGMSpriteCount) && (_isCopyBool == true)) {
+				__CollageThrow(__getName() + "isCopy was provided true when the spriteID is a GMSprite asset provided via the IDE!");
+			}
 		}
 		
 		if (_isCopy == false) {
@@ -698,7 +727,7 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 	static addFileStrip = function(_fileName, _identifierString = undefined, _removeBack = false, _smooth = false, _xOrigin = 0, _yOrigin = 0, _is3D = false) {
 		if (!__CollageFileFromWeb(_fileName)) && (!file_exists(_fileName)) {
 			// It doesn't exist, obviously!
-			__CollageTrace("File " + string(_fileName) + " doesn't exist!");
+			__CollageTrace(__getName() + "File " + string(_fileName) + " doesn't exist!");
 			return -1;
 		}
 		
@@ -708,6 +737,10 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 		}
 		
 		var _spriteSheet = sprite_add(_fileName, 1, _removeBack, _smooth, _xOrigin, _yOrigin);
+		if (_spriteSheet == -1) {
+			__CollageTrace(__getName() + "File " + string(_fileName) + " has an invalid formatting!");
+			exit;
+		}
 		var _width = sprite_get_width(_spriteSheet);
 		var _height = sprite_get_height(_spriteSheet);
 		var _offset = round(_width / _height);

@@ -10,6 +10,7 @@
     {"id":{"name":"CollageGetImageTexture","path":"scripts/CollageGetImageTexture/CollageGetImageTexture.yy",},"order":5,},
     {"id":{"name":"__CollageGPUStateSingleton","path":"scripts/__CollageGPUStateSingleton/__CollageGPUStateSingleton.yy",},"order":0,},
     {"id":{"name":"spr_soldier","path":"sprites/spr_soldier/spr_soldier.yy",},"order":7,},
+    {"id":{"name":"CollageIsImage","path":"scripts/CollageIsImage/CollageIsImage.yy",},"order":10,},
     {"id":{"name":"__CollageImageFetchPointer","path":"scripts/__CollageImageFetchPointer/__CollageImageFetchPointer.yy",},"order":1,},
     {"id":{"name":"CollageGetImageSurface","path":"scripts/CollageGetImageSurface/CollageGetImageSurface.yy",},"order":6,},
     {"id":{"name":"CollageImageIsLoaded","path":"scripts/CollageImageIsLoaded/CollageImageIsLoaded.yy",},"order":1,},
@@ -42,6 +43,7 @@
     {"id":{"name":"CollageImageAsync","path":"scripts/CollageImageAsync/CollageImageAsync.yy",},"order":4,},
     {"id":{"name":"__CollageFileFromWeb","path":"scripts/__CollageFileFromWeb/__CollageFileFromWeb.yy",},"order":8,},
     {"id":{"name":"CollageGet","path":"scripts/CollageGet/CollageGet.yy",},"order":8,},
+    {"id":{"name":"CollageIsCollage","path":"scripts/CollageIsCollage/CollageIsCollage.yy",},"order":11,},
     {"id":{"name":"CollageCompatibilityGetImageUVs","path":"scripts/CollageCompatibilityGetImageUVs/CollageCompatibilityGetImageUVs.yy",},"order":2,},
   ],
   "Options": [
@@ -158,6 +160,7 @@
     {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"sign_street.png","resourceType":"GMIncludedFile",},
     {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"barrier.png","resourceType":"GMIncludedFile",},
     {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"spr_soldier_long.png","resourceType":"GMIncludedFile",},
+    {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"clearlynotanimage.txt","resourceType":"GMIncludedFile",},
   ],
   "MetaData": {
     "IDEVersion": "2022.3.0.625",
