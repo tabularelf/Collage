@@ -1,4 +1,5 @@
 function __CollageGPUStateSingleton() {
+	gml_pragma("forceinline");
 	static _instance = {
 		gpuBlendEnable: undefined,
 		gpuBlendMode: undefined,
