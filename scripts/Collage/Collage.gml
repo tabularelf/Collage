@@ -12,7 +12,40 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 		init = false;
 		freeSpacePoints = [];
 		
+		static __checkImage = function(_str) {
+			if (COLLAGE_IMAGES_ARE_PUBLIC) {
+				return variable_struct_exists(global.__CollageImageMap, _str);	
+			} else {
+				return variable_struct_exists(owner.__imageMap, _str);	
+			}
+		}
+		
+		static __getImage = function(_str) {
+			if (COLLAGE_IMAGES_ARE_PUBLIC) {
+				return global.__CollageImageMap[$ _str];	
+			} else {
+				return owner.__imageMap[$ _str];	
+			}
+		}
+		
+		static __setImage = function(_str, _data) {
+			if (COLLAGE_IMAGES_ARE_PUBLIC) {
+				global.__CollageImageMap[$ _str] = _data;	
+			} else {
+				owner.__imageMap[$ _str] = _data;	
+			}
+		}
+		
 		static __build = function() {	
+			// Separate entries
+			var _len = array_length(owner.__batchImageList);
+			var _collageName = (owner.name != undefined) ? owner.name + " - ": "";
+			if (_len == 0) {
+				__CollageTrace(_collageName +"Building was commenced but there was no images to pack!");
+				exit;
+			}
+			
+			__CollageTrace(_collageName +"Building commenced! Attempting to pack " + string(array_length(owner.__batchImageList)) + " images!");
 			// Begin gather texture data
 			var _crop = owner.crop;
 			var _texWidth = owner.width;
@@ -24,13 +57,6 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 			var _sep = owner.separation;
 			var _3DArraySize = 0;
 			var _normalArraySize = 0;
-			
-			// Separate entries
-			var _len = array_length(_spriteList);
-			if (_len == 0) {
-				__CollageTrace("No sprites?!");
-				exit;
-			}
 
 			CollageSterlizeGPUState();
 			
@@ -66,7 +92,7 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 					// Exit early code
 					if (_drawW > _texWidth || _drawH > _texHeight) {
 						if (!COLLAGE_SCALE_TO_TEXTURES_ON_PAGE) {
-							__CollageTrace("Sprite " + string(_spriteData.name) + " is too big! Skipping...");
+							__CollageTrace("Image " + string(_spriteData.name) + " is too big! Skipping...");
 							if (_spriteData.isCopy) {
 								sprite_delete(_spriteID);
 							}
@@ -182,19 +208,20 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 					var _ratio = _spriteStruct.ratio;
 					
 					var _subStart = 0;
-					if (variable_struct_exists(global.__CollageImageMap, _spriteData.name)) {
+					if (__checkImage(_spriteData.name)) {
 						switch(COLLAGE_IMAGE_NAME_COLLISION_HANDLE) {
 							case 0:
 								__CollageTrace(_spriteData.name + " already exists! Skipping...");
+								--_normalArraySize;
 								continue;
 								break;
 							case 1:
-								if !(((_spriteInfo.width == global.__CollageImageMap[$ _spriteData.name].width) && (_spriteInfo.height == global.__CollageImageMap[$ _spriteData.name].height))
-								&& (_spriteInfo.bbox_right-_spriteInfo.bbox_left+1 == global.__CollageImageMap[$ _spriteData.name].cropWidth) && (_spriteInfo.bbox_bottom-_spriteInfo.bbox_top+1 == global.__CollageImageMap[$ _spriteData.name].cropHeight)) {
+								if !(((_spriteInfo.width == __getImage(_spriteData.name).width) && (_spriteInfo.height == __getImage(_spriteData.name).height))
+								&& (_spriteInfo.bbox_right-_spriteInfo.bbox_left+1 == __getImage(_spriteData.name).cropWidth) && (_spriteInfo.bbox_bottom-_spriteInfo.bbox_top+1 == __getImage(_spriteData.name).cropHeight)) {
 									var _spriteName = _spriteData.name;
 									var _num = 1;
 									var _name = _spriteName + string(_num);
-									while(variable_struct_exists(global.__CollageImageMap, _name)) {
+									while(__checkImage(_name)) {
 											var _name = _spriteName + string(++_num);
 									}
 									__CollageTrace(_spriteData.name + " already exists! Reidentified as " + _name);
@@ -202,7 +229,7 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 									
 									var _imageInfo = new __CollageImageInfo(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio);
 									// Lets add it to database
-									global.__CollageImageMap[$ _spriteData.name] = _imageInfo;
+									__setImage(_spriteData.name, _imageInfo);
 									
 									var _subImages = _spriteInfo.num_subimages;
 								} else {
@@ -256,7 +283,7 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 								var _spriteName = _spriteData.name;
 								var _num = 1;
 								var _name = _spriteName + string(_num);
-								while(variable_struct_exists(global.__CollageImageMap, _name)) {
+								while(__checkImage(_name)) {
 										var _name = _spriteName + string(++_num);
 								}
 								__CollageTrace(_spriteData.name + " already exists! Reidentified as " + _name);
@@ -264,19 +291,19 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 								
 								var _imageInfo = new __CollageImageInfo(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio);
 								// Lets add it to database
-								global.__CollageImageMap[$ _spriteData.name] = _imageInfo;
+								__setImage(_spriteData.name, _imageInfo);
 								var _subImages = _spriteInfo.num_subimages;
 							break;
 						}
 					} else {
 						var _imageInfo = new __CollageImageInfo(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio);
 						// Lets add it to database
-						global.__CollageImageMap[$ _spriteData.name] = _imageInfo;
+						__setImage(_spriteData.name, _imageInfo);
 						
 						var _subImages = _spriteInfo.num_subimages;
 						owner.imageCount++;
 						array_push(owner.__imageList, _imageInfo);
-						owner.__imageMap[$ _spriteData.name] = _imageInfo;
+						if (COLLAGE_IMAGES_ARE_PUBLIC) owner.__imageMap[$ _spriteData.name] = _imageInfo;
 					}
 					for(var _sub = _subStart; _sub < _subImages; ++_sub) {
 						var _emptySpaceSize = 0xFFFFFF;
@@ -394,20 +421,21 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 					var _ratio = _spriteStruct.ratio;
 					
 					var _subStart = 0;
-					if (CollageImageExists(_spriteData.name)) {
+					if (__checkImage(_spriteData.name)) {
 						switch(COLLAGE_IMAGE_NAME_COLLISION_HANDLE) {
 							case 0:
 								__CollageTrace(_spriteData.name + " already exists! Skipping...");
+								--_3DArraySize;
 								continue;
 							break;
 							
 							case 1:
-								if !(((_spriteInfo.width == global.__CollageImageMap[$ _spriteData.name].width) && (_spriteInfo.height == global.__CollageImageMap[$ _spriteData.name].height))
-								&& (_spriteInfo.bbox_right-_spriteInfo.bbox_left+1 == global.__CollageImageMap[$ _spriteData.name].cropWidth) && (_spriteInfo.bbox_bottom-_spriteInfo.bbox_top+1 == global.__CollageImageMap[$ _spriteData.name].cropHeight)) {
+								if !(((_spriteInfo.width == __checkImage(_spriteData.name).width) && (_spriteInfo.height == __checkImage(_spriteData.name).height))
+								&& (_spriteInfo.bbox_right-_spriteInfo.bbox_left+1 == __checkImage(_spriteData.name).cropWidth) && (_spriteInfo.bbox_bottom-_spriteInfo.bbox_top+1 == __checkImage(_spriteData.name).cropHeight)) {
 									var _spriteName = _spriteData.name;
 									var _num = 1;
 									var _name = _spriteName + string(_num);
-									while(variable_struct_exists(global.__CollageImageMap, _name)) {
+									while(__checkImage(_spriteData.name)) {
 											var _name = _spriteName + string(++_num);
 									}
 									__CollageTrace(_spriteData.name + " already exists! Reidentified as " + _name);
@@ -415,7 +443,7 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 									
 									var _imageInfo = new __CollageImageInfo(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio);
 									// Lets add it to database
-									global.__CollageImageMap[$ _spriteData.name] = _imageInfo;
+									__setImage(_spriteData.name, _imageInfo);
 									
 									var _subImages = _spriteInfo.num_subimages;
 								} else {
@@ -463,7 +491,7 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 								var _spriteName = _spriteData.name;
 								var _num = 1;
 								var _name = _spriteName + string(_num);
-								while(variable_struct_exists(global.__CollageImageMap, _name)) {
+								while(__checkImage(_name)) {
 										var _name = _spriteName + string(++_num);
 								}
 								__CollageTrace(_spriteData.name + " already exists! Reidentified as " + _name);
@@ -471,19 +499,19 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 								
 								var _imageInfo = new __CollageImageInfo(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio);
 								// Lets add it to database
-								global.__CollageImageMap[$ _spriteData.name] = _imageInfo;
+								__setImage(_spriteData.name, _imageInfo);
 								var _subImages = _spriteInfo.num_subimages;
 							break;
 						}
 					} else {
 						var _imageInfo = new __CollageImageInfo(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio);
 						// Lets add it to database
-						global.__CollageImageMap[$ _spriteData.name] = _imageInfo;
+						__setImage(_spriteData.name, _imageInfo);
 						
 						var _subImages = _spriteInfo.num_subimages;
 						owner.imageCount++;
 						array_push(owner.__imageList, _imageInfo);
-						owner.__imageMap[$ _spriteData.name] = _imageInfo;
+						if (COLLAGE_IMAGES_ARE_PUBLIC) owner.__imageMap[$ _spriteData.name] = _imageInfo;
 					}
 					for(var _sub = _subStart; _sub < _subImages; ++_sub) {
 							_texPage = new __CollageTexturePage(_texWidth, _texHeight);
@@ -551,7 +579,7 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 			array_resize(owner.__batchImageList, 0);
 			CollageRestoreGPUState();
 			
-			return self;	
+			__CollageTrace(_collageName + "Building finished! Packed " + string(_normalArraySize) + " images and " + string(_3DArraySize) + " images with \"3D\" texture pages.");
 		}
 	}
 	
@@ -760,8 +788,10 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 		
 		texPageCount = 0;
 		var _i = 0;
-		repeat(imageCount) {
-			variable_struct_remove(global.__CollageImageMap, __imageList[_i++].name);
+		if (COLLAGE_IMAGES_ARE_PUBLIC) {
+			repeat(imageCount) {
+				variable_struct_remove(global.__CollageImageMap, __imageList[_i++].name);
+			}	
 		}
 		
 		__imageList = [];
@@ -930,6 +960,10 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 		return __status;
 	}
 	
+	static exists = function(_identifier) {
+		return variable_struct_exists(__imageMap, _identifier);
+	}
+	
 	#endregion 
 	
 	// Members
@@ -949,9 +983,13 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 	width = _width;
 	height = _height;
 	crop = _crop;
-	name = _identifier;
+	name = is_undefined(_identifier) ? _identifier : string(_identifier);
 	array_push(global.__CollageTexturePagesList, self);
 	if (is_string(_identifier)) {
+		if (variable_struct_exists(global.__CollageTexturePagesMap, _identifier)) {
+			__CollageThrow(_identifier + " already exists as a Collage name!");	
+		}
+		
 		global.__CollageTexturePagesMap[$ _identifier] = self;
 	}
 	

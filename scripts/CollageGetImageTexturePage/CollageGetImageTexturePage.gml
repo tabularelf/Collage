@@ -1,10 +1,14 @@
-/// @func CollageGetImageTexturePage(identifier, subimage)
+/// @func CollageGetImageTexturePage(identifier)
 /// @param identifier
-/// @param subimage
-function CollageGetImageTexturePage(_identifier, _imageIndex) {
-	if (is_string(_spriteName)) {
-		return global.__CollageImageMap[$ _identifier].getTexturePage(_imageIndex);	
+function CollageGetImageTexturePage(_identifier) {
+	gml_pragma("forceinline");
+	if (is_string(_identifier)) {
+		if (!COLLAGE_IMAGES_ARE_PUBLIC) {
+			__CollageThrow("COLLAGE_IMAGES_ARE_PUBLIC is set to false and therefore string names do not work.");
+		}
+		
+		return global.__CollageImageMap[$ _identifier].getTexturePage();	
 	} 
 	
-	return _identifier.getTexturePage(_imageIndex);	
+	return _identifier.getTexturePage();	
 }

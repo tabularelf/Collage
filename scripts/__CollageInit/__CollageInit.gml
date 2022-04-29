@@ -29,5 +29,5 @@ function __CollageTrace(_string) {
 }
 
 function __CollageThrow(_string) {
-	show_error("Collage: Error!: " + _string, true);	
+	show_error("Collage Error: " + _string, true);	
 }

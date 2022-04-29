@@ -36,7 +36,13 @@
 */
 #macro COLLAGE_IMAGE_NAME_COLLISION_HANDLE 0
 
-// Whether Collage should automatically check if the texture page that your image is from when drawing.
+// Whether Collage should automatically check if the surface data stored for your image is available before drawing.
 // As Collages innerworking is relied on surfaces + buffers, this is crucial.
 // You can alternatively switch this off and call CollageCheckTexturePages() yourself before any drawing.
 #macro COLLAGE_AUTO_CHECK_TEXTURE_PAGES true
+
+// Whether Collage should make all images added available through the global image database or not.
+// The upside to this is that you can use string-based values in certain functions that allow it to fetch from a global database.
+// The downside is that you can't have the same names across multiple Collages.
+// Setting this to false will allow all image names to be used privately, but not accessible via the global image database.
+#macro COLLAGE_IMAGES_ARE_PUBLIC true

@@ -1,4 +1,5 @@
 function CollageImageAsync() {
+	gml_pragma("forceinline");
     var _fileName = async_load[? "filename"];
     var _id = async_load[? "id"];
     var _status = async_load[? "status"];

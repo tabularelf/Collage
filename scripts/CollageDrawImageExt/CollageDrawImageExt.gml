@@ -10,7 +10,6 @@
 /// @param alpha
 function CollageDrawImageExt(_imageData, _imageIndex, _x, _y, _xScale, _yScale, _rot, _col, _alpha) {
 	gml_pragma("forceinline");
-	var _image = __CollageImageFetchPointer(_imageData);
 	var _ratio = _image.ratio;
 	var _uvs = _image.subImagesArray[_imageIndex % _image.subImagesCount];
 	if (buffer_exists(_uvs.texturePageStruct.cacheBuffer)) {

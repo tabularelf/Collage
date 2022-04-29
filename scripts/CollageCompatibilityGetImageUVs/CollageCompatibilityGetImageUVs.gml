@@ -1,4 +1,5 @@
 function CollageCompatibilityGetImageUVs() {
+	gml_pragma("forceinline");
     var _uvs;
     if (is_string(_spriteName)) {
 		_uvs = global.__CollageImageMap[$ _spriteName].getUVs(_imageIndex);

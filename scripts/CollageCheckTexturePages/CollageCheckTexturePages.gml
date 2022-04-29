@@ -1,5 +1,7 @@
 /// @func CollageCheckTexturePages()
 function CollageCheckTexturePages() {
+	gml_pragma("forceinline");
+	if (COLLAGE_AUTO_CHECK_TEXTURE_PAGES) exit;
 	var _len = array_length(global.__CollageTexturePagesList);
 	var _i = 0;
 	repeat(_len) {

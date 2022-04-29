@@ -1,5 +1,6 @@
 /// @func CollageSterlizeGPUState()
 function CollageSterlizeGPUState() {
+			gml_pragma("forceinline");
 			var _instance = __CollageGPUStateSingleton()
 			if (_instance.isSteralized) {
 				__CollageThrow("GPU has been already sterlized! Please call CollageRestoreGPUState()!")

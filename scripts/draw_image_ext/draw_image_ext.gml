@@ -9,6 +9,7 @@
 /// @param col
 /// @param alpha
 function draw_image_ext(_sprite, _sub, _x, _y, _xscale, _yscale, _rot, _col, _alpha) {
+	gml_pragma("forceinline");
 	if (is_real(_sprite)) {
 		if (sprite_exists(_sprite)) {
 			draw_sprite_ext(_sprite, _sub, _x, _y, _xscale, _yscale, _rot, _col, _alpha);
