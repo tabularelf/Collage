@@ -1,2 +1,2 @@
 texPage = new Collage();
-texPage.addFileStrip("spr_soldier.png");
+texPage.AddFileStrip("spr_soldier.png");

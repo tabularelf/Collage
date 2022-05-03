@@ -1,8 +1,8 @@
 function CollageDestroy(_identifier) {
 	gml_pragma("forceinline");
     if (is_string(_identifier)) {
-		global.__CollageTexturePagesMap[$ _identifier].destroy();
+		global.__CollageTexturePagesMap[$ _identifier].Destroy();
     }
     
-    _identifier.destroy();
+    _identifier.Destroy();
 }

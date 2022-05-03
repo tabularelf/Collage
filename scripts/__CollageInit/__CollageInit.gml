@@ -3,7 +3,7 @@ enum __CollageStates {
 	BATCHING
 }
 
-enum __CollageStatus {
+enum CollageStatus {
 	READY,
 	WAITING_ON_FILES
 }

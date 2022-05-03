@@ -8,6 +8,7 @@
     {"id":{"name":"__CollageInit","path":"scripts/__CollageInit/__CollageInit.yy",},"order":9,},
     {"id":{"name":"obj_test_batch","path":"objects/obj_test_batch/obj_test_batch.yy",},"order":4,},
     {"id":{"name":"CollageGetImageTexture","path":"scripts/CollageGetImageTexture/CollageGetImageTexture.yy",},"order":5,},
+    {"id":{"name":"CollageImagesNamesToArray","path":"scripts/CollageImagesNamesToArray/CollageImagesNamesToArray.yy",},"order":12,},
     {"id":{"name":"__CollageGPUStateSingleton","path":"scripts/__CollageGPUStateSingleton/__CollageGPUStateSingleton.yy",},"order":0,},
     {"id":{"name":"spr_soldier","path":"sprites/spr_soldier/spr_soldier.yy",},"order":7,},
     {"id":{"name":"CollageIsImage","path":"scripts/CollageIsImage/CollageIsImage.yy",},"order":10,},
