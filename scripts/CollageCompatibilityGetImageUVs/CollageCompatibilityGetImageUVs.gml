@@ -1,3 +1,6 @@
+/// @func CollageCompatibilityGetImageUVs(identifier, image_index)
+/// @param identifier
+/// @param image_index
 function CollageCompatibilityGetImageUVs(_identifier, _imageIndex) {
 	gml_pragma("forceinline");
     var _uvs;

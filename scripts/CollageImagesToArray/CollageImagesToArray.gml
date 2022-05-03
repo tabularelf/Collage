@@ -1,3 +1,5 @@
+/// @func CollageImagesToArray(identifier)
+/// @param identifier
 function CollageImagesToArray(_identifier) {
 	gml_pragma("forceinline");
     if (is_string(_identifier)) {

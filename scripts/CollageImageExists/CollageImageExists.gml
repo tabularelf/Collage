@@ -1,4 +1,4 @@
-/// @func CollageImageexists(identifier)
+/// @func CollageImageExists(identifier)
 /// @param identifier
 function CollageImageExists(_identifier) {
 	gml_pragma("forceinline");

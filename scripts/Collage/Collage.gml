@@ -1,6 +1,6 @@
-/// @func Collage(width, height, [crop], [separation], [identifier])
-/// @param width
-/// @param height
+/// @func Collage([width], [height], [crop], [separation], [identifier])
+/// @param [width]
+/// @param [height]
 /// @param [crop]
 /// @param [separation]
 /// @param [identitifer]

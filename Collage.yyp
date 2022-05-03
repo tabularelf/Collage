@@ -43,7 +43,7 @@
     {"id":{"name":"CollageImageAsync","path":"scripts/CollageImageAsync/CollageImageAsync.yy",},"order":4,},
     {"id":{"name":"__CollageFileFromWeb","path":"scripts/__CollageFileFromWeb/__CollageFileFromWeb.yy",},"order":8,},
     {"id":{"name":"CollageGet","path":"scripts/CollageGet/CollageGet.yy",},"order":8,},
-    {"id":{"name":"CollageIsCollage","path":"scripts/CollageIsCollage/CollageIsCollage.yy",},"order":11,},
+    {"id":{"name":"CollageIsCollage","path":"scripts/CollageIsCollage/CollageIsCollage.yy",},"order":9,},
     {"id":{"name":"CollageCompatibilityGetImageUVs","path":"scripts/CollageCompatibilityGetImageUVs/CollageCompatibilityGetImageUVs.yy",},"order":2,},
   ],
   "Options": [
