@@ -15,10 +15,10 @@
 /// @param col3
 /// @param col4
 /// @param alpha
-function CollageDrawImageGeneral(_image, _imageIndex, _left, _top, _width, _height, _x, _y, _xScale, _yScale, _rot, _col1, _col2, _col3, _col4, _alpha) {
+function CollageDrawImageGeneral(_imageData, _imageIndex, _left, _top, _width, _height, _x, _y, _xScale, _yScale, _rot, _col1, _col2, _col3, _col4, _alpha) {
 	gml_pragma("forceinline");
-	var _ratio = _image.ratio;
-	var _uvs = _image.subImagesArray[_imageIndex % _image.subImagesCount];
+	var _ratio = _imageData.ratio;
+	var _uvs = _imageData.subImagesArray[_imageIndex % _imageData.subImagesCount];
 	if (buffer_exists(_uvs.texturePageStruct.cacheBuffer)) {
 		_uvs.texturePageStruct.__restoreFromCache();	
 	} 

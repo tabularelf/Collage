@@ -3,10 +3,10 @@
 /// @param image_index
 /// @param x
 /// @param y
-function CollageDrawImage(_image, _imageIndex, _x, _y) {
+function CollageDrawImage(_imageData, _imageIndex, _x, _y) {
 	gml_pragma("forceinline");
-	var _ratio = _image.ratio;
-	var _uvs = _image.subImagesArray[_imageIndex % _image.subImagesCount];
+	var _ratio = _imageData.ratio;
+	var _uvs = _imageData.subImagesArray[_imageIndex % _imageData.subImagesCount];
 	if (buffer_exists(_uvs.texturePageStruct.cacheBuffer)) {
 		_uvs.texturePageStruct.__restoreFromCache();	
 	} 

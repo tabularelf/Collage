@@ -828,6 +828,9 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 			}	
 		}
 		
+		builder.init = false;
+		array_resize(builder.bboxPoints, 0);
+		imageCount = 0;
 		__imageList = [];
 		__imageMap = {};
 		__texPageArray = [];
