@@ -37,7 +37,7 @@
 #macro COLLAGE_IMAGE_NAME_COLLISION_HANDLE 0
 
 // Whether Collage should automatically check if the surface data stored for your image is available before drawing.
-// As Collages innerworking is relied on surfaces + buffers, this is crucial.
+// As Collages inner working is relied on surfaces + buffers, this is crucial.
 // You can alternatively switch this off and call CollageCheckTexturePages() yourself before any drawing.
 #macro COLLAGE_AUTO_CHECK_TEXTURE_PAGES true
 

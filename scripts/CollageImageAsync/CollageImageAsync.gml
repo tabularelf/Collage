@@ -22,7 +22,10 @@ function CollageImageAsync() {
                     var _texPage = global.__CollageAsyncList[_i];
                     _texPage.__isWaitingOnAsync = false;
 					_texPage.__status = CollageStatus.READY;
-                    if (_texPage.__state == __CollageStates.NORMAL) _texPage.builder.__build();
+                    if (_texPage.__state == __CollageStates.NORMAL) {
+						var _builder = _texPage[$ "builder"];
+						_builder.__build();
+					}
                     array_delete(global.__CollageAsyncList, _i, 1);
                     --_i;
                 }

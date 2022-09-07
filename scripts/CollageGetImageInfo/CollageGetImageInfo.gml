@@ -5,5 +5,5 @@ function CollageGetImageInfo(_identifier) {
 	if (!COLLAGE_IMAGES_ARE_PUBLIC) {
 		__CollageThrow("COLLAGE_IMAGES_ARE_PUBLIC is set to false and therefore string names do not work.");
 	}
-	return global.__CollageImageMap[$ _spriteName];
+	return global.__CollageImageMap[$ _identifier];
 }
