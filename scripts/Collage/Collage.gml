@@ -77,10 +77,10 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 					var _yScale = 1;
 					var _forceScaled = false;
 					if (_crop == true) {
-						_drawX =		_spriteInfo.bbox_left;
-						_drawY =		_spriteInfo.bbox_top;
-						_drawW =	_spriteInfo.bbox_right-_drawX+1;
-						_drawH =		_spriteInfo.bbox_bottom-_drawY+1;	
+						_drawX =		sprite_get_bbox_left(_spriteID);
+						_drawY =		sprite_get_bbox_top(_spriteID);
+						_drawW =	sprite_get_bbox_right(_spriteID)-_drawX+1;
+						_drawH =		sprite_get_bbox_bottom(_spriteID)-_drawY+1;	
 					} else {
 						_drawX = 0;
 						_drawY = 0;
@@ -640,7 +640,7 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 			return self;
 		} 
 		
-		if (!__isWaitingOnAsync) builder.__build(_crop);
+		if (!__isWaitingOnAsync) builder.__build();
 		__state = __CollageStates.NORMAL;
 		return self;
 	}
@@ -652,10 +652,7 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 			exit;
 		}
 		
-		var _identifier = _identifierString;
-		if (_identifier == undefined) {
-			_identifier = __CollageGetName(_fileName);	
-		}
+		var _identifier = _identifierString ?? __CollageGetName(_fileName);
 		
 		var _spriteID = sprite_add(_fileName, _subImage, _removeBack, _smooth, _xOrigin, _yOrigin);
 		if (_spriteID == -1) {
@@ -693,10 +690,7 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 		var _spriteID = _spriteIdentifier;
 		var _isCopy = _isCopyBool;
 		
-		var _identifier = _identifierString;
-		if (_identifier == undefined) {
-			_identifier = sprite_get_name(_spriteID);
-		}
+		var _identifier = _identifierString ?? sprite_get_name(_spriteID);
 		
 		if (is_undefined(_isCopyBool)) {
 			if (_spriteID < global.__CollageGMSpriteCount) {
@@ -732,10 +726,7 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 			return -1;
 		}
 		
-		var _identifier = _identifierString;
-		if (_identifier == undefined) {
-			_identifier = __CollageGetName(_fileName);	
-		}
+		var _identifier = _identifierString ?? __CollageGetName(_fileName);	
 		
 		var _spriteSheet = sprite_add(_fileName, 1, _removeBack, _smooth, _xOrigin, _yOrigin);
 		if (_spriteSheet == -1) {
@@ -799,11 +790,7 @@ function Collage(_width = COLLAGE_DEFAULT_TEXTURE_SIZE, _height = COLLAGE_DEFAUL
 	static AddSurface = function(_surface, _identifierString = undefined, _x = 0, _y = 0, _w = surface_get_width(_surface), _h = surface_get_height(_surface), _removeBack = false, _smooth = false, _xOrigin = 0, _yOrigin = 0, _is3D = false) {
 		var _spriteID = sprite_create_from_surface(_surface, _x, _y, _w, _h, _removeBack, _smooth, _xOrigin, _yOrigin);
 		
-		var _identifier = _identifierString;
-		if (_identifier == undefined) {
-			_identifier = "surface" + string(_surface);	
-		}
-		
+		var _identifier = _identifierString ?? "surface" + string(_surface);	
 		// Add sprite data
 		var _spriteData = new __CollageSpriteFileData(_identifier, _spriteID, 1, _xOrigin, _yOrigin, _is3D, true);
 		

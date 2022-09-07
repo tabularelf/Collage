@@ -1,6 +1,5 @@
 texPage = new Collage();
 texPage.StartBatch();
-
 var _file = file_find_first("*.png", 0);
 while (_file != "") {
 	texPage.AddFile(_file);
