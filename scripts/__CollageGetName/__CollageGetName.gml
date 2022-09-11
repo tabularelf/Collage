@@ -1,3 +1,4 @@
+/// @ignore
 function __CollageGetName(_string) {
 	gml_pragma("forceinline");
 	if (__CollageFileFromWeb(_string)) {

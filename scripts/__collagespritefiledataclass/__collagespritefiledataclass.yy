@@ -6,7 +6,7 @@
     "path": "folders/Collage/System/Classes.yy",
   },
   "resourceVersion": "1.0",
-  "name": "__CollageImageUVsClass",
+  "name": "__CollageSpriteFileDataClass",
   "tags": [],
   "resourceType": "GMScript",
 }

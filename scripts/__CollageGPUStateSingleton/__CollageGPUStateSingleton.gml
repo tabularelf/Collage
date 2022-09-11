@@ -1,3 +1,4 @@
+/// @ignore
 function __CollageGPUStateSingleton() {
 	gml_pragma("forceinline");
 	static _instance = {

@@ -7,12 +7,12 @@ while (_file != "") {
 }
 file_find_close();
 
-var _file = file_find_first("*.jpg", 0);
+/*var _file = file_find_first("*.jpg", 0);
 while (_file != "") {
 	texPage.AddFile(_file);
 	_file = file_find_next();
 }
-file_find_close();
+file_find_close();*/
 texPage.FinishBatch();
 
 images = texPage.ImagesToArray();

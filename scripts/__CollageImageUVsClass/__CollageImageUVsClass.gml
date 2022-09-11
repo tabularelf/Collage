@@ -1,4 +1,5 @@
-function __CollageImageUVsClass(_texPageStruct, _texPageNum, _left, _top, _right, _bottom, _trimLeft = 0, _trimTop = 0, _ogW = 0, _ogH = 0, _xOffset = 0, _yOffset = 0) constructor {
+/// @ignore
+function __CollageImageUVsClass(_texPageStruct, _texPageNum, _left, _top, _right, _bottom, _trimLeft = 0, _trimTop = 0, _ogW = 0, _ogH = 0, /*_cropRotate = 0,*/ _xOffset = 0, _yOffset = 0) constructor {
 	left = _left;
 	right = _right;
 	top = _top;
@@ -7,10 +8,13 @@ function __CollageImageUVsClass(_texPageStruct, _texPageNum, _left, _top, _right
 	trimTop = _trimTop;
 	//trimRight = _trimRight;
 	//trimBottom = _trimBottom;
-	normLeft = _left / _texPageStruct.width;
-	normRight = (_right / _texPageStruct.width);
-	normTop = _top / _texPageStruct.height;
-	normBottom = (_bottom / _texPageStruct.height);
+	//rotate = _cropRotate;
+	normLeft = _left / _texPageStruct.__width;
+	normRight = (_right / _texPageStruct.__width);
+	normTop = _top / _texPageStruct.__height;
+	normBottom = (_bottom / _texPageStruct.__height);
+	normWidth = normLeft+normRight;
+	normHeight = normTop+normBottom;
 	originalWidth = _ogW;
 	originalHeight = _ogH;
 	xPos = _trimLeft-_xOffset;

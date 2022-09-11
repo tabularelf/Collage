@@ -1,3 +1,4 @@
+/* Feather ignore all */
 function CollageImageAsync() {
 	gml_pragma("forceinline");
     var _fileName = async_load[? "filename"];

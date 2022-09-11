@@ -9,25 +9,26 @@ enum CollageStatus {
 }
 
 #macro __COLLAGE_CREDITS "@TabularElf - https://tabelf.link/"
-#macro __COLLAGE_VERSION "v0.2.2"
+#macro __COLLAGE_VERSION "v0.3.0"
 show_debug_message("Collage " + __COLLAGE_VERSION + " Initalized! Created by " + __COLLAGE_CREDITS);
 
-global.__CollageTexturePagesMap = {};
-global.__CollageTexturePagesList = [];
-global.__CollageImageMap = {};
-global.__CollageGMSpriteCount = 0;
-global.__CollageAsyncList = [];
-
-var _i = 0;
-while(sprite_exists(_i)) {
-	global.__CollageGMSpriteCount = ++_i;
+/// @ignore
+function __CollageInit() {
+	static _init = false;
+		// Feather ignore once GM1011
+		if (!_init) {
+			global.__CollageTexturePagesMap = {};
+			global.__CollageTexturePagesList = [];
+			global.__CollageImageMap = {};
+			global.__CollageGMSpriteCount = 0;
+			global.__CollageAsyncList = [];
+			
+			var _i = 0;
+			while(sprite_exists(_i)) {
+				global.__CollageGMSpriteCount = _i;
+				++_i;
+			}
+			_init = true;
+	}
 }
-
-
-function __CollageTrace(_string) {
-	show_debug_message("Collage: " + _string);
-}
-
-function __CollageThrow(_string) {
-	show_error("Collage Error: " + _string, true);	
-}
+__CollageInit();
