@@ -16,6 +16,6 @@ function draw_image_ext(_sprite, _sub, _x, _y, _xscale, _yscale, _rot, _col, _al
 			draw_sprite_ext(_sprite, _sub, _x, _y, _xscale, _yscale, _rot, _col, _alpha);
 		}
 	} else {
-		collagedrawimageext(_sprite, _sub, _x, _y, _xscale, _yscale, _rot, _col, _alpha);	
+		CollageDrawImageExt(_sprite, _sub, _x, _y, _xscale, _yscale, _rot, _col, _alpha);	
 	} 
 } 
