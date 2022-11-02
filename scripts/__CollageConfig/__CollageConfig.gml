@@ -2,7 +2,7 @@
 // Whether Collage should respect Power of Two sizes. (Will readjust the texture page if it's not power of two)
 #macro __COLLAGE_ENSURE_POWER_TWO true
 
-// Whether Collage should clamp to the max texture page size.
+// Whether Collage should clamp to the min/max texture page size.
 #macro __COLLAGE_CLAMP_TEXTURE_SIZE true
 
 // The absolute minimum size that Collage will allow a texture page to be. Surfaces can work as low as 1. 
@@ -27,7 +27,7 @@
 #macro __COLLAGE_DEFAULT_CROP true
 
 // Whether Collage should aggressively pack images onto texture pages or not by default.
-#macro __COLLAGE_DEFAULT_OPTIMIZE false
+#macro __COLLAGE_DEFAULT_OPTIMIZE true
 
 // Separation value that Collage will respect across the board if no sep value was passed.
 #macro __COLLAGE_DEFAULT_SEPARATION 0
@@ -35,15 +35,10 @@
 // How Collage should handle image name collisions
 /*
     0: Reject all duplicate image names.
-    1: Allow replacing of existing images if they meet certain criteria (non*-crop: width & height. crop: width & height & general minimal box area) or otherwise add as new image.
+    1: Allow replacing of existing images if they meet certain criteria (non-crop: width & height. crop: width & height & general minimal box area) or otherwise add as new image.
     2: Add as new image.
 */
 #macro __COLLAGE_IMAGE_NAME_COLLISION_HANDLE 0
-
-// Whether Collage should automatically check if the surface data stored for your image is available before drawing.
-// As Collages inner working is relied on surfaces + buffers, this is crucial.
-// You can alternatively switch this off and call CollageCheckTexturePages() yourself before any drawing.
-#macro __COLLAGE_AUTO_CHECK_TEXTURE_PAGES true
 
 // Whether Collage should make all images added available through the global image database or not.
 // The upside to this is that you can use string-based values* in certain functions that allow it to fetch from a global database.
@@ -51,9 +46,9 @@
 // Setting this to false will allow all image names to be used privately, but not accessible via the global image database.
 #macro __COLLAGE_IMAGES_ARE_PUBLIC true
 
-// Whether Collage should clear the VRAM before making another texture page
+// Whether Collage should clear the VRAM before making another texture page (as in texture page gets full, surface is freed but contents is saved)
 // This is mostly to keep the VRAM usage low during building while having multiple sprites packed into VRAM at once.
 #macro __COLLAGE_BUILDER_VRAM_CLEAR false
 
 // Enables verbose console output to aid with debugging.
-#macro __COLLAGE_VERBOSE true
+#macro __COLLAGE_VERBOSE false

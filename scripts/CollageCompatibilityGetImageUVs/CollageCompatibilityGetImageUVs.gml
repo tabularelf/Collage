@@ -9,9 +9,9 @@ function CollageCompatibilityGetImageUVs(_identifier, _imageIndex) {
 		if (!__COLLAGE_IMAGES_ARE_PUBLIC) {
 			__CollageThrow("__COLLAGE_IMAGES_ARE_PUBLIC is set to false and therefore string names do not work.");
 		}
-		_uvs = global.__CollageImageMap[$ _identifier].GetUVs(_imageIndex);
+		_uvs = global.__CollageImageMap[$ _identifier].__InternalGetUvs(_imageIndex);
 	} else {
-	    _uvs =_identifier.GetUVs(_imageIndex);
+	    _uvs =_identifier.__InternalGetUvs(_imageIndex);
 	}
 	var _texPage = _uvs.texturePageStruct;
 	var _width = _texPage.width;

@@ -1,7 +1,7 @@
 {
   "resourceType": "GMObject",
   "resourceVersion": "1.0",
-  "name": "obj_test_batch",
+  "name": "obj_test_spritesheet",
   "spriteId": null,
   "solid": false,
   "visible": true,

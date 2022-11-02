@@ -38,6 +38,23 @@ function __CollageBuilderClass() constructor {
 		return  _sizeA - _sizeB;
 	}
 	
+	static __bbox = function(_left, _top, _right, _bottom) constructor {
+		left = _left;
+		top = _top;
+		right = _right;
+		bottom = _bottom;
+	}
+	
+	static __hashCompare = function(_spriteData) {
+		var _hashA = __CollageHashGenerator(_spriteData.spriteID);
+		var _img = __getImage(_spriteData.name);
+		if (is_undefined(_img)) {
+			return false;	
+		}
+		
+		return (_hashA == _img.__hash); 
+	}
+	
 	static __build = function() {	
 		// Store building time for verbose later
 		var _startTime = get_timer();
@@ -56,7 +73,7 @@ function __CollageBuilderClass() constructor {
 		var _texWidth = owner.width;
 		var _texHeight = owner.height;
 		var _spriteList = owner.__batchImageList;
-		var _batchMode = (owner.__state == __CollageStates.BATCHING);
+		var _batchMode = (owner.__state == CollageStates.BATCHING);
 		var _normalSprites = array_create(array_length(_spriteList));
 		var _3DSprites = array_create(array_length(_spriteList));
 		var _texPage = array_length(owner.__texPageArray) == 0 ? new __CollageTexturePageClass(_texWidth, _texHeight) : owner.__texPageArray[array_length(owner.__texPageArray)-1];
@@ -64,6 +81,13 @@ function __CollageBuilderClass() constructor {
 		var _3DArraySize = 0;
 		var _normalArraySize = 0;
 		var _optimize = owner.optimize;
+		
+		var _sterlized = CollageIsGPUStateSterlized();
+	
+		// Force sterlizing and restoring, in case something was altered)
+		if (_sterlized) {
+			CollageRestoreGPUState();	
+		}
 
 		CollageSterlizeGPUState();
 		
@@ -111,10 +135,6 @@ function __CollageBuilderClass() constructor {
 						_ratio = min(_xScale, _yScale);
 						_bbWidth = _ratio * _drawW;
 						_bbHeight = _ratio * _drawH;
-						//_xScale = _xScale / (_ratio*2);
-						//_yScale = _yScale / (_ratio*2);
-						//_drawW = _bbWidth;
-						//_drawH = _bbHeight;
 						__CollageTrace("Sprite " + string(_spriteData.name) + " has been rescaled from width: " +  string(_drawW) + ", height: " + string(_drawH) + ", " + " to width: " + string(_bbWidth) + ", height: " + string(_bbHeight));
 					}
 				}
@@ -174,7 +194,7 @@ function __CollageBuilderClass() constructor {
 		array_delete(_spriteList, 0, _len);
 		
 		if (init == false) {
-			array_push(bboxPoints, new __CollageBBoxClass(_sep, _sep, _texWidth - _sep, _texHeight - _sep));
+			array_push(bboxPoints, new __bbox(_sep, _sep, _texWidth - _sep, _texHeight - _sep));
 			init = true;
 		}
 		
@@ -215,8 +235,8 @@ function __CollageBuilderClass() constructor {
 							continue;
 							break;
 						case 1:
-							if !(((_spriteInfo.width == __getImage(_spriteData.name).width) && (_spriteInfo.height == __getImage(_spriteData.name).height))
-							&& (_spriteInfo.bbox_right-_spriteInfo.bbox_left+1 == __getImage(_spriteData.name).cropWidth) && (_spriteInfo.bbox_bottom-_spriteInfo.bbox_top+1 == __getImage(_spriteData.name).cropHeight)) {
+							if (!(((_spriteInfo.width == __getImage(_spriteData.name).width) && (_spriteInfo.height == __getImage(_spriteData.name).height))
+							&& (_spriteInfo.bbox_right-_spriteInfo.bbox_left+1 == __getImage(_spriteData.name).cropWidth) && (_spriteInfo.bbox_bottom-_spriteInfo.bbox_top+1 == __getImage(_spriteData.name).cropHeight))) {
 								var _spriteName = _spriteData.name;
 								var _num = 1;
 								var _name = _spriteName + string(_num);
@@ -323,10 +343,6 @@ function __CollageBuilderClass() constructor {
 					if(_emptySpaceID != -1) {
 						var _currentPoint = bboxPoints[_emptySpaceID];
 						draw_sprite_part_ext(_spriteID , _sub , _drawX  , _drawY , _drawW, _drawH, _currentPoint.left, _currentPoint.top, _ratio, _ratio, c_white, 1);
-						/*if (_forceScaled) {
-							_drawW = _drawW * _ratio;
-							_drawH = _drawH * _ratio;
-						}*/
 						if (__COLLAGE_RENDER_DEBUG_LINES) {
 							draw_set_colour(make_color_hsv((current_time * 5) mod 256, 255, 255));
 							draw_rectangle(_currentPoint.left+1,_currentPoint.top+1,_currentPoint.left+_wScale-2,_currentPoint.top+_hScale-2, true);
@@ -337,26 +353,19 @@ function __CollageBuilderClass() constructor {
 						var _uvY = _currentPoint.top;
 						var _uvW = _wScale;
 						var _uvH = _hScale;
-						//show_debug_message([_currentPoint.left,_currentPoint.top,_currentPoint.left+_drawW,_currentPoint.top+_drawH]);
 						var _uvs = new __CollageImageUVsClass(_texPage, owner.texPageCount, _uvX, _uvY, _uvW, _uvH, _drawX, _drawY, _ogW, _ogH, /*_sprWidth - _drawW - 2, _sprHeight - _drawH - 2,*/ _imageInfo.xoffset, _imageInfo.yoffset);
 						_imageInfo.subImagesArray[_sub] = _uvs;
-						//if (!_forceScaled) {
-							// Store next available space
-							if( _bbHeight < _currentPoint.bottom){ 
-							    var _struct = new __CollageBBoxClass(_currentPoint.left, _currentPoint.top + _drawH + _sep, _currentPoint.right , _currentPoint.bottom - _drawH - _sep);
-								//{left: _currentPoint.left , top: _currentPoint.top + _drawH + _sep , right: _currentPoint.right , bottom: _currentPoint.bottom - _drawH - _sep};
-								//var _struct = new __CollageBBoxClass(_currentPoint.left, _texHeight - (_currentPoint.top + _drawH + _sep), _currentPoint.right, _texHeight - (_currentPoint.bottom - _drawH - _sep), _texWidth, _texHeight);
-								array_push(bboxPoints,_struct);
-							}
-							
-							if( _bbWidth < _currentPoint.right) {
-								var _struct = new __CollageBBoxClass(_currentPoint.left + _drawW + _sep, _currentPoint.top, _currentPoint.right - _drawW - _sep, _drawH);
-								//var _struct = new __CollageBBoxClass(_texWidth - (_currentPoint.left + _drawW + _sep), _currentPoint.top, _texWidth(_currentPoint.right - _drawW - _sep), _drawH);
-								array_push(bboxPoints,_struct);
-							} 
-						/*} else {
-							array_push(bboxPoints, {left: 0, right: 0, top: 0, bottom: 0});
-						}*/
+						// Store next available space
+						if( _bbHeight < _currentPoint.bottom){ 
+						    var _struct = new __bbox(_currentPoint.left, _currentPoint.top + _drawH + _sep, _currentPoint.right , _currentPoint.bottom - _drawH - _sep);
+							array_push(bboxPoints,_struct);
+						}
+						
+						if( _bbWidth < _currentPoint.right) {
+							var _struct = new __bbox(_currentPoint.left + _drawW + _sep, _currentPoint.top, _currentPoint.right - _drawW - _sep, _drawH);
+							array_push(bboxPoints,_struct);
+						} 
+	
 						// Remove non-empty area
 						if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + _spriteData.name + " is currently being processed... " + string(_sub+1) + "/" + string(_subImages));
 						if (_sub == _subImages-1) {
@@ -366,7 +375,6 @@ function __CollageBuilderClass() constructor {
 						
 						if (_batchMode) && (_optimize) {
 							// Loop over sub entries
-							//var _bestEntries = [];
 							var _bestEntryWidth = -1;
 							var _bestEntryHeight = -1;
 							var _bestEntry = undefined;
@@ -417,7 +425,7 @@ function __CollageBuilderClass() constructor {
 						
 						// Clear spaces and add new one
 						array_delete(bboxPoints,0,array_length(bboxPoints));
-						array_push(bboxPoints, new __CollageBBoxClass(_sep, _sep, _texWidth - _sep, _texHeight - _sep));
+						array_push(bboxPoints, new __bbox(_sep, _sep, _texWidth - _sep, _texHeight - _sep));
 						--_sub;
 					}
 				}
@@ -536,7 +544,7 @@ function __CollageBuilderClass() constructor {
 							var _num = 1;
 							var _name = _spriteName + string(_num);
 							while(__checkImage(_name)) {
-									var _name = _spriteName + string(++_num);
+								_name = _spriteName + string(++_num);
 							}
 							__CollageTrace(_collageName + _spriteData.name + " already exists! Reidentified as " + _name);
 							_spriteData.name = _name;
@@ -561,10 +569,6 @@ function __CollageBuilderClass() constructor {
 						_texPage = new __CollageTexturePageClass(_texWidth, _texHeight);
 						_texPage.start();
 						draw_sprite_part_ext(_spriteID , _sub , _drawX  , _drawY , _drawW, _drawH, 0, 0, _ratio, _ratio, c_white, 1);
-						/*if (_forceScaled) {
-							_drawW = _drawW * _ratio;
-							_drawH = _drawH * _ratio;
-						}*/
 						if (__COLLAGE_RENDER_DEBUG_LINES) {
 							draw_set_colour(make_color_hsv((current_time * 5) mod 256, 255, 255));
 							draw_rectangle(_spriteInfo.bbox_left+1,_spriteInfo.bbox_top+1,_spriteInfo.bbox_left+_wScale-2,_spriteInfo.bbox_top+_hScale-2, true);
@@ -575,7 +579,6 @@ function __CollageBuilderClass() constructor {
 						var _uvY = 0;
 						var _uvW = _wScale;
 						var _uvH = _hScale;
-						//show_debug_message([_currentPoint.left,_currentPoint.top,_currentPoint.left+_drawW,_currentPoint.top+_drawH]);
 						var _uvs = new __CollageImageUVsClass(_texPage, owner.texPageCount, _uvX, _uvY, _uvW, _uvH, _drawX, _drawY, _ogW, _ogH,/*_sprWidth - _drawW - 2, _sprHeight - _drawH - 2,*/ _imageInfo.xoffset, _imageInfo.yoffset);
 						_imageInfo.subImagesArray[_sub] = _uvs;
 						// We declare this finished

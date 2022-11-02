@@ -1,11 +1,24 @@
-enum __CollageStates {
+enum CollageStates {
 	NORMAL,
 	BATCHING
+}
+
+enum __CollagePageType {
+	NORMAL,
+	SEPARATE
 }
 
 enum CollageStatus {
 	READY,
 	WAITING_ON_FILES
+}
+
+enum CollageOrigin {
+	LEFT = -2716284,
+	CENTER,
+	RIGHT,
+	TOP,
+	BOTTOM	
 }
 
 #macro __COLLAGE_CREDITS "@TabularElf - https://tabelf.link/"

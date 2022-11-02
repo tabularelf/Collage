@@ -7,6 +7,46 @@
 /// @param {Bool} [Optimize]
 /* Feather ignore all */
 function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DEFAULT_TEXTURE_SIZE, _crop = __COLLAGE_DEFAULT_CROP, _separation = __COLLAGE_DEFAULT_SEPARATION, _optimize = __COLLAGE_DEFAULT_OPTIMIZE) constructor {
+	// Members
+	__CollageInit();
+	__state = CollageStates.NORMAL;
+	__texPageArray = [];
+	texPageCount = 0;
+	imageCount = 0;
+	__batchImageList = [];
+	__imageMap = {};
+	__imageList = [];
+	__asyncList = [];
+	__isWaitingOnAsync = false;
+	__status = CollageStatus.READY;
+	builder = new __CollageBuilderClass();
+	separation = _separation;
+	width = _width;
+	height = _height;
+	crop = _crop;
+	optimize = _optimize;
+	name = is_undefined(_identifier) ? _identifier : string(_identifier);
+	
+	array_push(global.__CollageTexturePagesList, self);
+	if (is_string(_identifier)) {
+		if (variable_struct_exists(global.__CollageTexturePagesMap, _identifier)) {
+			__CollageThrow(_identifier + " already exists as a Collage name!");	
+		}
+		
+		global.__CollageTexturePagesMap[$ _identifier] = self;
+	}
+	
+	// Init texture settings
+	if (__COLLAGE_ENSURE_POWER_TWO) && !(CollageIsPowerTwo(width) || CollageIsPowerTwo(height)) {
+		width = CollageConvertPowerTwo(_width);
+		height = CollageConvertPowerTwo(_height);
+	} 
+	
+	if (__COLLAGE_CLAMP_TEXTURE_SIZE) {
+		width = clamp(width, __COLLAGE_MIN_TEXTURE_SIZE, __COLLAGE_MAX_TEXTURE_SIZE);
+		height = clamp(height, __COLLAGE_MIN_TEXTURE_SIZE, __COLLAGE_MAX_TEXTURE_SIZE);
+	}
+	
 	#region Methods
 	
 	static __getName = function() {
@@ -16,38 +56,40 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	static __originValidator = function(_spriteID, _xOriginValue, _yOriginValue) {
 		var _results = [_xOriginValue, _yOriginValue];
 		// X Origin
-		if (is_string(_xOriginValue)) {
-			switch(string_lower(_xOriginValue)) {
-				case "center": _results[0] = sprite_get_width(_spriteID) div 2; break;
-				case "left": _results[0] = 0; break;
-				case "right": _results[0] = sprite_get_width(_spriteID); break;
-			}
+		switch(_xOriginValue) {
+			case CollageOrigin.CENTER: _results[0] = sprite_get_width(_spriteID) div 2; break;
+			case CollageOrigin.LEFT: _results[0] = 0; break;
+			case CollageOrigin.RIGHT: _results[0] = sprite_get_width(_spriteID); break;
+			case CollageOrigin.TOP: case CollageOrigin.BOTTOM: 
+				__CollageThrow("Invalid xorigin set! Can't use " + (_xOriginValue == CollageOrigin.TOP ? "CollageOrigin.TOP" : "CollageOrigin.BOTTOM") + " as an option!"); 
+			break;
 		}
 		
 		// Y Origin
-		if (is_string(_yOriginValue)) {
-			switch(string_lower(_yOriginValue)) {
-				case "center": _results[1] = sprite_get_height(_spriteID) div 2; break;
-				case "top": _results[1] = 0; break;
-				case "bottom": _results[1] = sprite_get_height(_spriteID); break;
-			}
+		switch(_yOriginValue) {
+			case CollageOrigin.CENTER: _results[1] = sprite_get_height(_spriteID) div 2; break;
+			case CollageOrigin.TOP: _results[1] = 0; break;
+			case CollageOrigin.BOTTOM: _results[1] = sprite_get_height(_spriteID); break;
+			case CollageOrigin.LEFT: case CollageOrigin.RIGHT: 
+				__CollageThrow("Invalid yorigin set! Can't use " + (_yOriginValue == CollageOrigin.LEFT ? "CollageOrigin.LEFT" : "CollageOrigin.Right") + " as an option!"); 
+			break;
 		}
 		
 		return _results;
 	}
 	
 	static StartBatch = function() {
-		if (__state == __CollageStates.BATCHING) {
+		if (__state == CollageStates.BATCHING) {
 			__CollageTrace(__getName() + "Currently in batching mode!");
 			return self;
 		}
 		
-		__state = __CollageStates.BATCHING;
+		__state = CollageStates.BATCHING;
 		return self;
 	}
 	
 	static ClearBatch = function() {
-		if (__state == __CollageStates.BATCHING) {
+		if (__state == CollageStates.BATCHING) {
 			var _len = array_length(__batchImageList);
 			var _i = 0;
 			repeat(_len) {
@@ -68,13 +110,13 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	}
 	
 	static FinishBatch = function(_crop = true) {
-		if (__state != __CollageStates.BATCHING) {
+		if (__state != CollageStates.BATCHING) {
 			__CollageTrace(__getName() + "Is not in batching mode!");
 			return self;
 		} 
 		
 		if (!__isWaitingOnAsync) builder.__build();
-		__state = __CollageStates.NORMAL;
+		__state = CollageStates.NORMAL;
 		return self;
 	}
 	
@@ -129,13 +171,13 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 			array_push(__batchImageList, _spriteData);
 		}
 		
-		if (__state == __CollageStates.NORMAL) {
+		if (__state == CollageStates.NORMAL) {
 			if (!__isWaitingOnAsync) builder.__build();
 		}
 	}
 	
 	static AddSprite = function(_spriteIdentifier, _identifierString = undefined, _is3D = false) {
-		var _spriteID = _spriteIdentifier;
+		var _spriteID = sprite_duplicate(_spriteIdentifier);
 		
 		var _identifier = _identifierString ?? sprite_get_name(_spriteID);
 		
@@ -149,7 +191,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		
 		array_push(__batchImageList, _spriteData);
 		
-		if (__state == __CollageStates.NORMAL) {
+		if (__state == CollageStates.NORMAL) {
 			builder.__build();
 		}
 	}
@@ -231,10 +273,11 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 			array_push(__batchImageList, _spriteData);
 		}
 		
-		if (__state == __CollageStates.NORMAL) {
+		if (__state == CollageStates.NORMAL) {
 			builder.__build();
 		}
 		surface_free(_surf);
+		return self;
 	}
 	
 	static AddSurface = function(_surface, _identifierString = undefined, _x = 0, _y = 0, _w = surface_get_width(_surface), _h = surface_get_height(_surface), _removeBack = false, _smooth = false, _xOriginValue = 0, _yOriginValue = 0, _is3D = false) {
@@ -260,9 +303,65 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		
 		array_push(__batchImageList, _spriteData);
 		
-		if (__state == __CollageStates.NORMAL) {
+		if (__state == CollageStates.NORMAL) {
 			builder.__build();
 		}
+		return self;
+	}
+	
+	static AddSpriteSheet = function(_spriteID, _spriteArray, _identifierString, _width, _height, _removeBack = false, _smooth = false, _xOriginValue = 0, _yOriginValue = 0, _is3D = false) {
+		if (is_undefined(_spriteArray)) {
+			__CollageThrow("spriteArray String in .AddSpriteSheet() is undefined!");	
+		}
+		
+		if (is_undefined(_identifierString)) {
+			__CollageThrow("Identifier String in .AddSpriteSheet() is undefined!");	
+		}
+		
+		//var _width = _spriteSheetStruct.width;// sprite_get_width(_spriteSheet);
+		//var _height = _spriteSheetStruct.height;//sprite_get_height(_spriteSheet);
+		
+		var _i = 0;
+		var _surf = surface_create(_width, _height);
+		var _newSprite = -1;
+		
+		CollageSterlizeGPUState();
+		repeat(array_length(_spriteArray)) {
+			var _imageStruct = _spriteArray[_i];
+			var _xSize = _imageStruct.pos[2];
+			var _ySize = _imageStruct.pos[3];
+			var _subImages = max((_xSize >= _ySize ? (_xSize div _ySize) : (_ySize div _xSize)) - 1, 1);
+			var _j = 1;
+			repeat(_subImages) {
+				surface_set_target(_surf);
+				draw_clear_alpha(0, 0);
+				var _xPos = _subImages > 1 ? (_xSize >= _ySize ? (_j*_width) : (_imageStruct.pos[0])) : _imageStruct.pos[0];
+				var _yPos = _subImages > 1 ? (_xSize >= _ySize ? (_imageStruct.pos[1]) : (_j*_height))  : _imageStruct.pos[1];
+				draw_sprite_part(_spriteID, 0, _xPos, _yPos, _width, _height, 0, 0);
+				surface_reset_target();
+				if !(sprite_exists(_newSprite)) {
+					_newSprite = sprite_create_from_surface(_surf, 0, 0, _width, _height, _removeBack, _smooth, 0, 0);	
+				} else {
+					sprite_add_from_surface(_newSprite, _surf, 0, 0, _width, _height, _removeBack, _smooth);
+				}
+				++_j;
+			}
+			
+			var _origin = __originValidator(_newSprite, _xOriginValue, _yOriginValue);
+			var _xOrigin = _origin[0];
+			var _yOrigin = _origin[1];
+			var _spriteData = new __CollageSpriteFileDataClass(_identifierString + _imageStruct.subName, _newSprite, _subImages, _xOrigin, _yOrigin, _is3D);
+			array_push(__batchImageList, _spriteData);
+			_newSprite = -1;
+			++_i;
+		}
+		CollageRestoreGPUState();
+		
+		if (__state == CollageStates.NORMAL) {
+			builder.__build();
+		}
+		surface_free(_surf);
+		return self;
 	}
 	
 	static FreePages = function() {
@@ -443,12 +542,15 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		return __imageMap[$ _identifier];	
 	}
 	
-	static ImagesToArray = function() {
+	static ImagesToArray = function(_sorted = false) {
 		var _array = array_create(array_length(__imageList));
 		var _i = 0;
 		repeat(array_length(_array)) {
 			_array[_i] = __imageList[_i];
 			++_i;
+		}
+		if (_sorted) {
+			array_sort(_array, true);	
 		}
 		return _array;
 	}
@@ -466,45 +568,5 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		return variable_struct_exists(__imageMap, _identifier);
 	}
 	
-	#endregion 
-	
-	// Members
-	__CollageInit();
-	__state = __CollageStates.NORMAL;
-	__texPageArray = [];
-	texPageCount = 0;
-	imageCount = 0;
-	__batchImageList = [];
-	__imageMap = {};
-	__imageList = [];
-	__asyncList = [];
-	__isWaitingOnAsync = false;
-	__status = CollageStatus.READY;
-	builder = new __CollageBuilderClass();
-	separation = _separation;
-	width = _width;
-	height = _height;
-	crop = _crop;
-	optimize = _optimize;
-	name = is_undefined(_identifier) ? _identifier : string(_identifier);
-	array_push(global.__CollageTexturePagesList, self);
-	if (is_string(_identifier)) {
-		if (variable_struct_exists(global.__CollageTexturePagesMap, _identifier)) {
-			__CollageThrow(_identifier + " already exists as a Collage name!");	
-		}
-		
-		global.__CollageTexturePagesMap[$ _identifier] = self;
-	}
-	
-	// Init texture settings
-	if (__COLLAGE_ENSURE_POWER_TWO) && !(CollageIsPowerTwo(width) || CollageIsPowerTwo(height)) {
-		width = CollageConvertPowerTwo(_width);
-		height = CollageConvertPowerTwo(_height);
-	} 
-	
-	if (__COLLAGE_CLAMP_TEXTURE_SIZE) {
-		width = clamp(width, __COLLAGE_MIN_TEXTURE_SIZE, __COLLAGE_MAX_TEXTURE_SIZE);
-		height = clamp(height, __COLLAGE_MIN_TEXTURE_SIZE, __COLLAGE_MAX_TEXTURE_SIZE);
-	}
-	
+	#endregion 	
 }

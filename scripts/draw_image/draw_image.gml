@@ -1,4 +1,4 @@
-/// @func draw_image(sprite_index/image, image_index, x, y);
+/// @func draw_image(sprite_index/image, image_index, x, y)
 /// @param {Any} sprite_index/image
 /// @param {Real} image_index
 /// @param {Real} x

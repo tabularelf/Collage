@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Classes",
-    "path": "folders/Collage/System/Classes.yy",
+    "name": "System",
+    "path": "folders/Collage/System.yy",
   },
   "resourceVersion": "1.0",
-  "name": "__CollageBBoxClass",
+  "name": "__CollageBuildSprite",
   "tags": [],
   "resourceType": "GMScript",
 }

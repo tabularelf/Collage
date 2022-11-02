@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "General",
-    "path": "folders/Collage/General.yy",
+    "name": "Rendering",
+    "path": "folders/Collage/Rendering.yy",
   },
   "resourceVersion": "1.0",
-  "name": "CollageCheckTexturePages",
+  "name": "CollageDrawImageStretched",
   "tags": [],
   "resourceType": "GMScript",
 }

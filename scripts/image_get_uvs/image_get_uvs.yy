@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "System",
-    "path": "folders/Collage/System.yy",
+    "name": "GM-Collage Compatibility",
+    "path": "folders/Collage/GM-Collage Compatibility.yy",
   },
   "resourceVersion": "1.0",
-  "name": "__CollageArchive",
+  "name": "image_get_uvs",
   "tags": [],
   "resourceType": "GMScript",
 }

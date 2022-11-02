@@ -19,10 +19,14 @@
 function CollageDrawImageGeneral(_imageData, _imageIndex, _left, _top, _width, _height, _x, _y, _xScale, _yScale, _rot, _col1, _col2, _col3, _col4, _alpha) {
 	gml_pragma("forceinline");
 	var _ratio = _imageData.ratio;
-	var _uvs = _imageData.subImagesArray[_imageIndex % _imageData.subImagesCount];
+	var _uvs = _imageData.__InternalGetUvs(_imageIndex);
 	_uvs.texturePageStruct.__restoreFromCache();
 	
-	if (__COLLAGE_AUTO_CHECK_TEXTURE_PAGES) _uvs.texturePageStruct.CheckSurface();	
+	_uvs.texturePageStruct.CheckSurface();	
+	var _xOffset = -_uvs.xPos;
+	var _yOffset = _uvs.yPos;
+	var _xPos = lengthdir_x(_xOffset * _xScale, _rot) - lengthdir_x(_yOffset * _yScale, _rot - 90);
+	var _yPos = lengthdir_y(_xOffset * _xScale, _rot) - lengthdir_y(_yOffset * _yScale, _rot - 90);
 	
-	draw_surface_general(_uvs.texturePageStruct.__surface, clamp(_uvs.left+_left, _uvs.left, _uvs.left+_uvs.right), clamp(_uvs.top+_top, _uvs.top, _uvs.top+_uvs.bottom), clamp(_width, _left, _uvs.right), clamp(_height, _top, _uvs.bottom), _x+_uvs.xPos, _y+_uvs.yPos, _xScale/_ratio, _yScale/_ratio, _rot, _col1, _col2, _col3, _col4, _alpha);	
+	draw_surface_general(_uvs.texturePageStruct.__surface, clamp(_uvs.left+_left, _uvs.left, _uvs.left+_uvs.right), clamp(_uvs.top+_top, _uvs.top, _uvs.top+_uvs.bottom), clamp(_width, _left, _uvs.right), clamp(_height, _top, _uvs.bottom), _x-_xPos, _y-_yPos, _xScale/_ratio, _yScale/_ratio, _rot, _col1, _col2, _col3, _col4, _alpha);	
 }

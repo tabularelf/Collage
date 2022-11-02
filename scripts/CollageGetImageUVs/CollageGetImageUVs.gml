@@ -9,6 +9,7 @@ function CollageGetImageUVs(_identifier, _imageIndex) {
 			__CollageThrow("__COLLAGE_IMAGES_ARE_PUBLIC is set to false and therefore string names do not work.");
 		}
 		
+		if (!CollageImageExists(_identifier)) __CollageThrow(_identifier + " doesn't exist!");
 		return global.__CollageImageMap[$ _identifier].GetUVs(_imageIndex);
 	}
 	
