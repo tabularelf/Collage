@@ -52,31 +52,6 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	static __getName = function() {
 		return (is_undefined(name)) ? "" : name + " - ";	
 	}
-		
-	static __originValidator = function(_spriteID, _xOriginValue, _yOriginValue) {
-		var _results = [_xOriginValue, _yOriginValue];
-		// X Origin
-		switch(_xOriginValue) {
-			case CollageOrigin.CENTER: _results[0] = sprite_get_width(_spriteID) div 2; break;
-			case CollageOrigin.LEFT: _results[0] = 0; break;
-			case CollageOrigin.RIGHT: _results[0] = sprite_get_width(_spriteID); break;
-			case CollageOrigin.TOP: case CollageOrigin.BOTTOM: 
-				__CollageThrow("Invalid xorigin set! Can't use " + (_xOriginValue == CollageOrigin.TOP ? "CollageOrigin.TOP" : "CollageOrigin.BOTTOM") + " as an option!"); 
-			break;
-		}
-		
-		// Y Origin
-		switch(_yOriginValue) {
-			case CollageOrigin.CENTER: _results[1] = sprite_get_height(_spriteID) div 2; break;
-			case CollageOrigin.TOP: _results[1] = 0; break;
-			case CollageOrigin.BOTTOM: _results[1] = sprite_get_height(_spriteID); break;
-			case CollageOrigin.LEFT: case CollageOrigin.RIGHT: 
-				__CollageThrow("Invalid yorigin set! Can't use " + (_yOriginValue == CollageOrigin.LEFT ? "CollageOrigin.LEFT" : "CollageOrigin.Right") + " as an option!"); 
-			break;
-		}
-		
-		return _results;
-	}
 	
 	static StartBatch = function() {
 		if (__state == CollageStates.BATCHING) {
@@ -145,11 +120,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 			exit;
 		}
 		
-		var _origin = __originValidator(_spriteID, _xOriginValue, _yOriginValue);
-		_xOrigin = _origin[0];
-		_yOrigin = _origin[1];
-		
-		var _spriteData = new __CollageSpriteFileDataClass(_identifier, _spriteID, _subImage, _xOrigin, _yOrigin, _is3D);
+		var _spriteData = new __CollageSpriteFileDataClass(_identifier, _spriteID, _subImage).SetOrigin(_xOrigin, _yOrigin).Set3D(_is3D);
 		
 		if (__CollageFileFromWeb(_fileName)) {
 			__isWaitingOnAsync = true;
@@ -174,9 +145,11 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		if (__state == CollageStates.NORMAL) {
 			if (!__isWaitingOnAsync) builder.__build();
 		}
+		
+		return _spriteData;
 	}
 	
-	static AddSprite = function(_spriteIdentifier, _identifierString = undefined, _is3D = false) {
+	static AddSprite = function(_spriteIdentifier, _identifierString = undefined, _isCopy = undefined, _xOrigin = sprite_get_xoffset(_spriteIdentifier), _yOrigin = sprite_get_yoffset(_spriteIdentifier), _is3D = false) {
 		var _spriteID = sprite_duplicate(_spriteIdentifier);
 		
 		var _identifier = _identifierString ?? sprite_get_name(_spriteID);
@@ -187,13 +160,15 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		}
 		
 		// Add sprite data
-		var _spriteData = new __CollageSpriteFileDataClass(_identifier, _spriteID, sprite_get_number(_spriteID), sprite_get_xoffset(_spriteID), sprite_get_yoffset(_spriteID), _is3D);
+		var _spriteData = new __CollageSpriteFileDataClass(_identifier, _spriteID, sprite_get_number(_spriteID), _isCopy).SetOrigin(_xOrigin, _yOrigin).Set3D(_is3D);
 		
 		array_push(__batchImageList, _spriteData);
 		
 		if (__state == CollageStates.NORMAL) {
 			builder.__build();
 		}
+		
+		return _spriteData;
 	}
 	
 	static AddFileStrip = function(_fileName, _identifierString = undefined, _removeBack = false, _smooth = false, _xOriginValue = 0, _yOriginValue = 0, _is3D = false) {
@@ -203,16 +178,6 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 			return -1;
 		}
 		
-		var _xOrigin = _xOriginValue;
-		var _yOrigin = _yOriginValue;
-		if (!is_real(_xOrigin)) {
-			_xOrigin = 0;	
-		}
-		
-		if (!is_real(_yOrigin)) {
-			_yOrigin = 0;	
-		}
-		
 		var _identifier = _identifierString ?? __CollageGetName(_fileName);	
 		
 		var _spriteSheet = sprite_add(_fileName, 1, _removeBack, _smooth, _xOrigin, _yOrigin);
@@ -220,10 +185,6 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 			__CollageTrace(__getName() + "File " + string(_fileName) + " has an invalid formatting!");
 			exit;
 		}
-		
-		var _origin = __originValidator(_spriteID, _xOriginValue, _yOriginValue);
-		_xOrigin = _origin[0];
-		_yOrigin = _origin[1];
 		
 		var _width = sprite_get_width(_spriteSheet);
 		var _height = sprite_get_height(_spriteSheet);
@@ -242,7 +203,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 			draw_sprite_part(_spriteSheet, 0, _i*_width, 0, _width, _height, 0, 0);
 			surface_reset_target();
 			++_i;
-			if !(sprite_exists(_sprite)) {
+			if (!sprite_exists(_sprite)) {
 				_sprite = sprite_create_from_surface(_surf, 0, 0, _width, _height, _removeBack, _smooth, _xOrigin, _yOrigin);	
 			} else {
 				sprite_add_from_surface(_sprite, _surf, 0, 0, _width, _height, _removeBack, _smooth);
@@ -250,7 +211,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		}
 		CollageRestoreGPUState();
 		
-		var _spriteData = new __CollageSpriteFileDataClass(_identifier, _sprite, _offset, _xOrigin, _yOrigin, _is3D);
+		var _spriteData = new __CollageSpriteFileDataClass(_identifier, _sprite, _offset).SetOrigin(_xOrigin, _yOrigin).Set3D(_is3D);
 		sprite_delete(_spriteSheet);
 		
 		if (__CollageFileFromWeb(_fileName)) {
@@ -277,36 +238,26 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 			builder.__build();
 		}
 		surface_free(_surf);
-		return self;
+		return _spriteData;
 	}
 	
 	static AddSurface = function(_surface, _identifierString = undefined, _x = 0, _y = 0, _w = surface_get_width(_surface), _h = surface_get_height(_surface), _removeBack = false, _smooth = false, _xOriginValue = 0, _yOriginValue = 0, _is3D = false) {
 		var _xOrigin = _xOriginValue;
 		var _yOrigin = _yOriginValue;
-		if (!is_real(_xOrigin)) {
-			_xOrigin = 0;	
-		}
-		
-		if (!is_real(_yOrigin)) {
-			_yOrigin = 0;	
-		}
 		
 		var _spriteID = sprite_create_from_surface(_surface, _x, _y, _w, _h, _removeBack, _smooth, _xOrigin, _yOrigin);
 		
 		var _identifier = _identifierString ?? "surface" + string(_surface);	
 		// Add sprite data
-		var _origin = __originValidator(_spriteID, _xOriginValue, _yOriginValue);
-		_xOrigin = _origin[0];
-		_yOrigin = _origin[1];
 		
-		var _spriteData = new __CollageSpriteFileDataClass(_identifier, _spriteID, 1, _xOrigin, _yOrigin, _is3D);
+		var _spriteData = new __CollageSpriteFileDataClass(_identifier, _spriteID, 1).SetOrigin(_xOrigin, _yOrigin).Set3D(_is3D);
 		
 		array_push(__batchImageList, _spriteData);
 		
 		if (__state == CollageStates.NORMAL) {
 			builder.__build();
 		}
-		return self;
+		return _spriteData;
 	}
 	
 	static AddSpriteSheet = function(_spriteID, _spriteArray, _identifierString, _width, _height, _removeBack = false, _smooth = false, _xOriginValue = 0, _yOriginValue = 0, _is3D = false) {
@@ -324,6 +275,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		var _i = 0;
 		var _surf = surface_create(_width, _height);
 		var _newSprite = -1;
+		var _imageArray = [];
 		
 		CollageSterlizeGPUState();
 		repeat(array_length(_spriteArray)) {
@@ -339,19 +291,17 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 				var _yPos = _subImages > 1 ? (_xSize >= _ySize ? (_imageStruct.pos[1]) : (_j*_height))  : _imageStruct.pos[1];
 				draw_sprite_part(_spriteID, 0, _xPos, _yPos, _width, _height, 0, 0);
 				surface_reset_target();
-				if !(sprite_exists(_newSprite)) {
+				if (!sprite_exists(_newSprite)) {
 					_newSprite = sprite_create_from_surface(_surf, 0, 0, _width, _height, _removeBack, _smooth, 0, 0);	
 				} else {
 					sprite_add_from_surface(_newSprite, _surf, 0, 0, _width, _height, _removeBack, _smooth);
 				}
 				++_j;
 			}
-			
-			var _origin = __originValidator(_newSprite, _xOriginValue, _yOriginValue);
-			var _xOrigin = _origin[0];
-			var _yOrigin = _origin[1];
-			var _spriteData = new __CollageSpriteFileDataClass(_identifierString + _imageStruct.subName, _newSprite, _subImages, _xOrigin, _yOrigin, _is3D);
+		
+			var _spriteData = new __CollageSpriteFileDataClass(_identifierString + _imageStruct.subName, _newSprite, _subImages).SetOrigin(_xOriginValue, _yOriginValue).Set3D(_is3D);
 			array_push(__batchImageList, _spriteData);
+			array_push(_imageArray, _spriteData);
 			_newSprite = -1;
 			++_i;
 		}
@@ -361,7 +311,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 			builder.__build();
 		}
 		surface_free(_surf);
-		return self;
+		return _imageArray;
 	}
 	
 	static FreePages = function() {

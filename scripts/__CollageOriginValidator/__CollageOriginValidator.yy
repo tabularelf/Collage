@@ -1,11 +1,11 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "__CollageSpriteFileDataClass",
+  "name": "__CollageOriginValidator",
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Classes",
-    "path": "folders/Collage/System/Classes.yy",
+    "name": "System",
+    "path": "folders/Collage/System.yy",
   },
 }

@@ -46,8 +46,8 @@ function __CollageBuilderClass() constructor {
 	}
 	
 	static __hashCompare = function(_spriteData) {
-		var _hashA = __CollageHashGenerator(_spriteData.spriteID);
-		var _img = __getImage(_spriteData.name);
+		var _hashA = __CollageHashGenerator(_spriteData.__spriteID);
+		var _img = __getImage(_spriteData.__name);
 		if (is_undefined(_img)) {
 			return false;	
 		}
@@ -96,7 +96,7 @@ function __CollageBuilderClass() constructor {
 		var _i = 0;
 		repeat(_len) {
 				var _spriteData = _spriteList[_i];
-				var _spriteID = _spriteData.spriteID;
+				var _spriteID = _spriteData.__spriteID;
 				var _spriteInfo = sprite_get_info(_spriteID);
 				var _sprWidth = _spriteInfo.width;
 				var _sprHeight = _spriteInfo.height;
@@ -124,7 +124,7 @@ function __CollageBuilderClass() constructor {
 				if (_drawW > _texWidth || _drawH > _texHeight) {
 					if (!__COLLAGE_SCALE_TO_TEXTURES_ON_PAGE) {
 						__CollageTrace("Image " + string(_spriteData.name) + " is too big! Skipping...");
-						if (_spriteData.isCopy) {
+						if (_spriteData.__isCopy) {
 							sprite_delete(_spriteID);
 						}
 						array_delete(_spriteList, _i, 1);
@@ -175,7 +175,7 @@ function __CollageBuilderClass() constructor {
 		
 		// Separate sprites into two groups
 		repeat(_len) {
-		if (_spriteList[_i].spriteData.is3D) {
+		if (_spriteList[_i].spriteData.__is3D) {
 			_3DSprites[_3DArraySize++] = _spriteList[_i];	
 		} else {
 			_normalSprites[_normalArraySize++] = _spriteList[_i];	
@@ -217,8 +217,8 @@ function __CollageBuilderClass() constructor {
 				var _hScale = _spriteStruct.hScale;
 				var _ogW = _spriteStruct.originalWidth;
 				var _ogH = _spriteStruct.originalHeight;
-				var _xOffset = _spriteData.xOrigin;
-				var _yOffset = _spriteData.yOrigin;
+				var _xOffset = _spriteData.__xOrigin;
+				var _yOffset = _spriteData.__yOrigin;
 				
 				
 				var _bbWidth = _spriteStruct.bbWidth;
@@ -226,36 +226,36 @@ function __CollageBuilderClass() constructor {
 				var _ratio = _spriteStruct.ratio;
 				
 				var _subStart = 0;
-				if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + _spriteData.name + " is currently being processed... 0/" + string(_spriteInfo.num_subimages));
-				if (__checkImage(_spriteData.name)) {
+				if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + _spriteData.__name + " is currently being processed... 0/" + string(_spriteInfo.num_subimages));
+				if (__checkImage(_spriteData.__name)) {
 					switch(__COLLAGE_IMAGE_NAME_COLLISION_HANDLE) {
 						case 0:
-							__CollageTrace(_collageName + _spriteData.name + " already exists! Skipping...");
+							__CollageTrace(_collageName + _spriteData.__name + " already exists! Skipping...");
 							--_normalArraySize;
 							continue;
 							break;
 						case 1:
-							if (!(((_spriteInfo.width == __getImage(_spriteData.name).width) && (_spriteInfo.height == __getImage(_spriteData.name).height))
-							&& (_spriteInfo.bbox_right-_spriteInfo.bbox_left+1 == __getImage(_spriteData.name).cropWidth) && (_spriteInfo.bbox_bottom-_spriteInfo.bbox_top+1 == __getImage(_spriteData.name).cropHeight))) {
-								var _spriteName = _spriteData.name;
+							if (!(((_spriteInfo.width == __getImage(_spriteData.__name).width) && (_spriteInfo.height == __getImage(_spriteData.__name).height))
+							&& (_spriteInfo.bbox_right-_spriteInfo.bbox_left+1 == __getImage(_spriteData.__name).cropWidth) && (_spriteInfo.bbox_bottom-_spriteInfo.bbox_top+1 == __getImage(_spriteData.__name).cropHeight))) {
+								var _spriteName = _spriteData.__name;
 								var _num = 1;
 								var _name = _spriteName + string(_num);
 								while(__checkImage(_name)) {
 										var _name = _spriteName + string(++_num);
 								}
-								__CollageTrace(_collageName + _spriteData.name + " already exists! Reidentified as " + _name);
+								__CollageTrace(_collageName + _spriteData.__name + " already exists! Reidentified as " + _name);
 								_spriteData.name = _name;
 								
-								var _imageInfo = new __CollageImageClass(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio);
+								var _imageInfo = new __CollageImageClass(_spriteInfo, _spriteData.__name, _drawW, _drawH, _ratio);
 								// Lets add it to database
-								__setImage(_spriteData.name, _imageInfo);
+								__setImage(_spriteData.__name, _imageInfo);
 								
 								var _subImages = _spriteInfo.num_subimages;
 							} else {
 								// Same width/height
 								// Loop
 								var _subImageLen = _spriteInfo.num_subimages;
-								var _imageInfo = CollageGetImageInfo(_spriteData.name);
+								var _imageInfo = CollageGetImageInfo(_spriteData.__name);
 								var _uvsArray = _imageInfo.subImagesArray;
 								var _uvsArrayLength = array_length(_uvsArray);
 								var _uvi = 0;
@@ -294,35 +294,35 @@ function __CollageBuilderClass() constructor {
 								var _subImages = _subImageLen;
 								var _subStart = (_subImageLen > _uvsArrayLength) ? (_subImageLen - _uvsArrayLength) : _subImageLen;
 								_imageInfo.subImagesCount = _subImageLen;
-								__CollageTrace(_collageName + _spriteData.name + " overwritten! (" + string(_subImageLen) + "/" + string(_uvsArrayLength) + ") Left over: " + string(max(_subImageLen - _uvsArrayLength, 0)));
+								__CollageTrace(_collageName + _spriteData.__name + " overwritten! (" + string(_subImageLen) + "/" + string(_uvsArrayLength) + ") Left over: " + string(max(_subImageLen - _uvsArrayLength, 0)));
 							}
 						break;
 						
 						case 2:
-							var _spriteName = _spriteData.name;
+							var _spriteName = _spriteData.__name;
 							var _num = 1;
 							var _name = _spriteName + string(_num);
 							while(__checkImage(_name)) {
 									var _name = _spriteName + string(++_num);
 							}
-							__CollageTrace(_collageName + _spriteData.name + " already exists! Reidentified as " + _name);
-							_spriteData.name = _name;
+							__CollageTrace(_collageName + _spriteData.__name + " already exists! Reidentified as " + _name);
+							_spriteData.__name = _name;
 							
-							var _imageInfo = new __CollageImageClass(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio);
+							var _imageInfo = new __CollageImageClass(_spriteInfo, _spriteData.__name, _drawW, _drawH, _ratio);
 							// Lets add it to database
-							__setImage(_spriteData.name, _imageInfo);
+							__setImage(_spriteData.__name, _imageInfo);
 							var _subImages = _spriteInfo.num_subimages;
 						break;
 					}
 				} else {
-					var _imageInfo = new __CollageImageClass(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio, _xOffset, _yOffset);
+					var _imageInfo = new __CollageImageClass(_spriteInfo, _spriteData.__name, _drawW, _drawH, _ratio, _xOffset, _yOffset);
 					// Lets add it to database
-					__setImage(_spriteData.name, _imageInfo);
+					__setImage(_spriteData.__name, _imageInfo);
 					
 					var _subImages = _spriteInfo.num_subimages;
 					owner.imageCount++;
 					array_push(owner.__imageList, _imageInfo);
-					if (__COLLAGE_IMAGES_ARE_PUBLIC) owner.__imageMap[$ _spriteData.name] = _imageInfo;
+					if (__COLLAGE_IMAGES_ARE_PUBLIC) owner.__imageMap[$ _spriteData.__name] = _imageInfo;
 				}
 				for(var _sub = _subStart; _sub < _subImages; ++_sub) {
 					var _emptySpaceSize = 0xFFFFFF;
@@ -353,7 +353,7 @@ function __CollageBuilderClass() constructor {
 						var _uvY = _currentPoint.top;
 						var _uvW = _wScale;
 						var _uvH = _hScale;
-						var _uvs = new __CollageImageUVsClass(_texPage, owner.texPageCount, _uvX, _uvY, _uvW, _uvH, _drawX, _drawY, _ogW, _ogH, /*_sprWidth - _drawW - 2, _sprHeight - _drawH - 2,*/ _imageInfo.xoffset, _imageInfo.yoffset);
+						var _uvs = new __CollageImageUVsClass(_texPage, owner.texPageCount, _uvX, _uvY, _uvW, _uvH, _drawX, _drawY, _ogW, _ogH, _xOffset, _yOffset);
 						_imageInfo.subImagesArray[_sub] = _uvs;
 						// Store next available space
 						if( _bbHeight < _currentPoint.bottom){ 
@@ -367,9 +367,9 @@ function __CollageBuilderClass() constructor {
 						} 
 	
 						// Remove non-empty area
-						if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + _spriteData.name + " is currently being processed... " + string(_sub+1) + "/" + string(_subImages));
+						if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + _spriteData.__name + " is currently being processed... " + string(_sub+1) + "/" + string(_subImages));
 						if (_sub == _subImages-1) {
-							if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + _spriteData.name + " has been processed...");	
+							if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + _spriteData.__name + " has been processed...");	
 						}
 						array_delete(bboxPoints, _emptySpaceID, 1);
 						
@@ -472,37 +472,37 @@ function __CollageBuilderClass() constructor {
 				var _ratio = _spriteStruct.ratio;
 				
 				var _subStart = 0;
-				if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + _spriteData.name + " is currently being processed... 0/" + string(_spriteInfo.num_subimages));
+				if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + _spriteData.__name + " is currently being processed... 0/" + string(_spriteInfo.num_subimages));
 				if (__checkImage(_spriteData.name)) {
 					switch(__COLLAGE_IMAGE_NAME_COLLISION_HANDLE) {
 						case 0:
-							__CollageTrace(_collageName + _spriteData.name + " already exists! Skipping...");
+							__CollageTrace(_collageName + _spriteData.__name + " already exists! Skipping...");
 							--_3DArraySize;
 							continue;
 						break;
 						
 						case 1:
-							if !(((_spriteInfo.width == __checkImage(_spriteData.name).width) && (_spriteInfo.height == __checkImage(_spriteData.name).height))
-							&& (_spriteInfo.bbox_right-_spriteInfo.bbox_left+1 == __checkImage(_spriteData.name).cropWidth) && (_spriteInfo.bbox_bottom-_spriteInfo.bbox_top+1 == __checkImage(_spriteData.name).cropHeight)) {
-								var _spriteName = _spriteData.name;
+							if !(((_spriteInfo.width == __checkImage(_spriteData.__name).width) && (_spriteInfo.height == __checkImage(_spriteData.name).height))
+							&& (_spriteInfo.bbox_right-_spriteInfo.bbox_left+1 == __checkImage(_spriteData.__name).cropWidth) && (_spriteInfo.bbox_bottom-_spriteInfo.bbox_top+1 == __checkImage(_spriteData.__name).cropHeight)) {
+								var _spriteName = _spriteData.__name;
 								var _num = 1;
 								var _name = _spriteName + string(_num);
-								while(__checkImage(_spriteData.name)) {
+								while(__checkImage(_spriteData.__name)) {
 										var _name = _spriteName + string(++_num);
 								}
-								__CollageTrace(_collageName + _spriteData.name + " already exists! Reidentified as " + _name);
+								__CollageTrace(_collageName + _spriteData.__name + " already exists! Reidentified as " + _name);
 								_spriteData.name = _name;
 								
-								var _imageInfo = new __CollageImageClass(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio);
+								var _imageInfo = new __CollageImageClass(_spriteInfo, _spriteData.__name, _drawW, _drawH, _ratio);
 								// Lets add it to database
-								__setImage(_spriteData.name, _imageInfo);
+								__setImage(_spriteData.__name, _imageInfo);
 								
 								var _subImages = _spriteInfo.num_subimages;
 							} else {
 								// Same width/height
 								// Loop
 								var _subImageLen = _spriteInfo.num_subimages;
-								var _imageInfo = CollageGetImageInfo(_spriteData.name);
+								var _imageInfo = CollageGetImageInfo(_spriteData.__name);
 								var _uvsArray = _imageInfo.subImagesArray;
 								var _uvsArrayLength = array_length(_uvsArray);
 								var _uvi = 0;
@@ -535,35 +535,35 @@ function __CollageBuilderClass() constructor {
 								var _subImages = _subImageLen;
 								var _subStart = (_subImageLen > _uvsArrayLength) ? (_subImageLen - _uvsArrayLength) : _subImageLen;
 								_imageInfo.subImagesCount = _subImageLen;
-								__CollageTrace(_spriteData.name + " overwritten! (" + string(_subImageLen) + "/" + string(_uvsArrayLength) + ") Left over: " + string(max(_subImageLen - _uvsArrayLength, 0)));
+								__CollageTrace(_spriteData.__name + " overwritten! (" + string(_subImageLen) + "/" + string(_uvsArrayLength) + ") Left over: " + string(max(_subImageLen - _uvsArrayLength, 0)));
 							}
 						break;
 						
 						case 2:
-							var _spriteName = _spriteData.name;
+							var _spriteName = _spriteData.__name;
 							var _num = 1;
 							var _name = _spriteName + string(_num);
 							while(__checkImage(_name)) {
 								_name = _spriteName + string(++_num);
 							}
-							__CollageTrace(_collageName + _spriteData.name + " already exists! Reidentified as " + _name);
+							__CollageTrace(_collageName + _spriteData.__name + " already exists! Reidentified as " + _name);
 							_spriteData.name = _name;
 							
-							var _imageInfo = new __CollageImageClass(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio);
+							var _imageInfo = new __CollageImageClass(_spriteInfo, _spriteData.__name, _drawW, _drawH, _ratio);
 							// Lets add it to database
-							__setImage(_spriteData.name, _imageInfo);
+							__setImage(_spriteData.__name, _imageInfo);
 							var _subImages = _spriteInfo.num_subimages;
 						break;
 					}
 				} else {
-					var _imageInfo = new __CollageImageClass(_spriteInfo, _spriteData.name, _drawW, _drawH, _ratio);
+					var _imageInfo = new __CollageImageClass(_spriteInfo, _spriteData.__name, _drawW, _drawH, _ratio);
 					// Lets add it to database
 					__setImage(_spriteData.name, _imageInfo);
 					
 					var _subImages = _spriteInfo.num_subimages;
 					owner.imageCount++;
 					array_push(owner.__imageList, _imageInfo);
-					if (__COLLAGE_IMAGES_ARE_PUBLIC) owner.__imageMap[$ _spriteData.name] = _imageInfo;
+					if (__COLLAGE_IMAGES_ARE_PUBLIC) owner.__imageMap[$ _spriteData.__name] = _imageInfo;
 				}
 				for(var _sub = _subStart; _sub < _subImages; ++_sub) {
 						_texPage = new __CollageTexturePageClass(_texWidth, _texHeight);
@@ -594,9 +594,9 @@ function __CollageBuilderClass() constructor {
 							owner.__texPageArray[owner.texPageCount++] = _texPage;
 						}
 						
-						if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + _spriteData.name + " is currently being processed... " + string(_sub+1) + "/" + string(_subImages));
+						if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + _spriteData.__name + " is currently being processed... " + string(_sub+1) + "/" + string(_subImages));
 						if (_sub == _subImages-1) {
-							if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + _spriteData.name + " has been processed...");	
+							if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + _spriteData.__name + " has been processed...");	
 						}
 					} 
 				}			
@@ -619,7 +619,7 @@ function __CollageBuilderClass() constructor {
 		var _len = array_length(_normalSprites);
 		var _i = 0;
 		repeat(_len) {
-			if (_normalSprites[_i].spriteData.isCopy) {
+			if (_normalSprites[_i].spriteData.__isCopy) {
 				sprite_delete(_normalSprites[_i].spriteID);
 			}
 			++_i;
@@ -628,7 +628,7 @@ function __CollageBuilderClass() constructor {
 		var _len = array_length(_3DSprites);
 		var _i = 0;
 		repeat(_len) {
-			if (_3DSprites[_i].spriteData.isCopy) {
+			if (_3DSprites[_i].spriteData.__isCopy) {
 				sprite_delete(_3DSprites[_i].spriteID);
 			}
 			++_i;

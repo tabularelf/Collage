@@ -23,10 +23,24 @@ function CollageDrawImageGeneral(_imageData, _imageIndex, _left, _top, _width, _
 	_uvs.texturePageStruct.__restoreFromCache();
 	
 	_uvs.texturePageStruct.CheckSurface();	
-	var _xOffset = -_uvs.xPos;
+	var _xOffset = _uvs.xPos;
 	var _yOffset = _uvs.yPos;
-	var _xPos = lengthdir_x(_xOffset * _xScale, _rot) - lengthdir_x(_yOffset * _yScale, _rot - 90);
-	var _yPos = lengthdir_y(_xOffset * _xScale, _rot) - lengthdir_y(_yOffset * _yScale, _rot - 90);
-	
-	draw_surface_general(_uvs.texturePageStruct.__surface, clamp(_uvs.left+_left, _uvs.left, _uvs.left+_uvs.right), clamp(_uvs.top+_top, _uvs.top, _uvs.top+_uvs.bottom), clamp(_width, _left, _uvs.right), clamp(_height, _top, _uvs.bottom), _x-_xPos, _y-_yPos, _xScale/_ratio, _yScale/_ratio, _rot, _col1, _col2, _col3, _col4, _alpha);	
+	var _xPos = lengthdir_x(_xOffset * _xScale, _rot) + lengthdir_x(_yOffset * _yScale, _rot - 90);
+	var _yPos = lengthdir_y(_xOffset * _xScale, _rot) + lengthdir_y(_yOffset * _yScale, _rot - 90);
+	draw_surface_general(_uvs.texturePageStruct.__surface, 
+		clamp(_uvs.left+_left, _uvs.left, _uvs.left+_uvs.right), 
+		clamp(_uvs.top+_top, _uvs.top, _uvs.top+_uvs.bottom), 
+		clamp(_width, _left, _uvs.right), 
+		clamp(_height, _top, _uvs.bottom), 
+		_x-_xPos, 
+		_y-_yPos, 
+		_xScale/_ratio, 
+		_yScale/_ratio, 
+		_rot, 
+		_col1, 
+		_col2, 
+		_col3, 
+		_col4, 
+		_alpha
+	);	
 }

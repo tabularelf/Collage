@@ -18,6 +18,7 @@
     {"id":{"name":"CollageDestroy","path":"scripts/CollageDestroy/CollageDestroy.yy",},"order":2,},
     {"id":{"name":"obj_test_strip","path":"objects/obj_test_strip/obj_test_strip.yy",},"order":1,},
     {"id":{"name":"__CollageGPUStateSingleton","path":"scripts/__CollageGPUStateSingleton/__CollageGPUStateSingleton.yy",},"order":6,},
+    {"id":{"name":"CollageDrawImageTiled","path":"scripts/CollageDrawImageTiled/CollageDrawImageTiled.yy",},"order":7,},
     {"id":{"name":"obj_test_spritesheet","path":"objects/obj_test_spritesheet/obj_test_spritesheet.yy",},"order":10,},
     {"id":{"name":"obj_test_general","path":"objects/obj_test_general/obj_test_general.yy",},"order":4,},
     {"id":{"name":"__CollageConfig","path":"scripts/__CollageConfig/__CollageConfig.yy",},"order":6,},
@@ -27,10 +28,12 @@
     {"id":{"name":"draw_image","path":"scripts/draw_image/draw_image.yy",},"order":0,},
     {"id":{"name":"__CollageCloneStruct","path":"scripts/__CollageCloneStruct/__CollageCloneStruct.yy",},"order":3,},
     {"id":{"name":"CollageSterlizeGPUState","path":"scripts/CollageSterlizeGPUState/CollageSterlizeGPUState.yy",},"order":11,},
+    {"id":{"name":"CollageDrawImagePartExt","path":"scripts/CollageDrawImagePartExt/CollageDrawImagePartExt.yy",},"order":6,},
     {"id":{"name":"CollageGetRecommendedSize","path":"scripts/CollageGetRecommendedSize/CollageGetRecommendedSize.yy",},"order":4,},
     {"id":{"name":"__CollageInit","path":"scripts/__CollageInit/__CollageInit.yy",},"order":7,},
     {"id":{"name":"__CollageTexturePageClass","path":"scripts/__CollageTexturePageClass/__CollageTexturePageClass.yy",},"order":4,},
     {"id":{"name":"CollageGet","path":"scripts/CollageGet/CollageGet.yy",},"order":3,},
+    {"id":{"name":"CollageDrawImagePart","path":"scripts/CollageDrawImagePart/CollageDrawImagePart.yy",},"order":5,},
     {"id":{"name":"obj_test_dupe","path":"objects/obj_test_dupe/obj_test_dupe.yy",},"order":6,},
     {"id":{"name":"CollageGetImageTexturePage","path":"scripts/CollageGetImageTexturePage/CollageGetImageTexturePage.yy",},"order":4,},
     {"id":{"name":"CollageGetImageInfo","path":"scripts/CollageGetImageInfo/CollageGetImageInfo.yy",},"order":1,},
@@ -53,6 +56,7 @@
     {"id":{"name":"CollageDrawImageExt","path":"scripts/CollageDrawImageExt/CollageDrawImageExt.yy",},"order":1,},
     {"id":{"name":"CollageIsCollage","path":"scripts/CollageIsCollage/CollageIsCollage.yy",},"order":6,},
     {"id":{"name":"__CollageTrace","path":"scripts/__CollageTrace/__CollageTrace.yy",},"order":9,},
+    {"id":{"name":"__CollageOriginValidator","path":"scripts/__CollageOriginValidator/__CollageOriginValidator.yy",},"order":11,},
     {"id":{"name":"__CollageBuildSprite","path":"scripts/__CollageBuildSprite/__CollageBuildSprite.yy",},"order":2,},
     {"id":{"name":"__CollageSpriteFileDataClass","path":"scripts/__CollageSpriteFileDataClass/__CollageSpriteFileDataClass.yy",},"order":3,},
     {"id":{"name":"CollageCompatibilityGetImageUVs","path":"scripts/CollageCompatibilityGetImageUVs/CollageCompatibilityGetImageUVs.yy",},"order":0,},
@@ -97,7 +101,7 @@
     {"resourceType":"GMAudioGroup","resourceVersion":"1.3","name":"audiogroup_default","targets":-1,},
   ],
   "TextureGroups": [
-    {"resourceType":"GMTextureGroup","resourceVersion":"1.3","name":"Default","isScaled":true,"compressFormat":"bz2","autocrop":true,"border":2,"mipsToGenerate":0,"groupParent":null,"targets":-1,},
+    {"resourceType":"GMTextureGroup","resourceVersion":"1.3","name":"Default","isScaled":true,"compressFormat":"bz2","loadType":"default","directory":"","autocrop":true,"border":2,"mipsToGenerate":0,"groupParent":null,"targets":-1,},
   ],
   "IncludedFiles": [
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"highway.png","CopyToMask":-1,"filePath":"datafiles",},
@@ -182,6 +186,6 @@
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"bats.png","CopyToMask":-1,"filePath":"datafiles",},
   ],
   "MetaData": {
-    "IDEVersion": "2022.8.1.37",
+    "IDEVersion": "2022.9.1.51",
   },
 }

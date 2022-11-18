@@ -17,8 +17,8 @@ function __CollageImageUVsClass(_texPageStruct, _texPageNum, _left, _top, _right
 	normHeight = normTop+normBottom;
 	originalWidth = _ogW;
 	originalHeight = _ogH;
-	xPos = _trimLeft-_xOffset;
-	yPos = _trimTop-_yOffset;
+	xPos = _xOffset-_trimLeft;
+	yPos = _yOffset-_trimTop;
 	texturePageNum = _texPageNum;
 	texturePageStruct = _texPageStruct;
 }

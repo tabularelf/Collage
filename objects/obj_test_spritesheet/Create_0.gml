@@ -1,5 +1,5 @@
 show_debug_overlay(true);
-texPage = new Collage("Spritesheet");
+texPage = new Collage("Spritesheet",,, true);
 var _batSprite = sprite_add("bats.png", 1, false, false, 0, 0);
 var _array = [
 	CollageDefineSpriteSheet("_fly_down", 32, 0, 128, 32),
@@ -13,5 +13,3 @@ var _array = [
 ];
 texPage.AddSpriteSheet(_batSprite, _array, "bat", 32, 32, false, false, CollageOrigin.CENTER, CollageOrigin.CENTER);
 sprite_delete(_batSprite);
-
-debug_event("OutputDebugOn");

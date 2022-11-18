@@ -14,5 +14,16 @@ function CollageDrawImageStretched(_imageData, _imageIndex, _x, _y, _width, _hei
 	
 	_uvs.texturePageStruct.CheckSurface();	
 
-	draw_surface_part_ext(_uvs.texturePageStruct.__surface, _uvs.left, _uvs.top, _uvs.right, _uvs.bottom, _x+_uvs.xPos, _y+_uvs.yPos, (_width/_imageData.width)/_ratio, (_height/_imageData.height)/_ratio, c_white, 1);	
+	draw_surface_part_ext(_uvs.texturePageStruct.__surface, 
+		_uvs.left, 
+		_uvs.top, 
+		_uvs.right, 
+		_uvs.bottom, 
+		_x+_uvs.xPos, 
+		_y+_uvs.yPos, 
+		(_width/_imageData.width)/_ratio, 
+		(_height/_imageData.height)/_ratio, 
+		c_white, 
+		1
+	);	
 }

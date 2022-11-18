@@ -16,9 +16,25 @@ function CollageDrawImageExt(_imageData, _imageIndex, _x, _y, _xScale, _yScale, 
 	_uvs.texturePageStruct.__restoreFromCache();
 	
 	_uvs.texturePageStruct.CheckSurface();	
-	var _xOffset = -_uvs.xPos;
+	var _xOffset = _uvs.xPos;
 	var _yOffset = _uvs.yPos;
-	var _xPos = lengthdir_x(_xOffset * _xScale, _rot) - lengthdir_x(_yOffset * _yScale, _rot - 90);
-	var _yPos = lengthdir_y(_xOffset * _xScale, _rot) - lengthdir_y(_yOffset * _yScale, _rot - 90);
-	draw_surface_general(_uvs.texturePageStruct.__surface, _uvs.left, _uvs.top, _uvs.right, _uvs.bottom, _x-_xPos, _y-_yPos, _xScale/_ratio, _yScale/_ratio, _rot, _col, _col, _col, _col, _alpha);	
+	var _xPos = lengthdir_x(_xOffset * _xScale, _rot) + lengthdir_x(_yOffset * _yScale, _rot - 90);
+	var _yPos = lengthdir_y(_xOffset * _xScale, _rot) + lengthdir_y(_yOffset * _yScale, _rot - 90);
+	draw_surface_general(
+		_uvs.texturePageStruct.__surface, 
+		_uvs.left, 
+		_uvs.top, 
+		_uvs.right, 
+		_uvs.bottom, 
+		_x-_xPos, 
+		_y-_yPos, 
+		_xScale/_ratio, 
+		_yScale/_ratio, 
+		_rot,
+		_col, 
+		_col, 
+		_col, 
+		_col, 
+		_alpha
+	);	
 }

@@ -4,7 +4,7 @@
 /// @param {Real} x
 /// @param {Real} y
 /* Feather ignore once GM1042 */
-function CollageDrawImage(_imageData, _imageIndex, _x, _y) {
+/*function CollageDrawImage(_imageData, _imageIndex, _x, _y) {
 	gml_pragma("forceinline");
 	var _ratio = _imageData.ratio;
 	var _uvs = _imageData.__InternalGetUvs(_imageIndex);
@@ -12,6 +12,7 @@ function CollageDrawImage(_imageData, _imageIndex, _x, _y) {
 	
 	_uvs.texturePageStruct.CheckSurface();	
 	
+	draw_surface_tiled(
 	
 	if (_ratio != 1) {
 		draw_surface_part_ext(_uvs.texturePageStruct.__surface, 
