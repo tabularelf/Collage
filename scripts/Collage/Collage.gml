@@ -140,17 +140,19 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	}
 	
 	static AddSprite = function(_spriteIdentifier, _identifierString = undefined, _isCopy = undefined, _xOrigin = sprite_get_xoffset(_spriteIdentifier), _yOrigin = sprite_get_yoffset(_spriteIdentifier), _is3D = false) {
-		var _spriteID = sprite_duplicate(_spriteIdentifier);
+		var _spriteID = _spriteIdentifier;
+		var _isCopyValue = _isCopy;
 		
 		var _identifier = _identifierString ?? sprite_get_name(_spriteID);
 		
 		if (_spriteID <= global.__CollageGMSpriteCount) {
-			_spriteID = sprite_duplicate(_spriteID);
-			if (__COLLAGE_VERBOSE) __CollageTrace(__getName() + _identifier + " is a GMSprite resource added via the IDE, making a copy...")
+			_spriteID = sprite_duplicate(_spriteIdentifier);
+			if (__COLLAGE_VERBOSE) __CollageTrace(__getName() + _identifier + " is a GMSprite resource added via the IDE, making a copy...");
+			_isCopyValue = true;
 		}
 		
 		// Add sprite data
-		var _spriteData = new __CollageSpriteFileDataClass(_identifier, _spriteID, sprite_get_number(_spriteID), _isCopy).SetOrigin(_xOrigin, _yOrigin).Set3D(_is3D);
+		var _spriteData = new __CollageSpriteFileDataClass(_identifier, _spriteID, sprite_get_number(_spriteID), _isCopyValue).SetOrigin(_xOrigin, _yOrigin).Set3D(_is3D);
 		
 		array_push(__batchImageList, _spriteData);
 		
