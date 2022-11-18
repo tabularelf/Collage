@@ -1,11 +1,11 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "CollageRestoreGPUState",
+  "name": "__CollageSpriteGCTick",
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "General",
-    "path": "folders/Collage/General.yy",
+    "name": "System",
+    "path": "folders/Collage/System.yy",
   },
 }

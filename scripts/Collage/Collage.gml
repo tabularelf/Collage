@@ -113,6 +113,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		var _spriteData = new __CollageSpriteFileDataClass(_identifier, _spriteID, _subImage).SetOrigin(_xOrigin, _yOrigin).Set3D(_is3D);
 		
 		if (__CollageFileFromWeb(_fileName)) {
+			if (__COLLAGE_VERBOSE) __CollageTrace("Adding " + string(_fileName) + " to asynchronous listing...");
 			__isWaitingOnAsync = true;
 			__status = CollageStatus.WAITING_ON_FILES;
 			var _i = 0;
@@ -127,7 +128,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 				array_push(global.__CollageAsyncList, self);
 			}
 			
-			array_push(__asyncList, _spriteData);
+			array_push(__asyncList, [_spriteData, undefined]);
 		} else {
 			array_push(__batchImageList, _spriteData);
 		}
@@ -156,7 +157,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		
 		array_push(__batchImageList, _spriteData);
 		
-		if (__state == CollageStates.NORMAL) {
+		if (__state == CollageStates.NORMAL) && (__status == CollageStatus.READY) {
 			builder.__build();
 		}
 		
@@ -178,6 +179,38 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 			exit;
 		}
 		
+		var _spriteData = new __CollageSpriteFileDataClass(_identifier, _spriteSheet).SetOrigin(_xOrigin, _yOrigin).Set3D(_is3D);
+		
+		if (__CollageFileFromWeb(_fileName)) {
+			if (__COLLAGE_VERBOSE) __CollageTrace("Adding " + string(_fileName) + " to asynchronous listing...");
+			__isWaitingOnAsync = true;
+			__status = CollageStatus.WAITING_ON_FILES;
+			var _i = 0;
+			repeat(array_length(global.__CollageAsyncList)) {
+				if (global.__CollageAsyncList[_i] == self) {
+					break;	
+				}
+				++_i;
+			}
+			
+			if (_i == array_length(global.__CollageAsyncList)) {
+				array_push(global.__CollageAsyncList, self);
+			}
+			
+			array_push(__asyncList, [_spriteData, method_get_index(__InternalAddFileStrip), [_spriteData, _removeBack, _smooth, _xOrigin, _yOrigin, _is3D]]);
+		} else {
+			__InternalAddFileStrip(_spriteData, _identifierString, _removeBack, _smooth, _xOrigin, _yOrigin, _is3D);
+		}
+		
+		if (__state == CollageStates.NORMAL) && (__status == CollageStatus.READY) {
+			builder.__build();
+		}
+		
+		return _spriteData;
+	}
+	
+	static __InternalAddFileStrip = function(_spriteData, _removeBack, _smooth, _xOrigin, _yOrigin, _is3D) {	
+		var _spriteSheet = _spriteData.__spriteID;
 		var _width = sprite_get_width(_spriteSheet);
 		var _height = sprite_get_height(_spriteSheet);
 		var _offset = round(_width / _height);
@@ -203,35 +236,15 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		}
 		CollageRestoreGPUState();
 		
-		var _spriteData = new __CollageSpriteFileDataClass(_identifier, _sprite, _offset).SetOrigin(_xOrigin, _yOrigin).Set3D(_is3D);
+		_spriteData.__spriteID = _sprite;
+		_spriteData.__subImages = _subImages;
 		sprite_delete(_spriteSheet);
 		
-		if (__CollageFileFromWeb(_fileName)) {
-			__isWaitingOnAsync = true;
-			__status = CollageStatus.WAITING_ON_FILES;
-			var _i = 0;
-			repeat(array_length(global.__CollageAsyncList)) {
-				if (global.__CollageAsyncList[_i] == self) {
-					break;	
-				}
-				++_i;
-			}
-			
-			if (_i == array_length(global.__CollageAsyncList)) {
-				array_push(global.__CollageAsyncList, self);
-			}
-			
-			array_push(__asyncList, _spriteData);
-		} else {
-			array_push(__batchImageList, _spriteData);
-		}
-		
-		if (__state == CollageStates.NORMAL) {
-			builder.__build();
-		}
+		array_push(__batchImageList, _spriteData);
 		surface_free(_surf);
+		
 		return _spriteData;
-	}
+	}	
 	
 	static AddSurface = function(_surface, _identifierString = undefined, _x = 0, _y = 0, _w = surface_get_width(_surface), _h = surface_get_height(_surface), _removeBack = false, _smooth = false, _xOrigin = 0, _yOrigin = 0, _is3D = false) {
 		
@@ -244,7 +257,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		
 		array_push(__batchImageList, _spriteData);
 		
-		if (__state == CollageStates.NORMAL) {
+		if (__state == CollageStates.NORMAL) && (__status == CollageStatus.READY) {
 			builder.__build();
 		}
 		return _spriteData;

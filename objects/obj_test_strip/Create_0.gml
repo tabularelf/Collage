@@ -1,2 +1,2 @@
 texPage = new Collage();
-texPage.AddFileStrip("spr_soldier.png");
+http_set_request_crossorigin("Access-Control-Allow-Origin");

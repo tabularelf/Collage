@@ -10,12 +10,20 @@ function CollageImageAsync() {
         var _asyncList = global.__CollageAsyncList[_i].__asyncList;
         var _j = 0;
         repeat(array_length(_asyncList)) {
-            if (_id == _asyncList[_j].__spriteID) {
-                if (_status >= 0) && (sprite_get_number(_asyncList[_j].__spriteID) > 0) {
-                    array_push(global.__CollageAsyncList[_i].__batchImageList, _asyncList[_j]);
-					__CollageTrace(global.__CollageAsyncList[_i].__getName() + _asyncList[_j].__name + " loaded from the internet (" + string (_fileName) + ")!");
+            if (_id == _asyncList[_j][0].__spriteID) {
+                if (_status >= 0) && (sprite_get_number(_asyncList[_j][0].__spriteID) > 0) {
+                    if (!is_undefined(_asyncList[_j][1])) {
+						with(global.__CollageAsyncList[_i]) {
+							if (__COLLAGE_VERBOSE) __CollageTrace("Running asynchronous callback on " + _asyncList[_j][0].__name + "!");
+							script_execute_ext(_asyncList[_j][1], _asyncList[_j][2]);	
+						}
+					} else {
+						if (__COLLAGE_VERBOSE) __CollageTrace("Async: Pushing " + _asyncList[_j][0].__name + " straight to batchlist!");
+						array_push(global.__CollageAsyncList[_i].__batchImageList, _asyncList[_j][0]);	
+					}
+					__CollageTrace(global.__CollageAsyncList[_i].__getName() + _asyncList[_j][0].__name + " loaded from the internet (" + _fileName + ")!");
                 } else {
-                    __CollageTrace(global.__CollageAsyncList[_i].__getName() + _asyncList[_j].__name + " failed to load from (" + string (_fileName) + ")! Error status: " + string(_status));
+                    __CollageTrace(global.__CollageAsyncList[_i].__getName() + _asyncList[_j][0].__name + " failed to load from (" + _fileName + ")! Error status: " + string(_status));
                 }
                 array_delete(_asyncList, _j, 1);
                 

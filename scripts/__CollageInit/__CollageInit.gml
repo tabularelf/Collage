@@ -35,6 +35,9 @@ function __CollageInit() {
 			global.__CollageImageMap = {};
 			global.__CollageGMSpriteCount = 0;
 			global.__CollageAsyncList = [];
+			global.__CollageSpriteGCList = [];
+			global.__CollageTS = time_source_create(time_source_global, 15, time_source_units_seconds, method({}, __CollageSpriteGCTick), [], -1);
+			time_source_start(global.__CollageTS);
 			
 			var _i = 0;
 			while(sprite_exists(_i)) {

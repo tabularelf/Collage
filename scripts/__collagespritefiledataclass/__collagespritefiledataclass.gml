@@ -22,7 +22,6 @@ function __CollageSpriteFileDataClass(_identifier, _spriteID, _subImage = 1, _is
 		var _origin = __CollageOriginValidator(__spriteID, _xOrigin, _yOrigin);
 		__xOrigin = _origin[0];
 		__yOrigin = _origin[1];
-		sprite_set_offset(__spriteID, _origin[0], _origin[1]);
 		return self;
 	}
 	

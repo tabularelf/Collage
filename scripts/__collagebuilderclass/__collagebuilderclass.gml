@@ -625,7 +625,7 @@ function __CollageBuilderClass() constructor {
 		var _i = 0;
 		repeat(_len) {
 			if (_normalSprites[_i].spriteData.__isCopy) {
-				sprite_delete(_normalSprites[_i].spriteID);
+				array_push(global.__CollageSpriteGCList, _normalSprites[_i].spriteID);
 			}
 			++_i;
 		}
@@ -634,7 +634,7 @@ function __CollageBuilderClass() constructor {
 		var _i = 0;
 		repeat(_len) {
 			if (_3DSprites[_i].spriteData.__isCopy) {
-				sprite_delete(_3DSprites[_i].spriteID);
+				array_push(global.__CollageSpriteGCList, _3DSprites[_i].spriteID);
 			}
 			++_i;
 		}
