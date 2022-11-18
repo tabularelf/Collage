@@ -30,7 +30,7 @@
     2: Crop horizontally
 	3: Crop Vertically
 */
-#macro __COLLAGE_DEFAULT_CROP 3
+#macro __COLLAGE_DEFAULT_CROP 1
 
 // Whether Collage should aggressively pack images onto texture pages or not by default.
 #macro __COLLAGE_DEFAULT_OPTIMIZE true
