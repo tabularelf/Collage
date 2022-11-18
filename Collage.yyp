@@ -36,6 +36,7 @@
     {"id":{"name":"CollageDrawImagePart","path":"scripts/CollageDrawImagePart/CollageDrawImagePart.yy",},"order":5,},
     {"id":{"name":"obj_test_dupe","path":"objects/obj_test_dupe/obj_test_dupe.yy",},"order":6,},
     {"id":{"name":"CollageGetImageTexturePage","path":"scripts/CollageGetImageTexturePage/CollageGetImageTexturePage.yy",},"order":4,},
+    {"id":{"name":"fnt_main","path":"fonts/fnt_main/fnt_main.yy",},"order":11,},
     {"id":{"name":"CollageGetImageInfo","path":"scripts/CollageGetImageInfo/CollageGetImageInfo.yy",},"order":1,},
     {"id":{"name":"spr_pointFinder","path":"sprites/spr_pointFinder/spr_pointFinder.yy",},"order":7,},
     {"id":{"name":"CollageImageLoad","path":"scripts/CollageImageLoad/CollageImageLoad.yy",},"order":8,},
@@ -184,6 +185,8 @@
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"firetruck.png","CopyToMask":-1,"filePath":"datafiles",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"cycle_low.png","CopyToMask":-1,"filePath":"datafiles",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"bats.png","CopyToMask":-1,"filePath":"datafiles",},
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"IMAGE_WITH_SPACE.png","CopyToMask":-1,"filePath":"datafiles",},
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"IMAGE_WITH_SPACE2.png","CopyToMask":-1,"filePath":"datafiles",},
   ],
   "MetaData": {
     "IDEVersion": "2022.9.1.51",

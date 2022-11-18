@@ -137,5 +137,10 @@ function __CollageTexturePageClass(_width, _height) constructor {
 			CheckSurface();
 			return surface_get_texture(__surface);
 		}
+		
+		static GetSurface = function() {
+			CheckSurface();
+			return __surface;
+		}
 }
 	

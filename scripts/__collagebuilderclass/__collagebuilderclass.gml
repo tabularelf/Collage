@@ -104,17 +104,22 @@ function __CollageBuilderClass() constructor {
 				var _xScale = 1;
 				var _yScale = 1;
 				var _forceScaled = false;
-				if (_crop == true) {
-					_drawX =		sprite_get_bbox_left(_spriteID);
-					_drawY =		sprite_get_bbox_top(_spriteID);
+				_drawX = (_crop >= 1) ? ((_crop == 1 || _crop == 2) ? sprite_get_bbox_left(_spriteID) : 0) : 0;
+				_drawY = (_crop >= 1) ? ((_crop == 1 || _crop == 3) ? sprite_get_bbox_top(_spriteID) : 0) : 0;
+				_drawW = (_crop >= 1) ? ((_crop == 1 || _crop == 2) ? sprite_get_bbox_right(_spriteID)-_drawX+1 : _sprWidth) : _sprWidth;
+				_drawH = (_crop >= 1) ? ((_crop == 1 || _crop == 3) ? sprite_get_bbox_bottom(_spriteID)-_drawY+1 : _sprHeight) : _sprHeight;
+				
+				/*if (_crop) {
+					_drawX =	sprite_get_bbox_left(_spriteID);
+					_drawY =	sprite_get_bbox_top(_spriteID);
 					_drawW =	sprite_get_bbox_right(_spriteID)-_drawX+1;
-					_drawH =		sprite_get_bbox_bottom(_spriteID)-_drawY+1;	
+					_drawH =	sprite_get_bbox_bottom(_spriteID)-_drawY+1;	
 				} else {
 					_drawX = 0;
 					_drawY = 0;
 					_drawW = _sprWidth;
 					_drawH =  _sprHeight;		
-				}
+				}*/
 				
 				var _bbWidth = _drawW;
 				var _bbHeight = _drawH;
@@ -406,7 +411,7 @@ function __CollageBuilderClass() constructor {
 								}
 							}
 					} else {
-						
+						if (__COLLAGE_VERBOSE) __CollageTrace("Texture page full! Creating new texture page...");
 						// We declare this finished
 						_texPage.finish();
 						

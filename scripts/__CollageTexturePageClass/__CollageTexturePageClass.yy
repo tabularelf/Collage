@@ -1,12 +1,11 @@
 {
+  "resourceType": "GMScript",
+  "resourceVersion": "1.0",
+  "name": "__CollageTexturePageClass",
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
     "name": "Classes",
     "path": "folders/Collage/System/Classes.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "__CollageTexturePageClass",
-  "tags": [],
-  "resourceType": "GMScript",
 }

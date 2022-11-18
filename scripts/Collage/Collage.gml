@@ -95,21 +95,11 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		return self;
 	}
 	
-	static AddFile = function(_fileName, _identifierString = undefined, _subImage = 1, _removeBack = false, _smooth = false, _xOriginValue = 0, _yOriginValue = 0, _is3D = false) {
+	static AddFile = function(_fileName, _identifierString = undefined, _subImage = 1, _removeBack = false, _smooth = false, _xOrigin = 0, _yOrigin = 0, _is3D = false) {
 		if (!__CollageFileFromWeb(_fileName)) && (!file_exists(_fileName)) {
 			// It doesn't exist, obviously!
 			__CollageTrace(__getName() + "File " + string(_fileName) + " doesn't exist!");
 			exit;
-		}
-		
-		var _xOrigin = _xOriginValue;
-		var _yOrigin = _yOriginValue;
-		if (!is_real(_xOrigin)) {
-			_xOrigin = 0;	
-		}
-		
-		if (!is_real(_yOrigin)) {
-			_yOrigin = 0;	
 		}
 		
 		var _identifier = _identifierString ?? __CollageGetName(_fileName);
@@ -171,7 +161,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		return _spriteData;
 	}
 	
-	static AddFileStrip = function(_fileName, _identifierString = undefined, _removeBack = false, _smooth = false, _xOriginValue = 0, _yOriginValue = 0, _is3D = false) {
+	static AddFileStrip = function(_fileName, _identifierString = undefined, _removeBack = false, _smooth = false, _xOrigin = 0, _yOrigin = 0, _is3D = false) {
 		if (!__CollageFileFromWeb(_fileName)) && (!file_exists(_fileName)) {
 			// It doesn't exist, obviously!
 			__CollageTrace(__getName() + "File " + string(_fileName) + " doesn't exist!");
@@ -241,9 +231,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		return _spriteData;
 	}
 	
-	static AddSurface = function(_surface, _identifierString = undefined, _x = 0, _y = 0, _w = surface_get_width(_surface), _h = surface_get_height(_surface), _removeBack = false, _smooth = false, _xOriginValue = 0, _yOriginValue = 0, _is3D = false) {
-		var _xOrigin = _xOriginValue;
-		var _yOrigin = _yOriginValue;
+	static AddSurface = function(_surface, _identifierString = undefined, _x = 0, _y = 0, _w = surface_get_width(_surface), _h = surface_get_height(_surface), _removeBack = false, _smooth = false, _xOrigin = 0, _yOrigin = 0, _is3D = false) {
 		
 		var _spriteID = sprite_create_from_surface(_surface, _x, _y, _w, _h, _removeBack, _smooth, _xOrigin, _yOrigin);
 		
@@ -260,7 +248,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		return _spriteData;
 	}
 	
-	static AddSpriteSheet = function(_spriteID, _spriteArray, _identifierString, _width, _height, _removeBack = false, _smooth = false, _xOriginValue = 0, _yOriginValue = 0, _is3D = false) {
+	static AddSpriteSheet = function(_spriteID, _spriteArray, _identifierString, _width, _height, _removeBack = false, _smooth = false, _xOrigin = 0, _yOrigin = 0, _is3D = false) {
 		if (is_undefined(_spriteArray)) {
 			__CollageThrow("spriteArray String in .AddSpriteSheet() is undefined!");	
 		}
@@ -299,7 +287,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 				++_j;
 			}
 		
-			var _spriteData = new __CollageSpriteFileDataClass(_identifierString + _imageStruct.subName, _newSprite, _subImages).SetOrigin(_xOriginValue, _yOriginValue).Set3D(_is3D);
+			var _spriteData = new __CollageSpriteFileDataClass(_identifierString + _imageStruct.subName, _newSprite, _subImages).SetOrigin(_xOrigin, _yOrigin).Set3D(_is3D);
 			array_push(__batchImageList, _spriteData);
 			array_push(_imageArray, _spriteData);
 			_newSprite = -1;

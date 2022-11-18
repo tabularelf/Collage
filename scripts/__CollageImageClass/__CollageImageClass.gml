@@ -27,8 +27,7 @@ function __CollageImageClass(_spriteInfo, _name, _cropW, _cropH, _ratio, _xOffse
 	
 	static GetSurface = function(_imageIndex) {
 		var _texPage = subImagesArray[_imageIndex % subImagesCount].texturePageStruct;
-		_texPage.checkSurface();
-		return _texPage.surface;	
+		return _texPage.GetSurface();	
 	}
 	
 	static GetTexture = function(_imageIndex) {
@@ -38,5 +37,9 @@ function __CollageImageClass(_spriteInfo, _name, _cropW, _cropH, _ratio, _xOffse
 	
 	static GetTexturePage = function(_imageIndex) {
 		return subImagesArray[_imageIndex % subImagesCount].texturePageStruct;
+	}
+	
+	static GetImageCount = function() {
+		return subImagesCount;	
 	}
 }

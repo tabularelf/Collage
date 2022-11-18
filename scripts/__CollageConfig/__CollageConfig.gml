@@ -24,7 +24,13 @@
 #macro __COLLAGE_RENDER_DEBUG_LINES false
 
 // Whether Collage should autocrop any texture pages that weren't given a crop true/false value.
-#macro __COLLAGE_DEFAULT_CROP true
+/*
+    0: No cropping
+    1: Crop all sides
+    2: Crop horizontally
+	3: Crop Vertically
+*/
+#macro __COLLAGE_DEFAULT_CROP 3
 
 // Whether Collage should aggressively pack images onto texture pages or not by default.
 #macro __COLLAGE_DEFAULT_OPTIMIZE true
