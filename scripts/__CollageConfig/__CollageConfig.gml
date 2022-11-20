@@ -32,8 +32,13 @@
 */
 #macro __COLLAGE_DEFAULT_CROP 1
 
-// Whether Collage should aggressively pack images onto texture pages or not by default.
-#macro __COLLAGE_DEFAULT_OPTIMIZE true
+// Levels of optimization in which Collage will pack texture pages more efficiently (during batch mode)
+/*
+	0: No extra optimization.
+	1: Finding the next image that fits (big or small)
+	2: Rotating images (not in yet)
+*/
+#macro __COLLAGE_DEFAULT_OPTIMIZE 1
 
 // Separation value that Collage will respect across the board if no sep value was passed.
 #macro __COLLAGE_DEFAULT_SEPARATION 0

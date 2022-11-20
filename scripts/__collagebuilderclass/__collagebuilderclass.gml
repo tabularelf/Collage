@@ -316,6 +316,8 @@ function __CollageBuilderClass() constructor {
 							var _imageInfo = new __CollageImageClass(_spriteInfo, _spriteData.__name, _drawW, _drawH, _ratio);
 							// Lets add it to database
 							__setImage(_spriteData.__name, _imageInfo);
+							owner.imageCount++;
+							array_push(owner.__imageList, _imageInfo);
 							var _subImages = _spriteInfo.num_subimages;
 						break;
 					}
@@ -625,7 +627,7 @@ function __CollageBuilderClass() constructor {
 		var _i = 0;
 		repeat(_len) {
 			if (_normalSprites[_i].spriteData.__isCopy) {
-				array_push(global.__CollageSpriteGCList, _normalSprites[_i].spriteID);
+				sprite_delete(_normalSprites[_i].spriteID);
 			}
 			++_i;
 		}
@@ -634,7 +636,7 @@ function __CollageBuilderClass() constructor {
 		var _i = 0;
 		repeat(_len) {
 			if (_3DSprites[_i].spriteData.__isCopy) {
-				array_push(global.__CollageSpriteGCList, _3DSprites[_i].spriteID);
+				sprite_delete(_3DSprites[_i].spriteID);
 			}
 			++_i;
 		}

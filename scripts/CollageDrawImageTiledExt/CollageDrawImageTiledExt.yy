@@ -1,11 +1,11 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "__CollageSpriteGCTick",
+  "name": "CollageDrawImageTiledExt",
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "System",
-    "path": "folders/Collage/System.yy",
+    "name": "Rendering",
+    "path": "folders/Collage/Rendering.yy",
   },
 }

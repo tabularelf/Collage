@@ -130,6 +130,7 @@ function __CollageTexturePageClass(_width, _height) constructor {
 		static __UnloadVRAM = function() {
 			if (surface_exists(__surface)) {
 				surface_free(__surface);	
+				__surface = -1;
 			}
 		}
 		

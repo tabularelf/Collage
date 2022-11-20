@@ -25,7 +25,7 @@ function CollageSterlizeGPUState() {
 			_instance.matrixWorld =			matrix_get(matrix_world);
 			_instance.matrixView =				matrix_get(matrix_view);
 			_instance.matrixProj =				matrix_get(matrix_projection);
-			_instance.shader =						shader_current();
+			_instance.shader =					shader_current();
 			
 			// Change GPU settings
 			var _matrixDefault = matrix_build_identity();

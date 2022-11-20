@@ -199,7 +199,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 			
 			array_push(__asyncList, [_spriteData, method_get_index(__InternalAddFileStrip), [_spriteData, _removeBack, _smooth, _xOrigin, _yOrigin, _is3D]]);
 		} else {
-			__InternalAddFileStrip(_spriteData, _identifierString, _removeBack, _smooth, _xOrigin, _yOrigin, _is3D);
+			__InternalAddFileStrip(_spriteData, _removeBack, _smooth, _xOrigin, _yOrigin, _is3D);
 		}
 		
 		if (__state == CollageStates.NORMAL) && (__status == CollageStatus.READY) {
