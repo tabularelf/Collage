@@ -66,6 +66,7 @@ function __CollageTexturePageClass(_width, _height) constructor {
 		}
 		
 		static CheckSurface = function() {
+			__init();
 			if (buffer_exists(__buffer)) {
 				if !(surface_exists(__surface)) {
 					__surfaceCreate();
