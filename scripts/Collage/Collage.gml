@@ -1,15 +1,15 @@
-/// @func Collage([identifier], [width], [height], [crop], [Optimize])
+/// @func Collage([identifier], [width], [height], [crop], [optimize])
 /// @param {String} [identifier]
 /// @param {Real} [width]
 /// @param {Real} [height]
 /// @param {Real} [crop]
 /// @param {Real} [separation]
-/// @param {Bool} [Optimize]
+/// @param {Bool} [optimize]
 /* Feather ignore all */
 function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DEFAULT_TEXTURE_SIZE, _crop = __COLLAGE_DEFAULT_CROP, _separation = __COLLAGE_DEFAULT_SEPARATION, _optimize = __COLLAGE_DEFAULT_OPTIMIZE) constructor {
 	// Members
 	__CollageInit();
-	__state = CollageStates.NORMAL;
+	__state = CollageBuildStates.NORMAL;
 	__texPageArray = [];
 	texPageCount = 0;
 	imageCount = 0;
@@ -19,7 +19,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	__asyncList = [];
 	__isWaitingOnAsync = false;
 	__status = CollageStatus.READY;
-	builder = new __CollageBuilderClass();
+	__builder = new __CollageBuilderClass();
 	separation = _separation;
 	width = _width;
 	height = _height;
@@ -54,17 +54,17 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	}
 	
 	static StartBatch = function() {
-		if (__state == CollageStates.BATCHING) {
+		if (__state == CollageBuildStates.BATCHING) {
 			__CollageTrace(__getName() + "Currently in batching mode!");
 			return self;
 		}
 		
-		__state = CollageStates.BATCHING;
+		__state = CollageBuildStates.BATCHING;
 		return self;
 	}
 	
 	static ClearBatch = function() {
-		if (__state == CollageStates.BATCHING) {
+		if (__state == CollageBuildStates.BATCHING) {
 			var _len = array_length(__batchImageList);
 			var _i = 0;
 			repeat(_len) {
@@ -85,13 +85,13 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	}
 	
 	static FinishBatch = function(_crop = true) {
-		if (__state != CollageStates.BATCHING) {
+		if (__state != CollageBuildStates.BATCHING) {
 			__CollageTrace(__getName() + "Is not in batching mode!");
 			return self;
 		} 
 		
-		if (!__isWaitingOnAsync) builder.__build();
-		__state = CollageStates.NORMAL;
+		if (!__isWaitingOnAsync) __builder.__build();
+		__state = CollageBuildStates.NORMAL;
 		return self;
 	}
 	
@@ -133,11 +133,13 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 			array_push(__batchImageList, _spriteData);
 		}
 		
-		if (__state == CollageStates.NORMAL) {
-			if (!__isWaitingOnAsync) builder.__build();
+		if (__state == CollageBuildStates.NORMAL) {
+			if (!__isWaitingOnAsync) __builder.__build();
 		}
 		
-		return _spriteData;
+		if (__state == CollageBuildStates.BATCHING) {
+			return _spriteData;
+		}
 	}
 	
 	static AddSprite = function(_spriteIdentifier, _identifierString = undefined, _isCopy = undefined, _xOrigin = sprite_get_xoffset(_spriteIdentifier), _yOrigin = sprite_get_yoffset(_spriteIdentifier), _is3D = false) {
@@ -157,11 +159,13 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		
 		array_push(__batchImageList, _spriteData);
 		
-		if (__state == CollageStates.NORMAL) && (__status == CollageStatus.READY) {
-			builder.__build();
+		if (__state == CollageBuildStates.NORMAL) && (__status == CollageStatus.READY) {
+			__builder.__build();
 		}
 		
-		return _spriteData;
+		if (__state == CollageBuildStates.BATCHING) {
+			return _spriteData;	
+		}
 	}
 	
 	static AddFileStrip = function(_fileName, _identifierString = undefined, _removeBack = false, _smooth = false, _xOrigin = 0, _yOrigin = 0, _is3D = false) {
@@ -202,11 +206,13 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 			__InternalAddFileStrip(_spriteData, _removeBack, _smooth, _xOrigin, _yOrigin, _is3D);
 		}
 		
-		if (__state == CollageStates.NORMAL) && (__status == CollageStatus.READY) {
-			builder.__build();
+		if (__state == CollageBuildStates.NORMAL) && (__status == CollageStatus.READY) {
+			__builder.__build();
 		}
 		
-		return _spriteData;
+		if (__state == CollageBuildStates.BATCHING) {
+			return _spriteData;	
+		}
 	}
 	
 	static __InternalAddFileStrip = function(_spriteData, _removeBack, _smooth, _xOrigin, _yOrigin, _is3D) {	
@@ -257,10 +263,13 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		
 		array_push(__batchImageList, _spriteData);
 		
-		if (__state == CollageStates.NORMAL) && (__status == CollageStatus.READY) {
-			builder.__build();
+		if (__state == CollageBuildStates.NORMAL) && (__status == CollageStatus.READY) {
+			__builder.__build();
 		}
-		return _spriteData;
+		
+		if (__state == CollageBuildStates.BATCHING) {
+			return _spriteData;	
+		}
 	}
 	
 	static AddSpriteSheet = function(_spriteID, _spriteArray, _identifierString, _width, _height, _removeBack = false, _smooth = false, _xOrigin = 0, _yOrigin = 0, _is3D = false) {
@@ -272,9 +281,6 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 			__CollageThrow("Identifier String in .AddSpriteSheet() is undefined!");	
 		}
 		
-		//var _width = _spriteSheetStruct.width;// sprite_get_width(_spriteSheet);
-		//var _height = _spriteSheetStruct.height;//sprite_get_height(_spriteSheet);
-		
 		var _i = 0;
 		var _surf = surface_create(_width, _height);
 		var _newSprite = -1;
@@ -283,15 +289,15 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		CollageSterlizeGPUState();
 		repeat(array_length(_spriteArray)) {
 			var _imageStruct = _spriteArray[_i];
-			var _xSize = _imageStruct.pos[2];
-			var _ySize = _imageStruct.pos[3];
+			var _xSize = _imageStruct[3];
+			var _ySize = _imageStruct[4];
 			var _subImages = max((_xSize >= _ySize ? (_xSize div _ySize) : (_ySize div _xSize)) - 1, 1);
 			var _j = 1;
 			repeat(_subImages) {
 				surface_set_target(_surf);
 				draw_clear_alpha(0, 0);
-				var _xPos = _subImages > 1 ? (_xSize >= _ySize ? (_j*_width) : (_imageStruct.pos[0])) : _imageStruct.pos[0];
-				var _yPos = _subImages > 1 ? (_xSize >= _ySize ? (_imageStruct.pos[1]) : (_j*_height))  : _imageStruct.pos[1];
+				var _xPos = _subImages > 1 ? (_xSize >= _ySize ? (_j*_width) : (_imageStruct[1])) : _imageStruct[1];
+				var _yPos = _subImages > 1 ? (_xSize >= _ySize ? (_imageStruct[2]) : (_j*_height))  : _imageStruct[2];
 				draw_sprite_part(_spriteID, 0, _xPos, _yPos, _width, _height, 0, 0);
 				surface_reset_target();
 				if (!sprite_exists(_newSprite)) {
@@ -302,7 +308,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 				++_j;
 			}
 		
-			var _spriteData = new __CollageSpriteFileDataClass(_identifierString + _imageStruct.subName, _newSprite, _subImages).SetOrigin(_xOrigin, _yOrigin).Set3D(_is3D);
+			var _spriteData = new __CollageSpriteFileDataClass(_identifierString + _imageStruct[0], _newSprite, _subImages).SetOrigin(_xOrigin, _yOrigin).Set3D(_is3D);
 			array_push(__batchImageList, _spriteData);
 			array_push(_imageArray, _spriteData);
 			_newSprite = -1;
@@ -310,11 +316,14 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		}
 		CollageRestoreGPUState();
 		
-		if (__state == CollageStates.NORMAL) {
-			builder.__build();
+		if (__state == CollageBuildStates.NORMAL) {
+			__builder.__build();
 		}
 		surface_free(_surf);
-		return _imageArray;
+		
+		if (__state == CollageBuildStates.BATCHING) {
+			return _imageArray;	
+		}
 	}
 	
 	static FreePages = function() {
@@ -331,8 +340,8 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 			}	
 		}
 		
-		builder.init = false;
-		array_resize(builder.bboxPoints, 0);
+		__builder.init = false;
+		array_resize(__builder.bboxPoints, 0);
 		imageCount = 0;
 		__imageList = [];
 		__imageMap = {};
@@ -357,7 +366,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		return undefined;
 	}
 	
-	static GetPageCount = function() {
+	static GetCount = function() {
 		return texPageCount;
 	}
 		
@@ -392,7 +401,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	static savePageToBuffer = function() {
 		var _texPageCount = texPageCount;
 		var _imageCount =	imageCount;
-		var _bboxPointsCount = array_length(builder.bboxPoints);
+		var _bboxPointsCount = array_length(__builder.bboxPoints);
 		var _stringByte = 0;
 		var _subImagesCount = 0;
 		
@@ -485,7 +494,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		}
 		
 		// Demolish states
-		builder = undefined;
+		__builder = undefined;
 		__imageList = undefined;
 		__imageMap = undefined;
 		__texPageArray = undefined;

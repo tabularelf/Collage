@@ -1,6 +1,7 @@
-/// @func CollageImageExists(identifier)
-/// @param identifier
-/* Feather ignore once GM1042 */
+/// @func CollageImageExists(collage_image_or_name)
+/// @param {Struct.__CollageImageClass, String} collage_image_or_name
+/// @return {Bool}
+/* Feather ignore all */
 function CollageImageExists(_identifier) {
 	gml_pragma("forceinline");
 	if (is_string(_identifier)) {
@@ -10,5 +11,5 @@ function CollageImageExists(_identifier) {
 		return variable_struct_exists(global.__CollageImageMap, _identifier);		
 	} 
 	
-	return ((instanceof(_identifier) == "__CollageImageClass") && (variable_struct_exists(global.__CollageImageMap, _identifier.name)));
+	return ((instanceof(_identifier) == "__CollageImageClass") && (variable_struct_exists(global.__CollageImageMap, _identifier.__name)));
 }

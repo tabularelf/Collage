@@ -1,4 +1,5 @@
 /// @ignore
+/* Feather ignore all */
 function __CollageTexturePageClass(_width, _height) constructor {
 		__width = _width;
 		__height = _height;

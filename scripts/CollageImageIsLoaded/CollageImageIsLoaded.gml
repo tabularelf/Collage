@@ -1,7 +1,8 @@
 /// @func CollageImageIsLoaded(identifier, subImage)
-/// @param identifier
-/// @param subImage
-/* Feather ignore once GM1042 */
+/// @param {Struct.__CollageImageClass, String} collage_image_or_name
+/// @param {Real} image_index
+/// @return {Bool}
+/* Feather ignore all */
 function CollageImageIsLoaded(_identifier, _subImage) {
 	gml_pragma("forceinline");
 	var _image;
@@ -16,5 +17,5 @@ function CollageImageIsLoaded(_identifier, _subImage) {
 		_image = _identifier;	
 	}
 	
-	return (_image.subImagesArray[_subImage % _image.subImagesCount].texturePageStruct.isLoaded);
+	return (_image.subImagesArray[_subImage % _image.subImagesCount].texturePageStruct.__isLoaded);
 }

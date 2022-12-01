@@ -1,3 +1,5 @@
+/// @ignore
+/* Feather ignore all */
 function __CollageHashGenerator(_spriteID){
 	var _width = sprite_get_width(_spriteID);
 	var _height = sprite_get_height(_spriteID);

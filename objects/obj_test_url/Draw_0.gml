@@ -1,3 +1,3 @@
 if (CollageImageExists(image)) {
-	CollageDrawImage(image, 0, 0, 0);
+		CollageDrawImage(image, 0, 0, 0);	
 }

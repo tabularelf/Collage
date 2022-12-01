@@ -1,4 +1,5 @@
 /// @ignore
+/* Feather ignore all */
 function __CollageImageUVsClass(_texPageStruct, _texPageNum, _left, _top, _right, _bottom, _trimLeft = 0, _trimTop = 0, _ogW = 0, _ogH = 0, /*_cropRotate = 0,*/ _xOffset = 0, _yOffset = 0) constructor {
 	left = _left;
 	right = _right;

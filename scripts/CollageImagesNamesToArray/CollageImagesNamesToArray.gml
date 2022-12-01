@@ -1,6 +1,7 @@
-/// @func CollageImagesNamesToArray(identifier)
-/// @param identifier
-/* Feather ignore once GM1042 */
+/// @func CollageImagesNamesToArray(collage_or_name)
+/// @param {Struct.Collage, String} collage_or_name
+/// @return {Array<String>}
+/* Feather ignore all */
 function CollageImagesNamesToArray(_identifier) {
 	gml_pragma("forceinline");
     if (is_string(_identifier)) {

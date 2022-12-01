@@ -1,3 +1,5 @@
+/// @ignore
+/* Feather ignore all */
 function __CollageOriginValidator(_spriteID, _xOriginValue, _yOriginValue) {
 	var _results = [_xOriginValue, _yOriginValue];
 	// X Origin

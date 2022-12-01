@@ -1,11 +1,8 @@
-enum CollageStates {
+/// @ignore
+/* Feather ignore all */
+enum CollageBuildStates {
 	NORMAL,
 	BATCHING
-}
-
-enum __CollagePageType {
-	NORMAL,
-	SEPARATE
 }
 
 enum CollageStatus {
@@ -22,10 +19,9 @@ enum CollageOrigin {
 }
 
 #macro __COLLAGE_CREDITS "@TabularElf - https://tabelf.link/"
-#macro __COLLAGE_VERSION "v0.3.0-dev2"
+#macro __COLLAGE_VERSION "v0.3.0-preview"
 show_debug_message("Collage " + __COLLAGE_VERSION + " Initalized! Created by " + __COLLAGE_CREDITS);
 
-/// @ignore
 function __CollageInit() {
 	static _init = false;
 		// Feather ignore once GM1011

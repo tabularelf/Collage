@@ -1,45 +1,60 @@
 /// @ignore
+/* Feather ignore all */
 function __CollageImageClass(_spriteInfo, _name, _cropW, _cropH, _ratio, _xOffset, _yOffset) constructor {
-	width = _spriteInfo.width;
-	height  = _spriteInfo.height;
-	cropWidth = _cropW;
-	cropHeight = _cropH;
-	xoffset = _xOffset;
-	yoffset = _yOffset;
-	name = _name;
-	subImagesCount = _spriteInfo.num_subimages;
-	subImagesArray = array_create(subImagesCount);
-	ratio = _ratio;
-	
-	static GetTexture = function(_imageIndex) {
-		var _texPage = subImagesArray[_imageIndex % subImagesCount].texturePageStruct;
-		_texPage.checkSurface();
-		return surface_get_texture(_texPage.surface);
-	}
+	__width = _spriteInfo.width;
+	__height  = _spriteInfo.height;
+	__cropWidth = _cropW;
+	__cropHeight = _cropH;
+	__xoffset = _xOffset;
+	__yoffset = _yOffset;
+	__name = _name;
+	__subImagesCount = _spriteInfo.num_subimages;
+	__subImagesArray = array_create(__subImagesCount);
+	__ratio = _ratio;
 	
 	static __InternalGetUvs = function(_imageIndex) {
-		return subImagesArray[_imageIndex % subImagesCount];
+		return __subImagesArray[_imageIndex % __subImagesCount];
+	}
+	
+	static GetName = function() {
+		return __name;	
+	}
+	
+	static GetWidth = function() {
+		return __width;	
+	}
+	
+	static GetHeight = function() {
+		return __height;	
+	}
+	
+	static GetXOffset = function() {
+		return __xoffset;	
+	}
+	
+	static GetYOffset = function() {
+		return __yoffset;	
 	}
 	
 	static GetUVs = function(_imageIndex) {
-		return __CollageCloneStruct(__InternalGetUvs(_imageIndex));	
+		return __InternalGetUvs(_imageIndex);	
 	}
 	
 	static GetSurface = function(_imageIndex) {
-		var _texPage = subImagesArray[_imageIndex % subImagesCount].texturePageStruct;
+		var _texPage = __subImagesArray[_imageIndex % subImagesCount].texturePageStruct;
 		return _texPage.GetSurface();	
 	}
 	
 	static GetTexture = function(_imageIndex) {
-		var _texPage = subImagesArray[_imageIndex % subImagesCount].texturePageStruct;
+		var _texPage = __subImagesArray[_imageIndex % subImagesCount].texturePageStruct;
 		return _texPage.GetTexture();	
 	}
 	
 	static GetTexturePage = function(_imageIndex) {
-		return subImagesArray[_imageIndex % subImagesCount].texturePageStruct;
+		return __subImagesArray[_imageIndex % __subImagesCount].texturePageStruct;
 	}
 	
-	static GetImageCount = function() {
-		return subImagesCount;	
+	static GetCount = function() {
+		return __subImagesCount;	
 	}
 }

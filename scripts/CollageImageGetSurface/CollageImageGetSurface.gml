@@ -1,7 +1,8 @@
-/// @func CollageGetImageSurface(identifier, subimage)
-/// @param {String} identifier
-/// @param {Real} subimage
-/* Feather ignore once GM1042 */
+/// @func CollageGetImageSurface(collage_image_or_name, image_index)
+/// @param {Struct.__CollageImageClass, String} collage_image_or_name
+/// @param {Real} image_index
+/// @return {Id.Surface}
+/* Feather ignore all */
 function CollageGetImageSurface(_identifier, _imageIndex) {
 	gml_pragma("forceinline");
 	if (is_string(_identifier)) {

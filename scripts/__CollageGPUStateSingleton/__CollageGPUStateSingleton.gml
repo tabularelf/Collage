@@ -1,4 +1,5 @@
 /// @ignore
+/* Feather ignore all */
 function __CollageGPUStateSingleton() {
 	gml_pragma("forceinline");
 	static _instance = {

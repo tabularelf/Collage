@@ -1,4 +1,5 @@
 /// @func CollageSterlizeGPUState()
+/* Feather ignore all */
 function CollageSterlizeGPUState() {
 			gml_pragma("forceinline");
 			var _instance = __CollageGPUStateSingleton()

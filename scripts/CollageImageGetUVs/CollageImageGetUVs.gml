@@ -1,7 +1,8 @@
-/// @func CollageGetImageUVs(identifier, subimage)
-/// @param identifier
-/// @param subimage
-/* Feather ignore once GM1042 */
+/// @func CollageGetImageUVs(collage_image_or_name, image_index)
+/// @param {Struct.__CollageImageClass, String} collage_image_or_name
+/// @param {Real} image_index
+/// @return {Struct.__CollageUVsClass}
+/* Feather ignore all */
 function CollageGetImageUVs(_identifier, _imageIndex) {
 	gml_pragma("forceinline");
 	if (is_string(_identifier)) {
@@ -13,5 +14,6 @@ function CollageGetImageUVs(_identifier, _imageIndex) {
 		return global.__CollageImageMap[$ _identifier].GetUVs(_imageIndex);
 	}
 	
+	if (!CollageImageExists(_identifier)) __CollageThrow(_identifier + " doesn't exist!");
 	return _identifier.GetUVs(_imageIndex);
 }

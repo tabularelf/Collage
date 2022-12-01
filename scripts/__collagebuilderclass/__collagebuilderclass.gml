@@ -31,7 +31,7 @@ function __CollageBuilderClass() constructor {
 		}
 	}
 	
-	static __bboxSort = function(_elm1, _elm2) {
+	static __bboxSort = function(_elm1, _elm2) {	
 		var _sizeA, _sizeB;
 		_sizeA = (_elm2.bbWidth + _elm2.bbHeight) * .5; 
 		_sizeB = (_elm1.bbWidth + _elm1.bbHeight) * .5;
@@ -73,7 +73,7 @@ function __CollageBuilderClass() constructor {
 		var _texWidth = owner.width;
 		var _texHeight = owner.height;
 		var _spriteList = owner.__batchImageList;
-		var _batchMode = (owner.__state == CollageStates.BATCHING);
+		var _batchMode = (owner.__state == CollageBuildStates.BATCHING);
 		var _normalSprites = array_create(array_length(_spriteList));
 		var _3DSprites = array_create(array_length(_spriteList));
 		var _texPage = array_length(owner.__texPageArray) == 0 ? new __CollageTexturePageClass(_texWidth, _texHeight) : owner.__texPageArray[array_length(owner.__texPageArray)-1];
@@ -260,8 +260,8 @@ function __CollageBuilderClass() constructor {
 								// Same width/height
 								// Loop
 								var _subImageLen = _spriteInfo.num_subimages;
-								var _imageInfo = CollageGetImageInfo(_spriteData.__name);
-								var _uvsArray = _imageInfo.subImagesArray;
+								var _imageInfo = CollageImageGetInfo(_spriteData.__name);
+								var _uvsArray = _imageInfo.__subImagesArray;
 								var _uvsArrayLength = array_length(_uvsArray);
 								var _uvi = 0;
 								var _currentTexPage = _texPage;
@@ -361,7 +361,7 @@ function __CollageBuilderClass() constructor {
 						var _uvW = _wScale;
 						var _uvH = _hScale;
 						var _uvs = new __CollageImageUVsClass(_texPage, owner.texPageCount, _uvX, _uvY, _uvW, _uvH, _drawX, _drawY, _ogW, _ogH, _xOffset, _yOffset);
-						_imageInfo.subImagesArray[_sub] = _uvs;
+						_imageInfo.__subImagesArray[_sub] = _uvs;
 						// Store next available space
 						if( _bbHeight < _currentPoint.bottom){ 
 						    var _struct = new __bbox(_currentPoint.left, _currentPoint.top + _drawH + _sep, _currentPoint.right , _currentPoint.bottom - _drawH - _sep);
@@ -509,8 +509,8 @@ function __CollageBuilderClass() constructor {
 								// Same width/height
 								// Loop
 								var _subImageLen = _spriteInfo.num_subimages;
-								var _imageInfo = CollageGetImageInfo(_spriteData.__name);
-								var _uvsArray = _imageInfo.subImagesArray;
+								var _imageInfo = CollageImageGetInfo(_spriteData.__name);
+								var _uvsArray = _imageInfo.__subImagesArray;
 								var _uvsArrayLength = array_length(_uvsArray);
 								var _uvi = 0;
 								var _newTexPage = _texPage;
@@ -587,7 +587,7 @@ function __CollageBuilderClass() constructor {
 						var _uvW = _wScale;
 						var _uvH = _hScale;
 						var _uvs = new __CollageImageUVsClass(_texPage, owner.texPageCount, _uvX, _uvY, _uvW, _uvH, _drawX, _drawY, _ogW, _ogH,/*_sprWidth - _drawW - 2, _sprHeight - _drawH - 2,*/ _imageInfo.xoffset, _imageInfo.yoffset);
-						_imageInfo.subImagesArray[_sub] = _uvs;
+						_imageInfo.__subImagesArray[_sub] = _uvs;
 						// We declare this finished
 						_texPage.finish();
 						

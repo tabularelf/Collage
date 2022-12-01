@@ -1,7 +1,7 @@
-/// @func CollageImageLoad(identifier, subImage)
-/// @param {String} identifier
-/// @param {Real} subImage
-/* Feather ignore once GM1042 */
+/// @func CollageImageLoad(collage_image_or_name, image_index)
+/// @param {Struct.__CollageImageClass, String} collage_image_or_name
+/// @param {Real} image_index
+/* Feather ignore all */
 function CollageImageLoad(_identifier, _subImage) {
 	gml_pragma("forceinline");
 	var _image;
@@ -16,5 +16,6 @@ function CollageImageLoad(_identifier, _subImage) {
 		_image = _identifier;	
 	}
 	
-	_image.subImagesArray[_subImage % _image.subImagesCount].texturePageStruct.__restoreFromCache();
+	if (!CollageImageExists(_identifier)) __CollageThrow(_identifier + " doesn't exist!");
+	_image.subImagesArray[_subImage % _image.subImagesCount].texturePageStruct.CheckSurface();
 }

@@ -1,5 +1,5 @@
 /// @func CollageDrawImagePart(image, image_index, x, y);
-/// @param {Struct} image
+/// @param {Struct.__CollageImageClass} collage_image
 /// @param {Real} image_index
 /// @param {Real} left
 /// @param {Real} right
@@ -7,10 +7,10 @@
 /// @param {Real} height
 /// @param {Real} x
 /// @param {Real} y
-/* Feather ignore once GM1042 */
+/* Feather ignore all */
 function CollageDrawImagePart(_imageData, _imageIndex, _left, _top, _width, _height, _x, _y) {
 	gml_pragma("forceinline");
-	var _ratio = _imageData.ratio;
+	var _ratio = _imageData.__ratio;
 	var _uvs = _imageData.__InternalGetUvs(_imageIndex);
 	_uvs.texturePageStruct.__restoreFromCache();
 	

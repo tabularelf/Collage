@@ -1,5 +1,5 @@
 /// @ignore
-// Feather ignore all
+/* Feather ignore all */
 function __CollageSpriteFileDataClass(_identifier, _spriteID, _subImage = 1, _isCopy = (_spriteID > global.__CollageGMSpriteCount)) constructor {
 	__name = _identifier;
 	__subImages = _subImage;

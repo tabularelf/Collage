@@ -1,6 +1,6 @@
-/// @func CollageIsImage(image)
-/// @param {Struct.__CollageImageClass} image
-/* Feather ignore once GM1042 */
+/// @func CollageIsImage(value)
+/// @param {Any} value
+/* Feather ignore all */
 function CollageIsImage(_image) {
 	return (is_struct(_image) && (instanceof(_image) == "__CollageImageClass"));
 }
