@@ -68,7 +68,7 @@
   ],
   "nineSlice": null,
   "parent": {
-    "name": "Collage",
-    "path": "Collage.yyp",
+    "name": "Assets",
+    "path": "folders/Test Cases/Assets.yy",
   },
 }

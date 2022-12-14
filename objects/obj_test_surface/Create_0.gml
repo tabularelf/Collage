@@ -1,5 +1,5 @@
 texPage = new Collage();
-surf = surface_create(512, 512);
+surf = surface_create(256, 256);
 surface_set_target(surf);
 draw_rectangle_color(0,0, 512, 512, c_red, c_blue, c_green, c_yellow, false);
 surface_reset_target();

@@ -44,7 +44,7 @@ function __CollageTexturePageClass(_width, _height) constructor {
 			}
 		}
 		
-		static free = function() {
+		static Free = function() {
 			if (buffer_exists(__buffer)) {
 				buffer_delete(__buffer);
 				/* Feather ignore once GM1043 */

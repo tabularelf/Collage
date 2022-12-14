@@ -68,8 +68,8 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 			var _len = array_length(__batchImageList);
 			var _i = 0;
 			repeat(_len) {
-				if (__batchImageList[_i].isCopy) {
-					sprite_delete(__batchImageList[_i].spriteID);	
+				if (__batchImageList[_i].__isCopy) {
+					sprite_delete(__batchImageList[_i].__spriteID);	
 				}
 				++_i;
 			} 	
@@ -307,8 +307,8 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 				}
 				++_j;
 			}
-		
-			var _spriteData = new __CollageSpriteFileDataClass(_identifierString + _imageStruct[0], _newSprite, _subImages).SetOrigin(_xOrigin, _yOrigin).Set3D(_is3D);
+			var _name = (string_count("{{name}}", _imageStruct[0]) > 0) ? string_replace_all(_imageStruct[0], "{{name}}", _identifierString) : _identifierString + _imageStruct[0];
+			var _spriteData = new __CollageSpriteFileDataClass(_name, _newSprite, _subImages).SetOrigin(_xOrigin, _yOrigin).Set3D(_is3D);
 			array_push(__batchImageList, _spriteData);
 			array_push(_imageArray, _spriteData);
 			_newSprite = -1;
@@ -329,7 +329,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	static FreePages = function() {
 		var _i = 0;
 		repeat(array_length(__texPageArray)) {
-			__texPageArray[_i++].free();	
+			__texPageArray[_i++].Free();	
 		}
 		
 		texPageCount = 0;
@@ -350,7 +350,6 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	
 	static GetTexturePage = function(_index) {
 		if (_index < texPageCount) && (_index >= 0) {
-			__texPageArray[_index].checkSurface();
 			return __texPageArray[_index];
 		}
 		
@@ -500,6 +499,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		__texPageArray = undefined;
 	}
 	
+	/// @return {Struct.__CollageImageClass} collage_image
 	static GetImageInfo = function(_identifier) {
 		return __imageMap[$ _identifier];	
 	}

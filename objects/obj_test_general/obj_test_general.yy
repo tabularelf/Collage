@@ -28,7 +28,7 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Collage",
-    "path": "Collage.yyp",
+    "name": "Test Cases",
+    "path": "folders/Test Cases.yy",
   },
 }

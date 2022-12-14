@@ -12,8 +12,13 @@ function __CollageSpriteFileDataClass(_identifier, _spriteID, _subImage = 1, _is
 	__is3D = 0;
 	__isCopy = _isCopy;
 	__keepTogether = false;
+	__premultiplyAlpha = false;
+	__tiling = 0;
+	__colour = c_white;
+	__alpha = 1;
+	__priority = -1;
 	
-	static KeepTogether = function(_bool) {
+	static SetClump = function(_bool) {
 		__keepTogether = _bool;
 		return self;
 	}
@@ -25,8 +30,29 @@ function __CollageSpriteFileDataClass(_identifier, _spriteID, _subImage = 1, _is
 		return self;
 	}
 	
-	static Set3D = function(_3d) {
-		__is3D = _3d;
+	static Set3D = function(_bool) {
+		__is3D = _bool;
+		return self;
+	}
+	
+	static SetPremultiplyAlpha = function(_bool) {
+		__premultiplyAlpha = _bool;
+		return self;
+	}
+	
+	static SetTiling = function(_horizontal, _vertical) {
+		__tiling = (_horizontal << 1) | _vertical;
+		return self;
+	}
+	
+	static SetBlend = function(_col, _alpha) {
+		__colour = _col;
+		__alpha = _alpha;
+		return self;
+	}
+	
+	static SetPriority = function(_num) {
+		__priority = _num;
 		return self;
 	}
 }

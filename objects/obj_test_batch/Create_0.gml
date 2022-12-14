@@ -3,7 +3,7 @@ texPage.StartBatch();
 var _file = file_find_first("*.png", 0);
 var _i = 0;
 while (_file != "") {
-	texPage.AddFile(_file,, 1, false, false, CollageOrigin.CENTER, CollageOrigin.CENTER);
+	texPage.AddFile(_file,, 1, false, false, CollageOrigin.CENTER, CollageOrigin.CENTER);	
 	_file = file_find_next();
 	++_i;
 }
