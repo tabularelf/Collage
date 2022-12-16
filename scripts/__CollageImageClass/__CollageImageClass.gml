@@ -1,14 +1,14 @@
 /// @ignore
 /* Feather ignore all */
-function __CollageImageClass(_spriteInfo, _name, _cropW, _cropH, _tiling, _ratio, _xOffset, _yOffset) constructor {
-	__width = _spriteInfo.width;
-	__height  = _spriteInfo.height;
+function __CollageImageClass(_spriteStruct, _name, _cropW, _cropH, _tiling, _ratio, _xOffset, _yOffset) constructor {
+	__width = _spriteStruct.spriteInfo.width;
+	__height  = _spriteStruct.spriteInfo.height;
 	__cropWidth = _cropW;
 	__cropHeight = _cropH;
 	__xoffset = _xOffset;
 	__yoffset = _yOffset;
 	__name = _name;
-	__subImagesCount = _spriteInfo.num_subimages;
+	__subImagesCount = _spriteStruct.spriteInfo.num_subimages;
 	__subImagesArray = array_create(__subImagesCount);
 	__ratio = _ratio;
 	__tiling = _tiling;

@@ -22,6 +22,8 @@ function CollageDrawImageTiled(_imageData, _imageIndex, _x, _y) {
 	var _bboxWidth = _uvs.originalWidth;
 	var _bboxHeight = _uvs.originalHeight;
 	var _surface = _uvs.texturePageStruct.__surface;
+	var _col = draw_get_colour();
+	var _alpha = draw_get_alpha();
 	
 	var _i = 0;
 	var _j = 0;
@@ -40,8 +42,8 @@ function CollageDrawImageTiled(_imageData, _imageIndex, _x, _y) {
 				_yPos + ((_j * _bboxHeight) * _scale), 
 				_scale, 
 				_scale, 
-				c_white, 
-				1
+				_col, 
+				_alpha
 			);		
 			++_j;
 		}	

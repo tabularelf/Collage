@@ -19,7 +19,7 @@ enum CollageOrigin {
 }
 
 #macro __COLLAGE_CREDITS "@TabularElf - https://tabelf.link/"
-#macro __COLLAGE_VERSION "v0.3.0-preview"
+#macro __COLLAGE_VERSION "v0.3.0-preview2"
 show_debug_message("Collage " + __COLLAGE_VERSION + " Initalized! Created by " + __COLLAGE_CREDITS);
 
 function __CollageInit() {

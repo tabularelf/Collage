@@ -8,13 +8,6 @@ while (_file != "") {
 	++_i;
 }
 file_find_close();
-
-/*var _file = file_find_first("*.jpg", 0);
-while (_file != "") {
-	texPage.AddFile(_file);
-	_file = file_find_next();
-}
-file_find_close();*/
 texPage.FinishBatch();
 
 var _images = texPage.ImagesToArray();

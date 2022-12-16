@@ -57,9 +57,9 @@
 // Setting this to false will allow all image names to be used privately, but not accessible via the global image database.
 #macro __COLLAGE_IMAGES_ARE_PUBLIC true
 
-// Whether Collage should respect the origin of the image or not.
+// Whether Collage should respect the origin of the image or not when drawing it stretched.
 // By default this is false to match GameMaker's behaviour.
-#macro __COLLAGE_DRAW_IMAGE_STRETCHED_RESPECT_ORIGIN false
+#macro __COLLAGE_STRETCHED_RESPECT_ORIGIN false
 
 // Whether Collage should clear the VRAM before making another texture page (as in The texture page gets full, surface is freed but contents is saved)
 // This is mostly to keep the VRAM usage low during building while having multiple sprites packed into VRAM at once.
