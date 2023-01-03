@@ -1,3 +1,7 @@
+// To be added
+//var _gpuBlendMode = gpu_get_blendmode_ext_sepalpha();
+//gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_inv_src_alpha);
+
 /// @ignore
 /* Feather ignore all */
 function __CollageBuilderClass() constructor {
@@ -5,6 +9,192 @@ function __CollageBuilderClass() constructor {
 	bboxPoints = [];
 	init = false;
 	freeSpacePoints = [];
+	
+	static __drawImage = function(_spriteData, _spriteID, _sub, _drawXValue, _drawYValue, _drawWValue, _drawHValue, _currentPoint, _ratio, _wScale, _hScale) {
+		// Check Premultiply properties
+		if (_spriteData.__premultiplyAlpha) {
+			var _gpuBlendEnable = gpu_get_blendenable();	
+			var _gpuBlendMode = gpu_get_blendmode_ext();
+			gpu_set_blendenable(true);
+			gpu_set_blendmode_ext(bm_one, bm_inv_src_alpha);
+			shader_set(__ShdCollagePremultiply);
+		}
+		
+		var _tiling = __CollageExtractTiling(_spriteData.__tiling);
+		
+		var _drawX = (_tiling[0]) ? _drawXValue+2 : _drawXValue;
+		var _drawW = (_tiling[0]) ? _drawWValue-2 : _drawWValue;
+		var _drawY = (_tiling[1]) ? _drawYValue+2 : _drawYValue;
+		var _drawH = (_tiling[1]) ? _drawHValue-2 : _drawHValue;
+		var _width = sprite_get_width(_spriteID);
+		var _height = sprite_get_height(_spriteID);
+		var _col = _spriteData.__colour;
+		var _alpha = _spriteData.__alpha;
+		
+		draw_sprite_part_ext(
+			_spriteID, 
+			_sub, 
+			_drawXValue, 
+			_drawYValue, 
+			_drawWValue, 
+			_drawHValue, 
+			_currentPoint.left + ((_tiling[0]) ? 2 : 0), 
+			_currentPoint.top + ((_tiling[1]) ? 2 : 0), 
+			_ratio, 
+			_ratio, 
+			_col, 
+			_alpha
+		);
+		
+		#region Tiling
+		// Horizontal Tiling
+		if (_tiling[0]) {
+			// Left
+			draw_sprite_part_ext(
+				_spriteID, 
+				_sub, 
+				_drawW, 
+				_drawYValue, 
+				2, 
+				_drawHValue, 
+				_currentPoint.left, 
+				_currentPoint.top + ((_tiling[1]) ? 2 : 0), 
+				_ratio, 
+				_ratio, 
+				_col, 
+				_alpha
+			);
+			// Right
+			draw_sprite_part_ext(
+				_spriteID, 
+				_sub, 
+				_drawX-2, 
+				_drawYValue, 
+				2, 
+				_drawHValue, 
+				_currentPoint.left + _width + 2, 
+				_currentPoint.top + ((_tiling[1]) ? 2 : 0), 
+				_ratio, 
+				_ratio, 
+				_col, 
+				_alpha
+			);
+		}
+		
+		// Vertical Tiling
+		if (_tiling[1]) {
+			// Top
+			draw_sprite_part_ext(
+				_spriteID, 
+				_sub, 
+				_drawXValue, 
+				_drawH, 
+				_drawWValue, 
+				2, 
+				_currentPoint.left + ((_tiling[0]) ? 2 : 0), 
+				_currentPoint.top, 
+				_ratio, 
+				_ratio, 
+				_col, 
+				_alpha
+			);
+			// Bottom
+			draw_sprite_part_ext(
+				_spriteID, 
+				_sub, 
+				_drawXValue, 
+				_drawYValue, 
+				_drawWValue, 
+				2, 
+				_currentPoint.left + ((_tiling[0]) ? 2 : 0), 
+				_currentPoint.top + _height + 2, 
+				_ratio, 
+				_ratio, 
+				_col, 
+				_alpha
+			);
+		}
+		
+		// Horizontal + Vertical Tiling
+		if (_tiling[0] && _tiling[1]) {
+			// Left Top Corner
+			draw_sprite_part_ext(
+				_spriteID, 
+				_sub, 
+				_drawW,
+				_drawH,
+				2,
+				2,
+				_currentPoint.left, 
+				_currentPoint.top, 
+				_ratio, 
+				_ratio, 
+				_col, 
+				_alpha
+			);
+			
+			// Right Top Corner
+			draw_sprite_part_ext(
+				_spriteID, 
+				_sub, 
+				_drawXValue,
+				_drawH,
+				2,
+				2,
+				_currentPoint.left + _width + 2, 
+				_currentPoint.top, 
+				_ratio, 
+				_ratio, 
+				_col, 
+				_alpha
+			);
+			
+			// Left Bottom Corner
+			draw_sprite_part_ext(
+				_spriteID, 
+				_sub, 
+				_drawW,
+				_drawYValue,
+				2,
+				2,
+				_currentPoint.left, 
+				_currentPoint.top + _height + 2, 
+				_ratio, 
+				_ratio, 
+				_col, 
+				_alpha
+			);
+			
+			// Right Bottom Corner
+			draw_sprite_part_ext(
+				_spriteID, 
+				_sub, 
+				_drawXValue,
+				_drawYValue,
+				2,
+				2,
+				_currentPoint.left + _width + 2, 
+				_currentPoint.top + _height + 2, 
+				_ratio, 
+				_ratio, 
+				_col, 
+				_alpha
+			);
+		}
+		#endregion
+		
+		if (_spriteData.__premultiplyAlpha) {
+			gpu_set_blendenable(_gpuBlendEnable);	
+			gpu_set_blendmode_ext(_gpuBlendMode);
+			shader_reset();
+		}
+		
+		if (__COLLAGE_RENDER_DEBUG_LINES) {
+			draw_set_colour(make_color_hsv((current_time * 5) mod 256, 255, 255));
+			draw_rectangle(_currentPoint.left+1,_currentPoint.top+1,_currentPoint.left+_wScale-2,_currentPoint.top+_hScale-2, true);
+			draw_set_colour(c_white);	
+		}	
+	}
 	
 	static __checkImage = function(_str) {
 		/* Feather ignore once GM2047 */
@@ -32,17 +222,21 @@ function __CollageBuilderClass() constructor {
 	}
 	
 	static __bboxSort = function(_elm1, _elm2) {	
+		if (_elm1.spriteData.__priority >= 0) || (_elm2.spriteData.__priority >= 0) {
+			return _elm2.spriteData.__priority - _elm1.spriteData.__priority;
+		}
+		
 		var _sizeA, _sizeB;
-		_sizeA = (_elm2.bbWidth + _elm2.bbHeight) * .5; 
-		_sizeB = (_elm1.bbWidth + _elm1.bbHeight) * .5;
+		_sizeA = ((_elm2.bbWidth + (_elm2.tiling[0] ? 2 : 0)) + (_elm2.bbHeight + (_elm2.tiling[1] ? 2 : 0))) * .5; 
+		_sizeB = ((_elm1.bbWidth + (_elm1.tiling[0] ? 2 : 0)) + (_elm1.bbHeight + (_elm1.tiling[1] ? 2 : 0))) * .5;
 		return  _sizeA - _sizeB;
 	}
 	
 	static __bbox = function(_left, _top, _right, _bottom) constructor {
-		left = _left;
-		top = _top;
-		right = _right;
-		bottom = _bottom;
+		left = round(_left);
+		top = round(_top);
+		right = round(_right);
+		bottom = round(_bottom);
 	}
 	
 	static __hashCompare = function(_spriteData) {
@@ -61,26 +255,28 @@ function __CollageBuilderClass() constructor {
 		
 		// Separate entries
 		var _len = array_length(owner.__batchImageList);
-		var _collageName = (owner.name != undefined) ? owner.name + " - ": "";
+		var _collageName = owner.__getName();
 		if (_len == 0) {
 			__CollageTrace(_collageName +"Building was commenced but there was no images to pack!");
 			exit;
 		}
 		
+		
 		__CollageTrace(_collageName +"Building commenced! Attempting to pack " + string(array_length(owner.__batchImageList)) + " images!");
 		// Begin gather texture data
-		var _crop = owner.crop;
-		var _texWidth = owner.width;
-		var _texHeight = owner.height;
+		var _crop = owner.__crop;
+		var _texWidth = owner.__width;
+		var _texHeight = owner.__height;
 		var _spriteList = owner.__batchImageList;
 		var _batchMode = (owner.__state == CollageBuildStates.BATCHING);
 		var _normalSprites = array_create(array_length(_spriteList));
 		var _3DSprites = array_create(array_length(_spriteList));
 		var _texPage = array_length(owner.__texPageArray) == 0 ? new __CollageTexturePageClass(_texWidth, _texHeight) : owner.__texPageArray[array_length(owner.__texPageArray)-1];
-		var _sep = owner.separation;
+		var _sep = owner.__separation;
 		var _3DArraySize = 0;
 		var _normalArraySize = 0;
-		var _optimize = owner.optimize;
+		var _optimize = owner.__optimize;
+		var _rejectedImages = 0;
 		
 		var _sterlized = CollageIsGPUStateSterlized();
 	
@@ -94,7 +290,9 @@ function __CollageBuilderClass() constructor {
 		// Early check out of boundaries + data.
 		// This check is here to ensure that sprites are both ordered, and that we only get sprites that are valid.
 		var _i = 0;
+		var _isRejected = false;
 		repeat(_len) {
+				_isRejected = false;
 				var _spriteData = _spriteList[_i];
 				var _spriteID = _spriteData.__spriteID;
 				var _spriteInfo = sprite_get_info(_spriteID);
@@ -104,87 +302,106 @@ function __CollageBuilderClass() constructor {
 				var _xScale = 1;
 				var _yScale = 1;
 				var _forceScaled = false;
-				_drawX = (_crop >= 1) ? ((_crop == 1 || _crop == 2) ? sprite_get_bbox_left(_spriteID) : 0) : 0;
-				_drawY = (_crop >= 1) ? ((_crop == 1 || _crop == 3) ? sprite_get_bbox_top(_spriteID) : 0) : 0;
-				_drawW = (_crop >= 1) ? ((_crop == 1 || _crop == 2) ? sprite_get_bbox_right(_spriteID)-_drawX+1 : _sprWidth) : _sprWidth;
-				_drawH = (_crop >= 1) ? ((_crop == 1 || _crop == 3) ? sprite_get_bbox_bottom(_spriteID)-_drawY+1 : _sprHeight) : _sprHeight;
-				
-				/*if (_crop) {
-					_drawX =	sprite_get_bbox_left(_spriteID);
-					_drawY =	sprite_get_bbox_top(_spriteID);
-					_drawW =	sprite_get_bbox_right(_spriteID)-_drawX+1;
-					_drawH =	sprite_get_bbox_bottom(_spriteID)-_drawY+1;	
-				} else {
-					_drawX = 0;
-					_drawY = 0;
-					_drawW = _sprWidth;
-					_drawH =  _sprHeight;		
-				}*/
+				var _tiling = __CollageExtractTiling(_spriteData.__tiling);
+				_drawX = ((_crop >= 1) ? ((_crop == 1 || _crop == 2) ? sprite_get_bbox_left(_spriteID) : 0) : 0);
+				_drawY = ((_crop >= 1) ? ((_crop == 1 || _crop == 3) ? sprite_get_bbox_top(_spriteID) : 0) : 0);
+				_drawW = ((_crop >= 1) ? ((_crop == 1 || _crop == 2) ? sprite_get_bbox_right(_spriteID)-_drawX+1 : _sprWidth) : _sprWidth);
+				_drawH = ((_crop >= 1) ? ((_crop == 1 || _crop == 3) ? sprite_get_bbox_bottom(_spriteID)-_drawY+1 : _sprHeight) : _sprHeight);
 				
 				var _bbWidth = _drawW;
 				var _bbHeight = _drawH;
 				var _ratio = 1;
 				
 				// Exit early code
-				if (_drawW > _texWidth || _drawH > _texHeight) {
+				if (_drawW + (_tiling[0] ? 4 : 0) > _texWidth || _drawH + (_tiling[1] ? 4 : 0) > _texHeight) {
 					if (!__COLLAGE_SCALE_TO_TEXTURES_ON_PAGE) {
-						__CollageTrace("Image " + string(_spriteData.name) + " is too big! Skipping...");
+						__CollageTrace("Image " + "\"" + _spriteData.__name +  "\"" + " is too big! Skipping...");
 						if (_spriteData.__isCopy) {
 							sprite_delete(_spriteID);
 						}
 						array_delete(_spriteList, _i, 1);
 						--_i;
+						++_rejectedImages;
+						_isRejected = true;
 					} else {
 						_xScale = _texWidth/_drawW;
 						_yScale = _texHeight/_drawH;
 						_ratio = min(_xScale, _yScale);
 						_bbWidth = _ratio * _drawW;
 						_bbHeight = _ratio * _drawH;
-						__CollageTrace("Sprite " + string(_spriteData.name) + " has been rescaled from width: " +  string(_drawW) + ", height: " + string(_drawH) + ", " + " to width: " + string(_bbWidth) + ", height: " + string(_bbHeight));
+						__CollageTrace("Image " + "\"" + _spriteData.__name +  "\"" +  + " has been rescaled from width: " +  string(_drawW) + ", height: " + string(_drawH) + ", " + " to width: " + string(_bbWidth) + ", height: " + string(_bbHeight));
 					}
 				}
 				
-				
-				var _newSpriteData = {
-					spriteData: _spriteData,
-					spriteID: _spriteID,
-					spriteInfo: _spriteInfo,
-					spriteWidth: _sprWidth,
-					spriteHeight: _sprHeight,
-					xScale: _xScale,
-					yScale: _xScale,
-					ratio: _ratio,
-					bbWidth: _bbWidth,
-					bbHeight: _bbHeight,
-					drawX: _drawX,
-					drawY: _drawY,
-					drawW: _drawW,
-					drawH: _drawH,
-					wScale: _drawW * _ratio,
-					hScale: _drawH * _ratio,
-					originalWidth: _sprWidth,
-					originalHeight: _sprHeight,
+				if (_spriteData.__alpha <= 0.001) {
+					__CollageTrace("Image " + "\"" + _spriteData.__name +  "\"" + " alpha is invalid! Value is at " + string(_spriteData.__alpha) + ". Skipping...");
+					if (_spriteData.__isCopy) {
+						sprite_delete(_spriteID);
+					}
+					array_delete(_spriteList, _i, 1);
+					--_i;
+					++_rejectedImages;	
+					_isRejected = true;
 				}
-				_spriteList[_i] = _newSpriteData;
+				
+				
+				if (!_isRejected) {
+					var _newSpriteData = {
+						spriteData: _spriteData,
+						spriteID: _spriteID,
+						spriteInfo: _spriteInfo,
+						spriteWidth: _sprWidth,
+						spriteHeight: _sprHeight,
+						xScale: _xScale,
+						yScale: _xScale,
+						ratio: _ratio,
+						bbWidth: _bbWidth + (_tiling[0] ? 2 : 0),
+						bbHeight: _bbHeight + (_tiling[1] ? 2 : 0),
+						drawX: _drawX,
+						drawY: _drawY,
+						drawW: _drawW,
+						drawH: _drawH,
+						wScale: _drawW * _ratio,
+						hScale: _drawH * _ratio,
+						originalWidth: _sprWidth,
+						originalHeight: _sprHeight,
+						tiling: _tiling,
+					}
+					_spriteList[_i] = _newSpriteData;
+				}
 				++_i;
 		}
 		_len = array_length(_spriteList);
 		
+		var _smallestImageWidth = infinity;
+		var _smallestImageHeight = infinity;
+		_i = 0;
+		
+		// Find earliest point to exit
+		if ((_batchMode) && (_optimize)) {
+			repeat(_len) {
+				if (_spriteList[_i].bbWidth < _smallestImageWidth) || (_spriteList[_i].bbHeight < _smallestImageHeight) {
+					_smallestImageWidth = _spriteList[_i].bbWidth;
+					_smallestImageHeight = _spriteList[_i].bbHeight;
+				}
+				++_i;
+			}
+		}
 		
 		// Sort out by bbox
 		if (_len > 1) {
 			array_sort(_spriteList, __bboxSort);
 		}
 		
-		var _i = 0;
+		_i = 0;
 		
 		// Separate sprites into two groups
 		repeat(_len) {
-		if (_spriteList[_i].spriteData.__is3D) {
-			_3DSprites[_3DArraySize++] = _spriteList[_i];	
-		} else {
-			_normalSprites[_normalArraySize++] = _spriteList[_i];	
-		}	
+			if (_spriteList[_i].spriteData.__is3D) {
+				_3DSprites[_3DArraySize++] = _spriteList[_i];	
+			} else {
+				_normalSprites[_normalArraySize++] = _spriteList[_i];	
+			}	
 		
 			++_i;
 		}
@@ -198,6 +415,7 @@ function __CollageBuilderClass() constructor {
 		// Clear List
 		array_delete(_spriteList, 0, _len);
 		
+		
 		if (init == false) {
 			array_push(bboxPoints, new __bbox(_sep, _sep, _texWidth - _sep, _texHeight - _sep));
 			init = true;
@@ -208,7 +426,9 @@ function __CollageBuilderClass() constructor {
 			// Begin texture mapping
 			_texPage.start();	
 		}
-		for(var _ii = 0; _ii < array_length(_normalSprites); ++_ii) {
+		
+		var _spriteArrayLen = array_length(_normalSprites);
+		for(var _ii = 0; _ii < _spriteArrayLen; ++_ii) {
 			var _spriteStruct = _normalSprites[_ii];
 			var _spriteData = _spriteStruct.spriteData;
 				var _spriteID = _spriteStruct.spriteID;
@@ -224,19 +444,24 @@ function __CollageBuilderClass() constructor {
 				var _ogH = _spriteStruct.originalHeight;
 				var _xOffset = _spriteData.__xOrigin;
 				var _yOffset = _spriteData.__yOrigin;
+				var _subImages = _spriteInfo.num_subimages;
 				
 				
+				var _ratio = _spriteStruct.ratio;
+				var _tiling = _spriteStruct.tiling;
 				var _bbWidth = _spriteStruct.bbWidth;
 				var _bbHeight = _spriteStruct.bbHeight;
-				var _ratio = _spriteStruct.ratio;
 				
 				var _subStart = 0;
-				if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + _spriteData.__name + " is currently being processed... 0/" + string(_spriteInfo.num_subimages));
+				if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + "\"" + _spriteData.__name +  + "\"" + " is currently being processed... 0/" + string(_spriteInfo.num_subimages));
+				
+				var _imageRegistered = false;
 				if (__checkImage(_spriteData.__name)) {
 					switch(__COLLAGE_IMAGE_NAME_COLLISION_HANDLE) {
 						case 0:
 							__CollageTrace(_collageName + _spriteData.__name + " already exists! Skipping...");
 							--_normalArraySize;
+							++_rejectedImages;
 							continue;
 							break;
 						case 1:
@@ -251,11 +476,10 @@ function __CollageBuilderClass() constructor {
 								__CollageTrace(_collageName + _spriteData.__name + " already exists! Reidentified as " + _name);
 								_spriteData.name = _name;
 								
-								var _imageInfo = new __CollageImageClass(_spriteInfo, _spriteData.__name, _drawW, _drawH, _ratio);
+								var _imageInfo = new __CollageImageClass(_spriteStruct, _spriteData.__name, _drawW, _drawH, _spriteData.__tiling, _ratio);
 								// Lets add it to database
 								__setImage(_spriteData.__name, _imageInfo);
-								
-								var _subImages = _spriteInfo.num_subimages;
+								_imageRegistered = true;
 							} else {
 								// Same width/height
 								// Loop
@@ -281,12 +505,8 @@ function __CollageBuilderClass() constructor {
 									gpu_set_blendmode(bm_subtract);
 									draw_rectangle_color(_uvs.left, _uvs.top, _uvs.left+_uvs.right,_uvs.top+ _uvs.bottom, c_black, c_black, c_black, c_black, false);
 									gpu_set_blendmode(bm_normal);
-									draw_sprite_part_ext(_spriteID, _uvi-1, _drawX, _drawY, _drawW,  _drawH, _uvs.left, _uvs.top, _ratio, _ratio, c_white, 1);
-									if (__COLLAGE_RENDER_DEBUG_LINES) {
-										draw_set_colour(make_color_hsv((current_time * 5) mod 256, 255, 255));
-										draw_rectangle(_uvs.left+1,_uvs.top+1,_uvs.left+_drawW-2,_uvs.top+_drawH-2, true);
-										draw_set_colour(c_white);	
-									}
+									gpu_set_blendenable(false);
+									__drawImage(_spriteData, _spriteID, _uvi-1, _drawX, _drawY, _drawW, _drawH, _uvs, _ratio, _wScale, _hScale);
 								}
 								
 								if (_changedTexPage) {
@@ -295,11 +515,12 @@ function __CollageBuilderClass() constructor {
 									_texPage.start();
 								}
 								
-								gpu_set_blendenable(false);
+								
 								var _subImages = _subImageLen;
 								var _subStart = (_subImageLen > _uvsArrayLength) ? (_subImageLen - _uvsArrayLength) : _subImageLen;
 								_imageInfo.subImagesCount = _subImageLen;
 								__CollageTrace(_collageName + _spriteData.__name + " overwritten! (" + string(_subImageLen) + "/" + string(_uvsArrayLength) + ") Left over: " + string(max(_subImageLen - _uvsArrayLength, 0)));
+								_imageRegistered = true;
 							}
 						break;
 						
@@ -313,74 +534,144 @@ function __CollageBuilderClass() constructor {
 							__CollageTrace(_collageName + _spriteData.__name + " already exists! Reidentified as " + _name);
 							_spriteData.__name = _name;
 							
-							var _imageInfo = new __CollageImageClass(_spriteInfo, _spriteData.__name, _drawW, _drawH, _ratio);
+							var _imageInfo = new __CollageImageClass(_spriteStruct, _spriteData.__name, _drawW, _drawH, _spriteData.__tiling, _ratio);
 							// Lets add it to database
 							__setImage(_spriteData.__name, _imageInfo);
-							owner.imageCount++;
+							owner.__imageCount++;
 							array_push(owner.__imageList, _imageInfo);
-							var _subImages = _spriteInfo.num_subimages;
+							_imageRegistered = true;
 						break;
 					}
-				} else {
-					var _imageInfo = new __CollageImageClass(_spriteInfo, _spriteData.__name, _drawW, _drawH, _ratio, _xOffset, _yOffset);
+				} 
+				
+				// Validation for KeepTogether
+				var __forceNewTexturePage = false;
+				if (_spriteData.__keepTogether) && (_subImages > 1) {
+						var _tempBboxPoints = array_create(array_length(bboxPoints));
+						array_copy(_tempBboxPoints, 0, bboxPoints, 0, array_length(bboxPoints));
+						var _skipSprite = false;
+						for(var _sub = 0; _sub < _subImages; ++_sub) {
+							var _ktEmptySpaceSize = 0xFFFFFF;
+							var _ktEmptySpaceID = -1;
+							for(var _ktn = 0; _ktn < array_length(_tempBboxPoints); ++_ktn) {
+								if( _bbWidth <= _tempBboxPoints[_ktn].right && _bbHeight <= _tempBboxPoints[_ktn].bottom) {
+									var _resolve = (_tempBboxPoints[_ktn].right + _tempBboxPoints[_ktn].bottom ) / 2;
+									if (_resolve < _ktEmptySpaceSize) {
+										_ktEmptySpaceSize = _resolve;
+										_ktEmptySpaceID = _ktn;
+								    } 
+								}
+							}
+							
+							// We weren't able to find that all of them fit together
+							if (_ktEmptySpaceID == -1) {
+								
+								var _totalImageSubImg = ((_texWidth * _texHeight) div (_bbWidth * _bbHeight));
+								// We can't use this sprite PERIOD. Throw it out or scale it down!
+								if (_subImages > (_totalImageSubImg)) {
+									if (!__COLLAGE_SCALE_TO_TEXTURES_ON_PAGE) {
+										__CollageTrace(_collageName + "\"" + _spriteData.__name + "\"" + " can't clump together on new or current texture page! Skipping...");
+										--_normalArraySize;
+										_skipSprite = true;
+										++_rejectedImages;
+									} else {
+										_xScale = _drawW/_texWidth;
+										_yScale = _drawH/_texHeight;
+										_ratio = min(_xScale, _yScale);
+										_wScale = _drawW * _ratio;
+										_hScale = _drawH * _ratio;
+										_bbWidth = _ratio * _drawW;
+										_bbHeight = _ratio * _drawH;
+										__CollageTrace("Image " + "\"" + _spriteData.__name +  "\"" +  + " has been rescaled from width: " +  string(_drawW) + ", height: " + string(_drawH) + ", " + " to width: " + string(_bbWidth) + ", height: " + string(_bbHeight));
+									}
+									break;
+								} else {
+								// A sprite can fit!
+								if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + "\"" + _spriteData.__name + "\"" + " can fit on new texture page! Pushing image down the queue...");
+								__forceNewTexturePage = true;
+								break;	
+							}
+						} else {
+							var _currentPoint = _tempBboxPoints[_ktn-1];
+							// Store next available space in our simulation
+							if( _bbHeight < _currentPoint.bottom) { 
+							    var _struct = new __bbox(_currentPoint.left, _currentPoint.top + _drawH + _sep + ((_tiling[1]) ? 4 : 0), _currentPoint.right , _currentPoint.bottom - _drawH - _sep + ((_tiling[1]) ? 4 : 0));
+								array_push(_tempBboxPoints, _struct);
+							}
+							
+							if( _bbWidth < _currentPoint.right) {
+								var _struct = new __bbox(_currentPoint.left + _drawW + _sep + ((_tiling[0]) ? 4 : 0), _currentPoint.top, _currentPoint.right - _drawW - _sep  - ((_tiling[0]) ? 4 : 0), _drawH + ((_tiling[0]) ? 4 : 0));
+								array_push(_tempBboxPoints, _struct);
+							} 
+							
+							array_delete(_tempBboxPoints, _ktEmptySpaceID, 1);	
+						}
+						
+						if (_skipSprite) break;
+					}
+					
+					if (_skipSprite) {
+						continue;	
+					}
+				}
+				
+				if (!_imageRegistered) {
+					var _imageInfo = new __CollageImageClass(_spriteStruct, _spriteData.__name, _drawW, _drawH, _spriteData.__tiling, _ratio, _xOffset, _yOffset);
 					// Lets add it to database
 					__setImage(_spriteData.__name, _imageInfo);
 					
-					var _subImages = _spriteInfo.num_subimages;
-					owner.imageCount++;
+					owner.__imageCount++;
 					array_push(owner.__imageList, _imageInfo);
-					if (__COLLAGE_IMAGES_ARE_PUBLIC) owner.__imageMap[$ _spriteData.__name] = _imageInfo;
+					if (__COLLAGE_IMAGES_ARE_PUBLIC) owner.__imageMap[$ _spriteData.__name] = _imageInfo;	
 				}
+				
 				for(var _sub = _subStart; _sub < _subImages; ++_sub) {
 					var _emptySpaceSize = 0xFFFFFF;
 					var _emptySpaceID = -1;
-					var _n = 0;
-					for( var _n = 0; _n < array_length(bboxPoints); ++_n) {
-					     if( _bbWidth <= bboxPoints[_n].right && _bbHeight <= bboxPoints[_n].bottom) {
-					         var _resolve = (bboxPoints[_n].right + bboxPoints[_n].bottom ) / 2;
-							 if (_resolve < _emptySpaceSize) {
-					             _emptySpaceSize = _resolve;
-					             _emptySpaceID = _n;
-					        } 
-					    }
+					if (!__forceNewTexturePage) {
+						var _len = array_length(bboxPoints);
+						for(var _n = 0; _n < _len; ++_n) {
+						     if( _bbWidth <= bboxPoints[_n].right && _bbHeight <= bboxPoints[_n].bottom) {
+						         var _resolve = (bboxPoints[_n].right + bboxPoints[_n].bottom ) / 2;
+								 if (_resolve < _emptySpaceSize) {
+						             _emptySpaceSize = _resolve;
+						             _emptySpaceID = _n;
+						        } 
+						    }
+						}
 					}
 					
 					// Refresh empty areas
 					
 					if(_emptySpaceID != -1) {
 						var _currentPoint = bboxPoints[_emptySpaceID];
-						draw_sprite_part_ext(_spriteID , _sub , _drawX  , _drawY , _drawW, _drawH, _currentPoint.left, _currentPoint.top, _ratio, _ratio, c_white, 1);
-						if (__COLLAGE_RENDER_DEBUG_LINES) {
-							draw_set_colour(make_color_hsv((current_time * 5) mod 256, 255, 255));
-							draw_rectangle(_currentPoint.left+1,_currentPoint.top+1,_currentPoint.left+_wScale-2,_currentPoint.top+_hScale-2, true);
-							draw_set_colour(c_white);	
-						}
-						
-						var _uvX = _currentPoint.left; 
-						var _uvY = _currentPoint.top;
+						__drawImage(_spriteData, _spriteID, _sub, _drawX, _drawY, _drawW, _drawH, _currentPoint, _ratio, _wScale, _hScale);
+
+						var _uvX = _currentPoint.left + ((_tiling[0]) ? 2 : 0); 
+						var _uvY = _currentPoint.top + ((_tiling[1]) ? 2 : 0);
 						var _uvW = _wScale;
 						var _uvH = _hScale;
-						var _uvs = new __CollageImageUVsClass(_texPage, owner.texPageCount, _uvX, _uvY, _uvW, _uvH, _drawX, _drawY, _ogW, _ogH, _xOffset, _yOffset);
+						var _uvs = new __CollageImageUVsClass(_texPage, owner.__texPageCount, _uvX, _uvY, _uvW, _uvH, _drawX, _drawY, _ogW, _ogH, _xOffset, _yOffset);
 						_imageInfo.__subImagesArray[_sub] = _uvs;
 						// Store next available space
 						if( _bbHeight < _currentPoint.bottom){ 
-						    var _struct = new __bbox(_currentPoint.left, _currentPoint.top + _drawH + _sep, _currentPoint.right , _currentPoint.bottom - _drawH - _sep);
+						    var _struct = new __bbox(_currentPoint.left, _currentPoint.top + _bbHeight + _sep + ((_tiling[1]) ? 2 : 0), _currentPoint.right , _currentPoint.bottom - _bbHeight - _sep - ((_tiling[1]) ? 2 : 0));
 							array_push(bboxPoints,_struct);
 						}
 						
 						if( _bbWidth < _currentPoint.right) {
-							var _struct = new __bbox(_currentPoint.left + _drawW + _sep, _currentPoint.top, _currentPoint.right - _drawW - _sep, _drawH);
+							var _struct = new __bbox(_currentPoint.left + _bbWidth + _sep + ((_tiling[0]) ? 2 : 0), _currentPoint.top, _currentPoint.right - _bbWidth - _sep - ((_tiling[0]) ? 2 : 0), _bbHeight + ((_tiling[1]) ? 2 : 0));
 							array_push(bboxPoints,_struct);
 						} 
 	
 						// Remove non-empty area
-						if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + _spriteData.__name + " is currently being processed... " + string(_sub+1) + "/" + string(_subImages));
+						if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + "\"" + _spriteData.__name + "\"" + " is currently being processed... " + string(_sub+1) + "/" + string(_subImages));
 						if (_sub == _subImages-1) {
-							if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + _spriteData.__name + " has been processed...");	
+							if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + "\"" + _spriteData.__name + "\"" + " has been processed...");	
 						}
 						array_delete(bboxPoints, _emptySpaceID, 1);
 						
-						if (_batchMode) && (_optimize) {
+						if (_batchMode) && (_optimize) && (_sub == _subImages-1) {
 							// Loop over sub entries
 							var _bestEntryWidth = -1;
 							var _bestEntryHeight = -1;
@@ -389,20 +680,28 @@ function __CollageBuilderClass() constructor {
 							var _lenNormSprites = array_length(_normalSprites);
 							for(var _iii = _ii+1; _iii < _lenNormSprites; _iii++;) {//repeat(array_length(_normalSprites)-_iii) {
 								var _n = 0;
-								repeat(array_length(bboxPoints)) {
-								     if(_normalSprites[_iii].bbWidth <= bboxPoints[_n].right && _normalSprites[_iii].bbHeight <= bboxPoints[_n].bottom) && 
-									 (_normalSprites[_iii].bbWidth > _bestEntryWidth && _normalSprites[_iii].bbHeight > _bestEntryHeight) {
-								         var _resolve = (bboxPoints[_n].right + bboxPoints[_n].bottom ) / 2;
-										 if (_resolve < 0xFFFFFF) {
-											 _bestEntryWidth = _normalSprites[_iii].bbWidth;
-											 _bestEntryHeight = _normalSprites[_iii].bbHeight;
-											 _bestEntry = _normalSprites[_iii];
-											 _bestEntryPos = _iii;
-											 break;
-								        } 
-								    }
-									++_n;
+								var _tempBBWidth = _normalSprites[_iii].bbWidth;
+								var _tempBBHeight = _normalSprites[_iii].bbHeight;
+								if (_smallestImageWidth != _tempBBWidth) && (_smallestImageHeight != _tempBBHeight) {
+									repeat(array_length(bboxPoints)) {
+									     if(_tempBBWidth < bboxPoints[_n].right && _tempBBHeight < bboxPoints[_n].bottom) && 
+										 (_tempBBWidth > _bestEntryWidth && _tempBBHeight > _bestEntryHeight) {
+									         var _resolve = (bboxPoints[_n].right + bboxPoints[_n].bottom ) / 2;
+											 if (_resolve < 0xFFFFFF) {
+												 _bestEntryWidth = _tempBBWidth;
+												 _bestEntryHeight = _tempBBHeight;
+												 _bestEntry = _normalSprites[_iii];
+												 _bestEntryPos = _iii;
+												 break;
+									        } 
+									    }
+										++_n;
+									}
+								} else {
+									break;	
 								}
+								
+								if (_bestEntry != undefined) break;
 							}
 								
 								if (!is_undefined(_bestEntry)) {
@@ -410,10 +709,16 @@ function __CollageBuilderClass() constructor {
 									var _entryB = _bestEntry;
 									_normalSprites[_ii+1] = _entryB;
 									_normalSprites[_bestEntryPos] = _entryA;
+								} else {
+									// We can't find anymore that are a smaller size, force optimization flag off for this batch!
+									_optimize = false;
+									if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + "can't optimize images any further this batch!");
 								}
 							}
 					} else {
-						if (__COLLAGE_VERBOSE) __CollageTrace("Texture page full! Creating new texture page...");
+						// Reset to false in case
+						__forceNewTexturePage = false;
+						if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + "Texture page full! Creating new texture page...");
 						// We declare this finished
 						_texPage.finish();
 						
@@ -423,8 +728,8 @@ function __CollageBuilderClass() constructor {
 						}
 						
 						// Save texture page
-						if (owner.texPageCount == 0) || (owner.__texPageArray[owner.texPageCount-1] != _texPage) {
-							owner.__texPageArray[owner.texPageCount++] = _texPage;
+						if (owner.__texPageCount == 0) || (owner.__texPageArray[owner.__texPageCount-1] != _texPage) {
+							owner.__texPageArray[owner.__texPageCount++] = _texPage;
 						}
 						_texPage = new __CollageTexturePageClass(_texWidth, _texHeight);
 						_texPage.start();
@@ -446,19 +751,20 @@ function __CollageBuilderClass() constructor {
 		
 		// Give texture page + safety check
 		if (array_length(_normalSprites) > 0) {
-			if (owner.texPageCount != 0) {
-				if (owner.__texPageArray[owner.texPageCount-1] != _texPage) {
-					owner.__texPageArray[owner.texPageCount++] = _texPage;
+			if (owner.__texPageCount != 0) {
+				if (owner.__texPageArray[owner.__texPageCount-1] != _texPage) {
+					owner.__texPageArray[owner.__texPageCount++] = _texPage;
 				}
-			} else if (array_length(owner.__texPageArray) > 0) && (owner.__texPageArray[owner.texPageCount] == _texPage) {
+			} else if (array_length(owner.__texPageArray) > 0) && (owner.__texPageArray[owner.__texPageCount] == _texPage) {
 				// Do nothing
 			} else {
-				owner.__texPageArray[owner.texPageCount++] = _texPage;	
+				owner.__texPageArray[owner.__texPageCount++] = _texPage;	
 			}
 		}
 		
+		var _spriteArrayLen = array_length(_3DSprites);
 		// Now do 3D textures
-		for(var _ii = 0; _ii < array_length(_3DSprites); ++_ii) {
+		for(var _ii = 0; _ii < _spriteArrayLen; ++_ii) {
 			var _spriteStruct = _3DSprites[_ii];
 			var _spriteData = _spriteStruct.spriteData;
 				var _spriteID = _spriteStruct.spriteID;
@@ -479,11 +785,11 @@ function __CollageBuilderClass() constructor {
 				var _ratio = _spriteStruct.ratio;
 				
 				var _subStart = 0;
-				if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + _spriteData.__name + " is currently being processed... 0/" + string(_spriteInfo.num_subimages));
+				if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + "\"" + _spriteData.__name + "\"" + " is currently being processed... 0/" + string(_spriteInfo.num_subimages));
 				if (__checkImage(_spriteData.name)) {
 					switch(__COLLAGE_IMAGE_NAME_COLLISION_HANDLE) {
 						case 0:
-							__CollageTrace(_collageName + _spriteData.__name + " already exists! Skipping...");
+							__CollageTrace(_collageName + "\"" + _spriteData.__name + "\"" + " already exists! Skipping...");
 							--_3DArraySize;
 							continue;
 						break;
@@ -497,10 +803,10 @@ function __CollageBuilderClass() constructor {
 								while(__checkImage(_spriteData.__name)) {
 										var _name = _spriteName + string(++_num);
 								}
-								__CollageTrace(_collageName + _spriteData.__name + " already exists! Reidentified as " + _name);
+								__CollageTrace(_collageName + "\"" + _spriteData.__name + "\"" + " already exists! Reidentified as " + _name);
 								_spriteData.name = _name;
 								
-								var _imageInfo = new __CollageImageClass(_spriteInfo, _spriteData.__name, _drawW, _drawH, _ratio);
+								var _imageInfo = new __CollageImageClass(_spriteStruct, _spriteData.__name, _drawW, _drawH, _spriteData.__tiling, _ratio);
 								// Lets add it to database
 								__setImage(_spriteData.__name, _imageInfo);
 								
@@ -530,12 +836,7 @@ function __CollageBuilderClass() constructor {
 									draw_rectangle_color(_uvs.left, _uvs.top, _uvs.left+_uvs.right,_uvs.top+ _uvs.bottom, c_black, c_black, c_black, c_black, false);
 									gpu_set_blendmode(bm_normal);
 									gpu_set_blendenable(false);
-									draw_sprite_part_ext(_spriteID, _uvi-1, _drawX, _drawY, _drawW,  _drawH, _uvs.left, _uvs.top, _ratio, _ratio, c_white, 1);
-									if (__COLLAGE_RENDER_DEBUG_LINES) {
-										draw_set_colour(make_color_hsv((current_time * 5) mod 256, 255, 255));
-										draw_rectangle(_uvs.left+1,_uvs.top+1,_uvs.left+_drawW-2,_uvs.top+_drawH-2, true);
-										draw_set_colour(c_white);	
-									}
+									__drawImage(_spriteData, _spriteID, _uvi-1, _drawX, _drawY, _drawW, _drawH, _uvs, _ratio, _wScale, _hScale);
 								}
 								_texPage.finish();
 								gpu_set_blendenable(false);
@@ -553,40 +854,36 @@ function __CollageBuilderClass() constructor {
 							while(__checkImage(_name)) {
 								_name = _spriteName + string(++_num);
 							}
-							__CollageTrace(_collageName + _spriteData.__name + " already exists! Reidentified as " + _name);
+							__CollageTrace(_collageName + "\"" + _spriteData.__name + "\"" + " already exists! Reidentified as " + _name);
 							_spriteData.name = _name;
 							
-							var _imageInfo = new __CollageImageClass(_spriteInfo, _spriteData.__name, _drawW, _drawH, _ratio);
+							var _imageInfo = new __CollageImageClass(_spriteStruct, _spriteData.__name, _drawW, _drawH, _spriteData.__tiling, _ratio);
 							// Lets add it to database
 							__setImage(_spriteData.__name, _imageInfo);
 							var _subImages = _spriteInfo.num_subimages;
 						break;
 					}
 				} else {
-					var _imageInfo = new __CollageImageClass(_spriteInfo, _spriteData.__name, _drawW, _drawH, _ratio);
+					var _imageInfo = new __CollageImageClass(_spriteStruct, _spriteData.__name, _drawW, _drawH, _spriteData.__tiling, _ratio);
 					// Lets add it to database
 					__setImage(_spriteData.name, _imageInfo);
 					
 					var _subImages = _spriteInfo.num_subimages;
-					owner.imageCount++;
+					owner.__imageCount++;
 					array_push(owner.__imageList, _imageInfo);
 					if (__COLLAGE_IMAGES_ARE_PUBLIC) owner.__imageMap[$ _spriteData.__name] = _imageInfo;
 				}
 				for(var _sub = _subStart; _sub < _subImages; ++_sub) {
 						_texPage = new __CollageTexturePageClass(_texWidth, _texHeight);
 						_texPage.start();
-						draw_sprite_part_ext(_spriteID , _sub , _drawX  , _drawY , _drawW, _drawH, 0, 0, _ratio, _ratio, c_white, 1);
-						if (__COLLAGE_RENDER_DEBUG_LINES) {
-							draw_set_colour(make_color_hsv((current_time * 5) mod 256, 255, 255));
-							draw_rectangle(_spriteInfo.bbox_left+1,_spriteInfo.bbox_top+1,_spriteInfo.bbox_left+_wScale-2,_spriteInfo.bbox_top+_hScale-2, true);
-							draw_set_colour(c_white);	
-						}
+						__drawImage(_spriteData, _spriteID, _sub, _drawX, _drawY, _drawW, _drawH, _currentPoint, _ratio, _wScale, _hScale);
 						
-						var _uvX = 0; 
-						var _uvY = 0;
+						var _tiling = __CollageExtractTiling(_spriteData.__tiling);
+						var _uvX = _currentPoint.left + ((_tiling[0]) ? 2 : 0); 
+						var _uvY = _currentPoint.top + ((_tiling[1]) ? 2 : 0);
 						var _uvW = _wScale;
 						var _uvH = _hScale;
-						var _uvs = new __CollageImageUVsClass(_texPage, owner.texPageCount, _uvX, _uvY, _uvW, _uvH, _drawX, _drawY, _ogW, _ogH,/*_sprWidth - _drawW - 2, _sprHeight - _drawH - 2,*/ _imageInfo.xoffset, _imageInfo.yoffset);
+						var _uvs = new __CollageImageUVsClass(_texPage, owner.__texPageCount, _uvX, _uvY, _uvW, _uvH, _drawX, _drawY, _ogW, _ogH,/*_sprWidth - _drawW - 2, _sprHeight - _drawH - 2,*/ _imageInfo.xoffset, _imageInfo.yoffset);
 						_imageInfo.__subImagesArray[_sub] = _uvs;
 						// We declare this finished
 						_texPage.finish();
@@ -597,27 +894,25 @@ function __CollageBuilderClass() constructor {
 						}
 						
 						// Save texture page
-						if (owner.texPageCount == 0) || (owner.__texPageArray[owner.texPageCount-1] != _texPage) {
-							owner.__texPageArray[owner.texPageCount++] = _texPage;
+						if (owner.__texPageCount == 0) || (owner.__texPageArray[owner.__texPageCount-1] != _texPage) {
+							owner.__texPageArray[owner.__texPageCount++] = _texPage;
 						}
 						
-						if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + _spriteData.__name + " is currently being processed... " + string(_sub+1) + "/" + string(_subImages));
+						if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + "\"" + _spriteData.__name + "\"" + " is currently being processed... " + string(_sub+1) + "/" + string(_subImages));
 						if (_sub == _subImages-1) {
-							if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + _spriteData.__name + " has been processed...");	
+							if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + "\"" + _spriteData.__name + "\"" + " has been processed...");	
 						}
 					} 
 				}			
 		
 		// Give texture page + safety check
 		if (array_length(_3DSprites) > 0) {
-			if (owner.texPageCount != 0) {
-				if (owner.__texPageArray[owner.texPageCount-1] != _texPage) {
-					owner.__texPageArray[owner.texPageCount++] = _texPage;
+			if (owner.__texPageCount != 0) {
+				if (owner.__texPageArray[owner.__texPageCount-1] != _texPage) {
+					owner.__texPageArray[owner.__texPageCount++] = _texPage;
 				}
-			} else if (array_length(owner.__texPageArray) > 0) && (owner.__texPageArray[owner.texPageCount] == _texPage) {
-				// Do nothing
-			} else {
-				owner.__texPageArray[owner.texPageCount++] = _texPage;	
+			} else if (!(array_length(owner.__texPageArray) > 0) && (owner.__texPageArray[owner.__texPageCount] == _texPage)) {
+				owner.__texPageArray[owner.__texPageCount++] = _texPage;	
 			}
 		}
 		
@@ -643,8 +938,9 @@ function __CollageBuilderClass() constructor {
 		array_resize(owner.__batchImageList, 0);
 		CollageRestoreGPUState();
 		
-		__CollageTrace(_collageName + "Building finished! Packed " + string(_normalArraySize) + " images and " + string(_3DArraySize) + " images with separate texture pages.");
+		var _rejectedImgStr = (_rejectedImages > 0) ? (" Rejected " +string(_rejectedImages) + "!") : "";
+		__CollageTrace(_collageName + "Building finished! Packed " + string(_normalArraySize) + " images and " + string(_3DArraySize) + " images with separate texture pages." + _rejectedImgStr);
 		var _finalTime = (get_timer()-_startTime)/1000;
-		if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + "Building took " + string(_finalTime) + "ms");
+		__CollageTrace(_collageName + "Total time: " + string(_finalTime) + "ms!");
 	}
 }

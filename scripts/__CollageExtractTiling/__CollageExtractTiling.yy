@@ -1,11 +1,11 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "CollageDefineSpriteForSheet",
+  "name": "__CollageExtractTiling",
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "General",
-    "path": "folders/Collage/General.yy",
+    "name": "System",
+    "path": "folders/Collage/System.yy",
   },
 }

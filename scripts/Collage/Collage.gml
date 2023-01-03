@@ -3,7 +3,7 @@
 /// @param {Real} [width]
 /// @param {Real} [height]
 /// @param {Real} [crop]
-/// @param {Real} [separation]
+/// @param {Real} [__separation]
 /// @param {Bool} [optimize]
 /* Feather ignore all */
 function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DEFAULT_TEXTURE_SIZE, _crop = __COLLAGE_DEFAULT_CROP, _separation = __COLLAGE_DEFAULT_SEPARATION, _optimize = __COLLAGE_DEFAULT_OPTIMIZE) constructor {
@@ -11,8 +11,8 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	__CollageInit();
 	__state = CollageBuildStates.NORMAL;
 	__texPageArray = [];
-	texPageCount = 0;
-	imageCount = 0;
+	__texPageCount = 0;
+	__imageCount = 0;
 	__batchImageList = [];
 	__imageMap = {};
 	__imageList = [];
@@ -20,12 +20,12 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	__isWaitingOnAsync = false;
 	__status = CollageStatus.READY;
 	__builder = new __CollageBuilderClass();
-	separation = _separation;
-	width = _width;
-	height = _height;
-	crop = _crop;
-	optimize = _optimize;
-	name = is_undefined(_identifier) ? _identifier : string(_identifier);
+	__separation = _separation;
+	__width = _width;
+	__height = _height;
+	__crop = _crop;
+	__optimize = _optimize;
+	__name = is_undefined(_identifier) ? _identifier : string(_identifier);
 	
 	array_push(global.__CollageTexturePagesList, self);
 	if (is_string(_identifier)) {
@@ -37,20 +37,20 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	}
 	
 	// Init texture settings
-	if (__COLLAGE_ENSURE_POWER_TWO) && !(CollageIsPowerTwo(width) || CollageIsPowerTwo(height)) {
-		width = CollageConvertPowerTwo(_width);
-		height = CollageConvertPowerTwo(_height);
+	if (__COLLAGE_ENSURE_POWER_TWO) && !(CollageIsPowerTwo(__width) || CollageIsPowerTwo(__height)) {
+		__width = CollageConvertPowerTwo(_width);
+		__height = CollageConvertPowerTwo(_height);
 	} 
 	
 	if (__COLLAGE_CLAMP_TEXTURE_SIZE) {
-		width = clamp(width, __COLLAGE_MIN_TEXTURE_SIZE, __COLLAGE_MAX_TEXTURE_SIZE);
-		height = clamp(height, __COLLAGE_MIN_TEXTURE_SIZE, __COLLAGE_MAX_TEXTURE_SIZE);
+		__width = clamp(__width, __COLLAGE_MIN_TEXTURE_SIZE, __COLLAGE_MAX_TEXTURE_SIZE);
+		__height = clamp(__height, __COLLAGE_MIN_TEXTURE_SIZE, __COLLAGE_MAX_TEXTURE_SIZE);
 	}
 	
 	#region Methods
 	
 	static __getName = function() {
-		return (is_undefined(name)) ? "" : name + " - ";	
+		return (is_undefined(__name)) ? "" : __name + " - ";	
 	}
 	
 	static StartBatch = function() {
@@ -68,8 +68,8 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 			var _len = array_length(__batchImageList);
 			var _i = 0;
 			repeat(_len) {
-				if (__batchImageList[_i].isCopy) {
-					sprite_delete(__batchImageList[_i].spriteID);	
+				if (__batchImageList[_i].__isCopy) {
+					sprite_delete(__batchImageList[_i].__spriteID);	
 				}
 				++_i;
 			} 	
@@ -183,7 +183,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 			exit;
 		}
 		
-		var _spriteData = new __CollageSpriteFileDataClass(_identifier, _spriteSheet).SetOrigin(_xOrigin, _yOrigin).Set3D(_is3D);
+		var _spriteData = new __CollageSpriteFileDataClass(_identifier, _spriteSheet).Set3D(_is3D);
 		
 		if (__CollageFileFromWeb(_fileName)) {
 			if (__COLLAGE_VERBOSE) __CollageTrace("Adding " + string(_fileName) + " to asynchronous listing...");
@@ -248,7 +248,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		
 		array_push(__batchImageList, _spriteData);
 		surface_free(_surf);
-		
+		_spriteData.SetOrigin(_xOrigin, _yOrigin);
 		return _spriteData;
 	}	
 	
@@ -307,8 +307,8 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 				}
 				++_j;
 			}
-		
-			var _spriteData = new __CollageSpriteFileDataClass(_identifierString + _imageStruct[0], _newSprite, _subImages).SetOrigin(_xOrigin, _yOrigin).Set3D(_is3D);
+			var _name = (string_count("{{name}}", _imageStruct[0]) > 0) ? string_replace_all(_imageStruct[0], "{{name}}", _identifierString) : _identifierString + _imageStruct[0];
+			var _spriteData = new __CollageSpriteFileDataClass(_name, _newSprite, _subImages).SetOrigin(_xOrigin, _yOrigin).Set3D(_is3D);
 			array_push(__batchImageList, _spriteData);
 			array_push(_imageArray, _spriteData);
 			_newSprite = -1;
@@ -329,28 +329,27 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	static FreePages = function() {
 		var _i = 0;
 		repeat(array_length(__texPageArray)) {
-			__texPageArray[_i++].free();	
+			__texPageArray[_i++].Free();	
 		}
 		
-		texPageCount = 0;
+		__texPageCount = 0;
 		var _i = 0;
 		if (__COLLAGE_IMAGES_ARE_PUBLIC) {
-			repeat(imageCount) {
-				variable_struct_remove(global.__CollageImageMap, __imageList[_i++].name);
+			repeat(__imageCount) {
+				variable_struct_remove(global.__CollageImageMap, __imageList[_i++].__name);
 			}	
 		}
 		
 		__builder.init = false;
 		array_resize(__builder.bboxPoints, 0);
-		imageCount = 0;
+		__imageCount = 0;
 		__imageList = [];
 		__imageMap = {};
 		__texPageArray = [];
 	}
 	
 	static GetTexturePage = function(_index) {
-		if (_index < texPageCount) && (_index >= 0) {
-			__texPageArray[_index].checkSurface();
+		if (_index < __texPageCount) && (_index >= 0) {
 			return __texPageArray[_index];
 		}
 		
@@ -358,7 +357,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	}
 	
 	static GetTexture = function(_index) {
-		if (_index < texPageCount) && (_index >= 0) {
+		if (_index < __texPageCount) && (_index >= 0) {
 			__texPageArray[_index].checkSurface();
 			return __texPageArray[_index].GetTexture();
 		}
@@ -367,11 +366,11 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	}
 	
 	static GetCount = function() {
-		return texPageCount;
+		return __texPageCount;
 	}
 		
 	static FlushPages = function() {
-		var _len = texPageCount;
+		var _len = __texPageCount;
 		var _i = 0;
 		repeat(_len) {
 			__texPageArray[_i++].__cacheTexture();
@@ -379,13 +378,13 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	}
 	
 	static FlushPage = function(_index) {
-		if (_index >= 0 && _index < texPageCount) {
+		if (_index >= 0 && _index < __texPageCount) {
 			__texPageArray[_index].__cacheTexture();
 		}
 	}
 	
 	static PrefetchPages = function() {
-		var _len = texPageCount;
+		var _len = __texPageCount;
 		var _i = 0;
 		repeat(_len) {
 			__texPageArray[_i++].__restoreFromCache();
@@ -393,21 +392,21 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	}
 	
 	static PrefetchPage = function(_index) {
-		if (_index >= 0 && _index < texPageCount) {
+		if (_index >= 0 && _index < __texPageCount) {
 			__texPageArray[_index].__restoreFromCache();
 		}	
 	}
 		
 	static savePageToBuffer = function() {
-		var _texPageCount = texPageCount;
-		var _imageCount =	imageCount;
+		var ___texPageCount = __texPageCount;
+		var ___imageCount =	__imageCount;
 		var _bboxPointsCount = array_length(__builder.bboxPoints);
 		var _stringByte = 0;
 		var _subImagesCount = 0;
 		
 		// Get image names
 		var _i = 0;
-		repeat(_imageCount) {
+		repeat(___imageCount) {
 			_stringByte += string_byte_length(__imageList[_i].name) + 1;
 			_subImagesCount += __imageList[_i]. subImagesCount;
 			++_i;
@@ -417,7 +416,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		#macro __TGM_SPRITE_FORMAT 12
 		#macro __TGM_UV_FORMAT 20 + 8 // 8 for 4byte float
 		#macro __TGM_SPACEPOINTS_FORMAT 8
-		var _headerSize = __TGM_HEADER_FORMAT + _stringByte + (__TGM_SPRITE_FORMAT * _imageCount) + (__TGM_UV_FORMAT * _subImagesCount) + __TGM_SPACEPOINTS_FORMAT;*/
+		var _headerSize = __TGM_HEADER_FORMAT + _stringByte + (__TGM_SPRITE_FORMAT * ___imageCount) + (__TGM_UV_FORMAT * _subImagesCount) + __TGM_SPACEPOINTS_FORMAT;*/
 		
 		// Create buffer
 		var _groupBuffer = buffer_create(1, buffer_grow, 1);
@@ -426,12 +425,12 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		buffer_write(_groupBuffer, buffer_u16, width); // 2 Bytes
 		buffer_write(_groupBuffer, buffer_u16, height); // 2 Bytes
 		buffer_write(_groupBuffer, buffer_u8, _bboxPointsCount); // 1 Bytes
-		buffer_write(_groupBuffer, buffer_u32, imageCount); // 4 Bytes
-		buffer_write(_groupBuffer, buffer_u32, texPageCount); // 4 Bytes
+		buffer_write(_groupBuffer, buffer_u32, __imageCount); // 4 Bytes
+		buffer_write(_groupBuffer, buffer_u32, __texPageCount); // 4 Bytes
 		
 		// Write Image Format
 		var _i = 0;
-		repeat(_imageCount) {
+		repeat(___imageCount) {
 			buffer_write(_groupBuffer, buffer_string, imageList[_i].name); // String byte length + null
 			buffer_write(_groupBuffer, buffer_u16, imageList[_i].width); // 2 byte
 			buffer_write(_groupBuffer, buffer_u16, imageList[_i].height);  // 2 byte
@@ -443,10 +442,10 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 			buffer_write(_groupBuffer, buffer_f32, imageList[_i].ratio); // 4 byte
 			
 			// Write UV format
-			var _imageSubImageCount = imageList[_i].subImagesCount;
+			var _imageSub__imageCount = imageList[_i].subImagesCount;
 			var _j = 0;
 			var _subImages = imageList[_i].subImagesArray;
-			repeat(_imageSubImageCount) {
+			repeat(_imageSub__imageCount) {
 				buffer_write(_groupBuffer, buffer_u16, _subImages[_j].texturePageNum); // 2 Byte
 				buffer_write(_groupBuffer, buffer_u16, _subImages[_j].left); // 2 Byte
 				buffer_write(_groupBuffer, buffer_u16, _subImages[_j].right); // 2 Byte
@@ -467,7 +466,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		
 		// Save texture page data	
 	_i = 0;
-	repeat(texPageCount) {
+	repeat(__texPageCount) {
 		var _size = width*height*4;
 		var _texBuffer = buffer_create(_size, buffer_fixed, 4);
 		buffer_get_surface(_texBuffer, _surf, 0);
@@ -500,6 +499,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		__texPageArray = undefined;
 	}
 	
+	/// @return {Struct.__CollageImageClass} collage_image
 	static GetImageInfo = function(_identifier) {
 		return __imageMap[$ _identifier];	
 	}

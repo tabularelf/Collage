@@ -10,9 +10,9 @@
 /* Feather ignore all */
 function CollageDrawImageTiledExt(_imageData, _imageIndex, _x, _y, _xScale, _yScale, _col, _alpha) {
 	gml_pragma("forceinline");
+	if (!is_struct(_imageData)) __CollageThrow("Invalid collage_image! Got " + string(_imageData) + " instead!");
 	var _ratio = _imageData.__ratio;
 	var _uvs = _imageData.__InternalGetUvs(_imageIndex);
-	_uvs.texturePageStruct.__restoreFromCache();
 	
 	_uvs.texturePageStruct.CheckSurface();	
 	

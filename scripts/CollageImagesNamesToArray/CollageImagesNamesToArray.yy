@@ -5,7 +5,7 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Image",
-    "path": "folders/Collage/Image.yy",
+    "name": "General",
+    "path": "folders/Collage/General.yy",
   },
 }

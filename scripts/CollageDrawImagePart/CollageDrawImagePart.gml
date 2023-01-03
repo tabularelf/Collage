@@ -10,9 +10,9 @@
 /* Feather ignore all */
 function CollageDrawImagePart(_imageData, _imageIndex, _left, _top, _width, _height, _x, _y) {
 	gml_pragma("forceinline");
+	if (!is_struct(_imageData)) __CollageThrow("Invalid collage_image! Got " + string(_imageData) + " instead!");
 	var _ratio = _imageData.__ratio;
 	var _uvs = _imageData.__InternalGetUvs(_imageIndex);
-	_uvs.texturePageStruct.__restoreFromCache();
 	
 	_uvs.texturePageStruct.CheckSurface();	
 	
@@ -27,8 +27,8 @@ function CollageDrawImagePart(_imageData, _imageIndex, _left, _top, _width, _hei
 			_y-_uvs.yPos, 
 			1/_ratio, 
 			1/_ratio, 
-			c_white, 
-			1
+			draw_get_colour(), 
+			draw_get_alpha()
 		);	
 	} else {
 		draw_surface_part(
