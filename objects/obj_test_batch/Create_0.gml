@@ -12,7 +12,7 @@ texPage.FinishBatch();
 
 var _images = texPage.ImagesToArray();
 pos = array_create(array_length(_images));
-var _i = 0;
+_i = 0;
 repeat(array_length(_images)) {
 	pos[_i] = {image: _images[_i], x: random(room_width-128), y: random(room_height-128)};
 	++_i;

@@ -255,7 +255,7 @@ function __CollageBuilderClass() constructor {
 		
 		// Separate entries
 		var _len = array_length(owner.__batchImageList);
-		var _collageName = (owner.name != undefined) ? owner.name + " - ": "";
+		var _collageName = owner.__getName();
 		if (_len == 0) {
 			__CollageTrace(_collageName +"Building was commenced but there was no images to pack!");
 			exit;
@@ -264,18 +264,18 @@ function __CollageBuilderClass() constructor {
 		
 		__CollageTrace(_collageName +"Building commenced! Attempting to pack " + string(array_length(owner.__batchImageList)) + " images!");
 		// Begin gather texture data
-		var _crop = owner.crop;
-		var _texWidth = owner.width;
-		var _texHeight = owner.height;
+		var _crop = owner.__crop;
+		var _texWidth = owner.__width;
+		var _texHeight = owner.__height;
 		var _spriteList = owner.__batchImageList;
 		var _batchMode = (owner.__state == CollageBuildStates.BATCHING);
 		var _normalSprites = array_create(array_length(_spriteList));
 		var _3DSprites = array_create(array_length(_spriteList));
 		var _texPage = array_length(owner.__texPageArray) == 0 ? new __CollageTexturePageClass(_texWidth, _texHeight) : owner.__texPageArray[array_length(owner.__texPageArray)-1];
-		var _sep = owner.separation;
+		var _sep = owner.__separation;
 		var _3DArraySize = 0;
 		var _normalArraySize = 0;
-		var _optimize = owner.optimize;
+		var _optimize = owner.__optimize;
 		var _rejectedImages = 0;
 		
 		var _sterlized = CollageIsGPUStateSterlized();
@@ -537,7 +537,7 @@ function __CollageBuilderClass() constructor {
 							var _imageInfo = new __CollageImageClass(_spriteStruct, _spriteData.__name, _drawW, _drawH, _spriteData.__tiling, _ratio);
 							// Lets add it to database
 							__setImage(_spriteData.__name, _imageInfo);
-							owner.imageCount++;
+							owner.__imageCount++;
 							array_push(owner.__imageList, _imageInfo);
 							_imageRegistered = true;
 						break;
@@ -620,7 +620,7 @@ function __CollageBuilderClass() constructor {
 					// Lets add it to database
 					__setImage(_spriteData.__name, _imageInfo);
 					
-					owner.imageCount++;
+					owner.__imageCount++;
 					array_push(owner.__imageList, _imageInfo);
 					if (__COLLAGE_IMAGES_ARE_PUBLIC) owner.__imageMap[$ _spriteData.__name] = _imageInfo;	
 				}
@@ -651,7 +651,7 @@ function __CollageBuilderClass() constructor {
 						var _uvY = _currentPoint.top + ((_tiling[1]) ? 2 : 0);
 						var _uvW = _wScale;
 						var _uvH = _hScale;
-						var _uvs = new __CollageImageUVsClass(_texPage, owner.texPageCount, _uvX, _uvY, _uvW, _uvH, _drawX, _drawY, _ogW, _ogH, _xOffset, _yOffset);
+						var _uvs = new __CollageImageUVsClass(_texPage, owner.__texPageCount, _uvX, _uvY, _uvW, _uvH, _drawX, _drawY, _ogW, _ogH, _xOffset, _yOffset);
 						_imageInfo.__subImagesArray[_sub] = _uvs;
 						// Store next available space
 						if( _bbHeight < _currentPoint.bottom){ 
@@ -728,8 +728,8 @@ function __CollageBuilderClass() constructor {
 						}
 						
 						// Save texture page
-						if (owner.texPageCount == 0) || (owner.__texPageArray[owner.texPageCount-1] != _texPage) {
-							owner.__texPageArray[owner.texPageCount++] = _texPage;
+						if (owner.__texPageCount == 0) || (owner.__texPageArray[owner.__texPageCount-1] != _texPage) {
+							owner.__texPageArray[owner.__texPageCount++] = _texPage;
 						}
 						_texPage = new __CollageTexturePageClass(_texWidth, _texHeight);
 						_texPage.start();
@@ -751,14 +751,14 @@ function __CollageBuilderClass() constructor {
 		
 		// Give texture page + safety check
 		if (array_length(_normalSprites) > 0) {
-			if (owner.texPageCount != 0) {
-				if (owner.__texPageArray[owner.texPageCount-1] != _texPage) {
-					owner.__texPageArray[owner.texPageCount++] = _texPage;
+			if (owner.__texPageCount != 0) {
+				if (owner.__texPageArray[owner.__texPageCount-1] != _texPage) {
+					owner.__texPageArray[owner.__texPageCount++] = _texPage;
 				}
-			} else if (array_length(owner.__texPageArray) > 0) && (owner.__texPageArray[owner.texPageCount] == _texPage) {
+			} else if (array_length(owner.__texPageArray) > 0) && (owner.__texPageArray[owner.__texPageCount] == _texPage) {
 				// Do nothing
 			} else {
-				owner.__texPageArray[owner.texPageCount++] = _texPage;	
+				owner.__texPageArray[owner.__texPageCount++] = _texPage;	
 			}
 		}
 		
@@ -869,7 +869,7 @@ function __CollageBuilderClass() constructor {
 					__setImage(_spriteData.name, _imageInfo);
 					
 					var _subImages = _spriteInfo.num_subimages;
-					owner.imageCount++;
+					owner.__imageCount++;
 					array_push(owner.__imageList, _imageInfo);
 					if (__COLLAGE_IMAGES_ARE_PUBLIC) owner.__imageMap[$ _spriteData.__name] = _imageInfo;
 				}
@@ -883,7 +883,7 @@ function __CollageBuilderClass() constructor {
 						var _uvY = _currentPoint.top + ((_tiling[1]) ? 2 : 0);
 						var _uvW = _wScale;
 						var _uvH = _hScale;
-						var _uvs = new __CollageImageUVsClass(_texPage, owner.texPageCount, _uvX, _uvY, _uvW, _uvH, _drawX, _drawY, _ogW, _ogH,/*_sprWidth - _drawW - 2, _sprHeight - _drawH - 2,*/ _imageInfo.xoffset, _imageInfo.yoffset);
+						var _uvs = new __CollageImageUVsClass(_texPage, owner.__texPageCount, _uvX, _uvY, _uvW, _uvH, _drawX, _drawY, _ogW, _ogH,/*_sprWidth - _drawW - 2, _sprHeight - _drawH - 2,*/ _imageInfo.xoffset, _imageInfo.yoffset);
 						_imageInfo.__subImagesArray[_sub] = _uvs;
 						// We declare this finished
 						_texPage.finish();
@@ -894,8 +894,8 @@ function __CollageBuilderClass() constructor {
 						}
 						
 						// Save texture page
-						if (owner.texPageCount == 0) || (owner.__texPageArray[owner.texPageCount-1] != _texPage) {
-							owner.__texPageArray[owner.texPageCount++] = _texPage;
+						if (owner.__texPageCount == 0) || (owner.__texPageArray[owner.__texPageCount-1] != _texPage) {
+							owner.__texPageArray[owner.__texPageCount++] = _texPage;
 						}
 						
 						if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + "\"" + _spriteData.__name + "\"" + " is currently being processed... " + string(_sub+1) + "/" + string(_subImages));
@@ -907,12 +907,12 @@ function __CollageBuilderClass() constructor {
 		
 		// Give texture page + safety check
 		if (array_length(_3DSprites) > 0) {
-			if (owner.texPageCount != 0) {
-				if (owner.__texPageArray[owner.texPageCount-1] != _texPage) {
-					owner.__texPageArray[owner.texPageCount++] = _texPage;
+			if (owner.__texPageCount != 0) {
+				if (owner.__texPageArray[owner.__texPageCount-1] != _texPage) {
+					owner.__texPageArray[owner.__texPageCount++] = _texPage;
 				}
-			} else if (!(array_length(owner.__texPageArray) > 0) && (owner.__texPageArray[owner.texPageCount] == _texPage)) {
-				owner.__texPageArray[owner.texPageCount++] = _texPage;	
+			} else if (!(array_length(owner.__texPageArray) > 0) && (owner.__texPageArray[owner.__texPageCount] == _texPage)) {
+				owner.__texPageArray[owner.__texPageCount++] = _texPage;	
 			}
 		}
 		
