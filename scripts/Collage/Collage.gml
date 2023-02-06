@@ -8,7 +8,7 @@
 /* Feather ignore all */
 function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DEFAULT_TEXTURE_SIZE, _crop = __COLLAGE_DEFAULT_CROP, _separation = __COLLAGE_DEFAULT_SEPARATION, _optimize = __COLLAGE_DEFAULT_OPTIMIZE) constructor {
 	// Members
-	__CollageInit();
+	static __system = __CollageSystem();
 	__state = CollageBuildStates.NORMAL;
 	__texPageArray = [];
 	__texPageCount = 0;
@@ -27,13 +27,13 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	__optimize = _optimize;
 	__name = is_undefined(_identifier) ? _identifier : string(_identifier);
 	
-	array_push(global.__CollageTexturePagesList, self);
+	array_push(__system.__CollageTexturePagesList, self);
 	if (is_string(_identifier)) {
-		if (variable_struct_exists(global.__CollageTexturePagesMap, _identifier)) {
+		if (variable_struct_exists(__system.__CollageTexturePagesMap, _identifier)) {
 			__CollageThrow(_identifier + " already exists as a Collage name!");	
 		}
 		
-		global.__CollageTexturePagesMap[$ _identifier] = self;
+		__system.__CollageTexturePagesMap[$ _identifier] = self;
 	}
 	
 	// Init texture settings
@@ -117,15 +117,15 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 			__isWaitingOnAsync = true;
 			__status = CollageStatus.WAITING_ON_FILES;
 			var _i = 0;
-			repeat(array_length(global.__CollageAsyncList)) {
-				if (global.__CollageAsyncList[_i] == self) {
+			repeat(array_length(__system.__CollageAsyncList)) {
+				if (__system.__CollageAsyncList[_i] == self) {
 					break;	
 				}
 				++_i;
 			}
 			
-			if (_i == array_length(global.__CollageAsyncList)) {
-				array_push(global.__CollageAsyncList, self);
+			if (_i == array_length(__system.__CollageAsyncList)) {
+				array_push(__system.__CollageAsyncList, self);
 			}
 			
 			array_push(__asyncList, [_spriteData, undefined]);
@@ -148,7 +148,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		
 		var _identifier = _identifierString ?? sprite_get_name(_spriteID);
 		
-		if (_spriteID <= global.__CollageGMSpriteCount) {
+		if (_spriteID <= __system.__CollageGMSpriteCount) {
 			_spriteID = sprite_duplicate(_spriteIdentifier);
 			if (__COLLAGE_VERBOSE) __CollageTrace(__getName() + _identifier + " is a GMSprite resource added via the IDE, making a copy...");
 			_isCopyValue = true;
@@ -190,15 +190,15 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 			__isWaitingOnAsync = true;
 			__status = CollageStatus.WAITING_ON_FILES;
 			var _i = 0;
-			repeat(array_length(global.__CollageAsyncList)) {
-				if (global.__CollageAsyncList[_i] == self) {
+			repeat(array_length(__system.__CollageAsyncList)) {
+				if (__system.__CollageAsyncList[_i] == self) {
 					break;	
 				}
 				++_i;
 			}
 			
-			if (_i == array_length(global.__CollageAsyncList)) {
-				array_push(global.__CollageAsyncList, self);
+			if (_i == array_length(__system.__CollageAsyncList)) {
+				array_push(__system.__CollageAsyncList, self);
 			}
 			
 			array_push(__asyncList, [_spriteData, method_get_index(__InternalAddFileStrip), [_spriteData, _removeBack, _smooth, _xOrigin, _yOrigin, _is3D]]);
@@ -215,39 +215,44 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		}
 	}
 	
-	static __InternalAddFileStrip = function(_spriteData, _removeBack, _smooth, _xOrigin, _yOrigin, _is3D) {	
+	static __InternalAddFileStrip = function(_spriteData, _removeBack = false, _smooth = false, _xOrigin, _yOrigin, _is3D) {	
 		var _spriteSheet = _spriteData.__spriteID;
 		var _width = sprite_get_width(_spriteSheet);
 		var _height = sprite_get_height(_spriteSheet);
 		var _offset = round(_width / _height);
+		var _surf = -1;
+		var _subImages = 1;
+		if (_offset != 0) {
 		_width = _height;
 		
-		var _subImages = _offset;
+		_subImages = _offset;
 		var _i = 0;
-		var _surf = surface_create(_width, _height);
+		_surf = surface_create(_width, _height);
 		var _sprite = -1;
 		
 		CollageSterlizeGPUState();
-		repeat(_offset) {
-			surface_set_target(_surf);
-			draw_clear_alpha(0, 0);
-			draw_sprite_part(_spriteSheet, 0, _i*_width, 0, _width, _height, 0, 0);
-			surface_reset_target();
-			++_i;
-			if (!sprite_exists(_sprite)) {
-				_sprite = sprite_create_from_surface(_surf, 0, 0, _width, _height, _removeBack, _smooth, _xOrigin, _yOrigin);	
-			} else {
-				sprite_add_from_surface(_sprite, _surf, 0, 0, _width, _height, _removeBack, _smooth);
+			repeat(_offset) {
+				surface_set_target(_surf);
+				draw_clear_alpha(0, 0);
+				draw_sprite_part(_spriteSheet, 0, _i*_width, 0, _width, _height, 0, 0);
+				surface_reset_target();
+				++_i;
+				if (!sprite_exists(_sprite)) {
+					_sprite = sprite_create_from_surface(_surf, 0, 0, _width, _height, _removeBack, _smooth, _xOrigin, _yOrigin);	
+				} else {
+					sprite_add_from_surface(_sprite, _surf, 0, 0, _width, _height, _removeBack, _smooth);
+				}
 			}
+			CollageRestoreGPUState();
+		} else {
+			_sprite = sprite_duplicate(_spriteSheet);	
 		}
-		CollageRestoreGPUState();
-		
 		_spriteData.__spriteID = _sprite;
 		_spriteData.__subImages = _subImages;
 		sprite_delete(_spriteSheet);
 		
 		array_push(__batchImageList, _spriteData);
-		surface_free(_surf);
+		if (_surf != -1) surface_free(_surf);
 		_spriteData.SetOrigin(_xOrigin, _yOrigin);
 		return _spriteData;
 	}	
@@ -326,7 +331,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		}
 	}
 	
-	static FreePages = function() {
+	static Clear = function() {
 		var _i = 0;
 		repeat(array_length(__texPageArray)) {
 			__texPageArray[_i++].Free();	
@@ -336,7 +341,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		var _i = 0;
 		if (__COLLAGE_IMAGES_ARE_PUBLIC) {
 			repeat(__imageCount) {
-				variable_struct_remove(global.__CollageImageMap, __imageList[_i++].__name);
+				variable_struct_remove(__system.__CollageImageMap, __imageList[_i++].__name);
 			}	
 		}
 		
@@ -358,7 +363,6 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	
 	static GetTexture = function(_index) {
 		if (_index < __texPageCount) && (_index >= 0) {
-			__texPageArray[_index].checkSurface();
 			return __texPageArray[_index].GetTexture();
 		}
 		
@@ -373,13 +377,13 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		var _len = __texPageCount;
 		var _i = 0;
 		repeat(_len) {
-			__texPageArray[_i++].__cacheTexture();
+			__texPageArray[_i++].__UnloadVRAM();
 		}
 	}
 	
 	static FlushPage = function(_index) {
 		if (_index >= 0 && _index < __texPageCount) {
-			__texPageArray[_index].__cacheTexture();
+			__texPageArray[_index].__UnloadVRAM();
 		}
 	}
 	
@@ -387,13 +391,13 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		var _len = __texPageCount;
 		var _i = 0;
 		repeat(_len) {
-			__texPageArray[_i++].__restoreFromCache();
+			__texPageArray[_i++].CheckSurface();
 		}
 	}
 	
 	static PrefetchPage = function(_index) {
 		if (_index >= 0 && _index < __texPageCount) {
-			__texPageArray[_index].__restoreFromCache();
+			__texPageArray[_index].CheckSurface();
 		}	
 	}
 		
@@ -479,17 +483,17 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	}
 	
 	static Destroy = function() {
-		FreePages();
+		Clear();
 		var _i = 0;
-		repeat(array_length(global.__CollageTexturePagesList)) {
-			if (global.__CollageTexturePagesList[_i] == self) {
-				array_delete(global.__CollageTexturePagesList, _i, 1);
+		repeat(array_length(__system.__CollageTexturePagesList)) {
+			if (__system.__CollageTexturePagesList[_i] == self) {
+				array_delete(__system.__CollageTexturePagesList, _i, 1);
 				break;
 			}
-			_i++
+			_i++;
 		}
-		if (is_string(name)) {
-			variable_struct_remove(global.__CollageTexturePagesMap, name);
+		if (is_string(__name)) {
+			variable_struct_remove(__system.__CollageTexturePagesMap, __name);
 		}
 		
 		// Demolish states
@@ -530,5 +534,12 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		return variable_struct_exists(__imageMap, _identifier);
 	}
 	
+	static Cache = function() {
+		var _len = __texPageCount;
+		var _i = 0;
+		repeat(_len) {
+			__texPageArray[_i++].__cacheTexture();
+		}
+	}
 	#endregion 	
 }

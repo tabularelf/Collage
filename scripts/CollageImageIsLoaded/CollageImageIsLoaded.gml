@@ -5,6 +5,7 @@
 /* Feather ignore all */
 function CollageImageIsLoaded(_identifier, _subImage) {
 	gml_pragma("forceinline");
+	static __system = __CollageSystem();
 	var _image;
 	
 	if (is_string(_identifier)) {
@@ -12,7 +13,7 @@ function CollageImageIsLoaded(_identifier, _subImage) {
 			__CollageThrow("__COLLAGE_IMAGES_ARE_PUBLIC is set to false and therefore string names do not work.");
 		}
 		
-		 _image =  global.__CollageImageMap[$ _identifier];
+		 _image =  __system.__CollageImageMap[$ _identifier];
 	} else {
 		_image = _identifier;	
 	}

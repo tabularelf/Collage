@@ -61,6 +61,10 @@
 // By default this is false to match GameMaker's behaviour.
 #macro __COLLAGE_STRETCHED_RESPECT_ORIGIN false
 
+// Whether Collage should respect the origin of the image or not when drawing part.
+// By default this is false to match GameMaker's behaviour.
+#macro __COLLAGE_PART_RESPECT_ORIGIN false
+
 // Whether Collage should clear the VRAM before making another texture page (as in The texture page gets full, surface is freed but contents is saved)
 // This is mostly to keep the VRAM usage low during building while having multiple sprites packed into VRAM at once.
 #macro __COLLAGE_BUILDER_VRAM_CLEAR false

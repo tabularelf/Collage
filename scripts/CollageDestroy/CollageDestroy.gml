@@ -3,8 +3,9 @@
 /* Feather ignore all */
 function CollageDestroy(_identifier) {
 	gml_pragma("forceinline");
+	static __system = __CollageSystem();
     if (is_string(_identifier)) {
-		global.__CollageTexturePagesMap[$ _identifier].Destroy();
+		__system.__CollageTexturePagesMap[$ _identifier].Destroy();
     } else {
 		_identifier.Destroy();	
 	}

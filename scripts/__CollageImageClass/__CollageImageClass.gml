@@ -11,6 +11,7 @@ function __CollageImageClass(_spriteStruct, _name, _cropW, _cropH, _tiling, _rat
 	__subImagesCount = _spriteStruct.spriteInfo.num_subimages;
 	__subImagesArray = array_create(__subImagesCount);
 	__ratio = _ratio;
+    __scaled = 1/_ratio;
 	__tiling = _tiling;
 	
 	static __InternalGetUvs = function(_imageIndex) {

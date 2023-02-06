@@ -1,6 +1,7 @@
 /// @ignore
 /* Feather ignore all */
-function __CollageSpriteFileDataClass(_identifier, _spriteID, _subImage = 1, _isCopy = (_spriteID > global.__CollageGMSpriteCount)) constructor {
+function __CollageSpriteFileDataClass(_identifier, _spriteID, _subImage = 1, _isCopy = undefined) constructor {
+	static __system = __CollageSystem();
 	__name = _identifier;
 	__subImages = _subImage;
 	__xOrigin = 0;
@@ -10,7 +11,7 @@ function __CollageSpriteFileDataClass(_identifier, _spriteID, _subImage = 1, _is
 	}
 	__spriteID = _spriteID;
 	__is3D = 0;
-	__isCopy = _isCopy;
+	__isCopy = _isCopy ?? (_spriteID > __system.__CollageGMSpriteCount);
 	__keepTogether = false;
 	__premultiplyAlpha = false;
 	__tiling = 0;

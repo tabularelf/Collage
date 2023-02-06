@@ -7,14 +7,13 @@
 function CollageDrawImageTiled(_imageData, _imageIndex, _x, _y) {
 	gml_pragma("forceinline");
 	if (!is_struct(_imageData)) __CollageThrow("Invalid collage_image! Got " + string(_imageData) + " instead!");
-	var _ratio = _imageData.__ratio;
 	var _uvs = _imageData.__InternalGetUvs(_imageIndex);
 	
-	_uvs.texturePageStruct.CheckSurface();	
+	if (!_uvs.texturePageStruct.__isLoaded) _uvs.texturePageStruct.CheckSurface();
 	
 	var _xPos = _x-_uvs.xPos;
 	var _yPos = _y-_uvs.yPos;
-	var _scale = 1/_ratio;
+	var _scale = _imageData.__scaled;
 	var _bboxLeft = _uvs.left;
 	var _bboxTop = _uvs.top;
 	var _bboxRight = _uvs.right;
@@ -30,6 +29,7 @@ function CollageDrawImageTiled(_imageData, _imageIndex, _x, _y) {
 	var _viewCam = view_camera[view_current];
 	var _w = camera_get_view_width(_viewCam);
 	var _h = camera_get_view_height(_viewCam);
+	
 	repeat((_w div _bboxWidth)+1) {
 		_j = 0;
 		repeat((_h div _bboxHeight)+1) {

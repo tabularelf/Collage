@@ -1,12 +1,19 @@
 /// @ignore
 /* Feather ignore all */
 function __CollageTexturePageClass(_width, _height) constructor {
+		static __idCount = 0;
+		static __system = __CollageSystem();
+		static __tp_list = __system.__CollageTPLoadedList;
 		__width = _width;
 		__height = _height;
 		__surface = -1;
 		__buffer = -1;
+		__texture = -1;
 		__cacheBuffer = -1;
 		__isLoaded = false;
+		__textureID = __idCount;
+		__isAlive = true;
+		__idCount++;
 		
 		static start = function() {
 			if !(surface_exists(__surface)) {
@@ -30,7 +37,7 @@ function __CollageTexturePageClass(_width, _height) constructor {
 			}
 			
 			buffer_get_surface(__buffer, __surface, 0);
-			__isLoaded = true;
+			__HandleLoad(true);
 		}
 		
 		static __init = function() {
@@ -63,7 +70,8 @@ function __CollageTexturePageClass(_width, _height) constructor {
 				__surface = -1;
 			}
 			
-			__isLoaded = false;
+			__HandleLoad(false);
+			__isAlive = false;
 		}
 		
 		static CheckSurface = function() {
@@ -72,6 +80,7 @@ function __CollageTexturePageClass(_width, _height) constructor {
 				if !(surface_exists(__surface)) {
 					__surfaceCreate();
 					buffer_set_surface(__buffer,__surface,0);
+					__HandleLoad(true);
 				}
 			}
 		}
@@ -81,15 +90,29 @@ function __CollageTexturePageClass(_width, _height) constructor {
 				var _depthSetting = surface_get_depth_disable();
 				surface_depth_disable(true);
 				__surface = surface_create(__width, __height);
+				__texture = surface_get_texture(__surface);
 				surface_depth_disable(_depthSetting);
+			}
+		}
+		
+		static __HandleLoad = function(_doLoad) {
+			if (_doLoad) {
+				if (ds_list_find_index(__tp_list, self) == -1) {
+					ds_list_add(__tp_list, self);	
+				}
+				__isLoaded = true;
+			} else {
+				var _pos = ds_list_find_index(__tp_list, self);
+				if (_pos != -1) {
+					ds_list_delete(__tp_list, _pos);	
+				}	
+				__isLoaded = false;
 			}
 		}
 			
 		static __cacheTexture = function() {
-			if !(buffer_exists(__cacheBuffer)) {
+			if (!buffer_exists(__cacheBuffer)) {
 				if (buffer_exists(__buffer)) {
-					// Have to do this due to a bug with buffer_compress. 
-					// Will change later once bugfix comes through.
 					var _size = __width*__height*4;
 					__cacheBuffer = buffer_compress(__buffer, 0, _size);
 					
@@ -105,7 +128,7 @@ function __CollageTexturePageClass(_width, _height) constructor {
 						__surface = -1;
 					}
 				}
-				isLoaded = false;
+				__HandleLoad(false);
 			}
 		}
 			
@@ -122,7 +145,7 @@ function __CollageTexturePageClass(_width, _height) constructor {
 					CheckSurface();
 					
 					// It has loaded successfully!
-					__isLoaded = true;
+					__HandleLoad(true);
 				} else {
 					__CollageThrow("Something terrible has gone wrong with unloading cache data!");	
 				}
@@ -133,17 +156,15 @@ function __CollageTexturePageClass(_width, _height) constructor {
 			if (surface_exists(__surface)) {
 				surface_free(__surface);	
 				__surface = -1;
+				__HandleLoad(false);
 			}
 		}
 		
 		static GetTexture = function() {
-			CheckSurface();
-			return surface_get_texture(__surface);
+			return __texture;
 		}
 		
 		static GetSurface = function() {
-			CheckSurface();
 			return __surface;
 		}
 }
-	
