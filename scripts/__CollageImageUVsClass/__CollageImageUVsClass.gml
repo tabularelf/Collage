@@ -10,9 +10,9 @@ function __CollageImageUVsClass(_texPageStruct, _texPageNum, _left, _top, _right
 	//trimRight = _trimRight;
 	//trimBottom = _trimBottom;
 	//rotate = _cropRotate;
-	normLeft = _left / _texPageStruct.__width;
+	normLeft = (_left / _texPageStruct.__width);
 	normRight = (_right / _texPageStruct.__width);
-	normTop = _top / _texPageStruct.__height;
+	normTop = (_top / _texPageStruct.__height);
 	normBottom = (_bottom / _texPageStruct.__height);
 	normWidth = normLeft+normRight;
 	normHeight = normTop+normBottom;

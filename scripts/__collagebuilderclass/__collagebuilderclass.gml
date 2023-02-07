@@ -5,12 +5,14 @@
 /// @ignore
 /* Feather ignore all */
 function __CollageBuilderClass() constructor {
+	/* Feather ignore all */
+	static __system = __CollageSystem();
 	owner = other;
 	bboxPoints = [];
 	init = false;
 	freeSpacePoints = [];
 	
-	static __drawImage = function(_spriteData, _spriteID, _sub, _drawXValue, _drawYValue, _drawWValue, _drawHValue, _currentPoint, _ratio, _wScale, _hScale) {
+	static __drawImage = function(_spriteData, _spriteID, _sub, _drawXValue, _drawYValue, _drawWValue, _drawHValue, _currentPoint = undefined, _ratio = 1, _wScale = 1, _hScale = 1) {
 		// Check Premultiply properties
 		if (_spriteData.__premultiplyAlpha) {
 			var _gpuBlendEnable = gpu_get_blendenable();	
@@ -19,6 +21,13 @@ function __CollageBuilderClass() constructor {
 			gpu_set_blendmode_ext(bm_one, bm_inv_src_alpha);
 			shader_set(__ShdCollagePremultiply);
 		}
+		
+		static __defaultCP = {
+			left: 0,
+			top: 0
+		}
+		
+		var _point = _currentPoint ?? __defaultCP;
 		
 		var _tiling = __CollageExtractTiling(_spriteData.__tiling);
 		
@@ -38,8 +47,8 @@ function __CollageBuilderClass() constructor {
 			_drawYValue, 
 			_drawWValue, 
 			_drawHValue, 
-			_currentPoint.left + ((_tiling[0]) ? 2 : 0), 
-			_currentPoint.top + ((_tiling[1]) ? 2 : 0), 
+			_point.left + ((_tiling[0]) ? 2 : 0), 
+			_point.top + ((_tiling[1]) ? 2 : 0), 
 			_ratio, 
 			_ratio, 
 			_col, 
@@ -57,8 +66,8 @@ function __CollageBuilderClass() constructor {
 				_drawYValue, 
 				2, 
 				_drawHValue, 
-				_currentPoint.left, 
-				_currentPoint.top + ((_tiling[1]) ? 2 : 0), 
+				_point.left, 
+				_point.top + ((_tiling[1]) ? 2 : 0), 
 				_ratio, 
 				_ratio, 
 				_col, 
@@ -72,8 +81,8 @@ function __CollageBuilderClass() constructor {
 				_drawYValue, 
 				2, 
 				_drawHValue, 
-				_currentPoint.left + _width + 2, 
-				_currentPoint.top + ((_tiling[1]) ? 2 : 0), 
+				_point.left + _width + 2, 
+				_point.top + ((_tiling[1]) ? 2 : 0), 
 				_ratio, 
 				_ratio, 
 				_col, 
@@ -91,8 +100,8 @@ function __CollageBuilderClass() constructor {
 				_drawH, 
 				_drawWValue, 
 				2, 
-				_currentPoint.left + ((_tiling[0]) ? 2 : 0), 
-				_currentPoint.top, 
+				_point.left + ((_tiling[0]) ? 2 : 0), 
+				_point.top, 
 				_ratio, 
 				_ratio, 
 				_col, 
@@ -106,8 +115,8 @@ function __CollageBuilderClass() constructor {
 				_drawYValue, 
 				_drawWValue, 
 				2, 
-				_currentPoint.left + ((_tiling[0]) ? 2 : 0), 
-				_currentPoint.top + _height + 2, 
+				_point.left + ((_tiling[0]) ? 2 : 0), 
+				_point.top + _height + 2, 
 				_ratio, 
 				_ratio, 
 				_col, 
@@ -125,8 +134,8 @@ function __CollageBuilderClass() constructor {
 				_drawH,
 				2,
 				2,
-				_currentPoint.left, 
-				_currentPoint.top, 
+				_point.left, 
+				_point.top, 
 				_ratio, 
 				_ratio, 
 				_col, 
@@ -141,8 +150,8 @@ function __CollageBuilderClass() constructor {
 				_drawH,
 				2,
 				2,
-				_currentPoint.left + _width + 2, 
-				_currentPoint.top, 
+				_point.left + _width + 2, 
+				_point.top, 
 				_ratio, 
 				_ratio, 
 				_col, 
@@ -157,8 +166,8 @@ function __CollageBuilderClass() constructor {
 				_drawYValue,
 				2,
 				2,
-				_currentPoint.left, 
-				_currentPoint.top + _height + 2, 
+				_point.left, 
+				_point.top + _height + 2, 
 				_ratio, 
 				_ratio, 
 				_col, 
@@ -173,8 +182,8 @@ function __CollageBuilderClass() constructor {
 				_drawYValue,
 				2,
 				2,
-				_currentPoint.left + _width + 2, 
-				_currentPoint.top + _height + 2, 
+				_point.left + _width + 2, 
+				_point.top + _height + 2, 
 				_ratio, 
 				_ratio, 
 				_col, 
@@ -191,7 +200,7 @@ function __CollageBuilderClass() constructor {
 		
 		if (__COLLAGE_RENDER_DEBUG_LINES) {
 			draw_set_colour(make_color_hsv((current_time * 5) mod 256, 255, 255));
-			draw_rectangle(_currentPoint.left+1,_currentPoint.top+1,_currentPoint.left+_wScale-2,_currentPoint.top+_hScale-2, true);
+			draw_rectangle(_point.left+1,_point.top+1,_point.left+_wScale-2,_point.top+_hScale-2, true);
 			draw_set_colour(c_white);	
 		}	
 	}
@@ -199,7 +208,7 @@ function __CollageBuilderClass() constructor {
 	static __checkImage = function(_str) {
 		/* Feather ignore once GM2047 */
 		if (__COLLAGE_IMAGES_ARE_PUBLIC) {
-			return variable_struct_exists(global.__CollageImageMap, _str);	
+			return variable_struct_exists(__system.__CollageImageMap, _str);	
 		} else {
 			return variable_struct_exists(owner.__imageMap, _str);	
 		}
@@ -207,7 +216,7 @@ function __CollageBuilderClass() constructor {
 	
 	static __getImage = function(_str) {
 		if (__COLLAGE_IMAGES_ARE_PUBLIC) {
-			return global.__CollageImageMap[$ _str];	
+			return __system.__CollageImageMap[$ _str];	
 		} else {
 			return owner.__imageMap[$ _str];	
 		}
@@ -215,7 +224,7 @@ function __CollageBuilderClass() constructor {
 	
 	static __setImage = function(_str, _data) {
 		if (__COLLAGE_IMAGES_ARE_PUBLIC) {
-			global.__CollageImageMap[$ _str] = _data;	
+			__system.__CollageImageMap[$ _str] = _data;	
 		} else {
 			owner.__imageMap[$ _str] = _data;	
 		}
@@ -267,7 +276,9 @@ function __CollageBuilderClass() constructor {
 		var _crop = owner.__crop;
 		var _texWidth = owner.__width;
 		var _texHeight = owner.__height;
-		var _spriteList = owner.__batchImageList;
+		var _spriteList = array_create(array_length(owner.__batchImageList));
+		array_copy(_spriteList, 0, owner.__batchImageList, 0, array_length(owner.__batchImageList));
+		array_resize(owner.__batchImageList, 0);
 		var _batchMode = (owner.__state == CollageBuildStates.BATCHING);
 		var _normalSprites = array_create(array_length(_spriteList));
 		var _3DSprites = array_create(array_length(_spriteList));
@@ -776,6 +787,8 @@ function __CollageBuilderClass() constructor {
 				var _yScale = _spriteStruct.yScale;
 				var _wScale = _spriteStruct.wScale;
 				var _hScale = _spriteStruct.hScale;
+				var _xOffset = _spriteData.__xOrigin;
+				var _yOffset = _spriteData.__yOrigin;
 				var _ogW = _spriteStruct.originalWidth;
 				var _ogH = _spriteStruct.originalHeight;
 				
@@ -786,7 +799,7 @@ function __CollageBuilderClass() constructor {
 				
 				var _subStart = 0;
 				if (__COLLAGE_VERBOSE) __CollageTrace(_collageName + "\"" + _spriteData.__name + "\"" + " is currently being processed... 0/" + string(_spriteInfo.num_subimages));
-				if (__checkImage(_spriteData.name)) {
+				if (__checkImage(_spriteData.__name)) {
 					switch(__COLLAGE_IMAGE_NAME_COLLISION_HANDLE) {
 						case 0:
 							__CollageTrace(_collageName + "\"" + _spriteData.__name + "\"" + " already exists! Skipping...");
@@ -804,7 +817,7 @@ function __CollageBuilderClass() constructor {
 										var _name = _spriteName + string(++_num);
 								}
 								__CollageTrace(_collageName + "\"" + _spriteData.__name + "\"" + " already exists! Reidentified as " + _name);
-								_spriteData.name = _name;
+								_spriteData.__name = _name;
 								
 								var _imageInfo = new __CollageImageClass(_spriteStruct, _spriteData.__name, _drawW, _drawH, _spriteData.__tiling, _ratio);
 								// Lets add it to database
@@ -866,7 +879,7 @@ function __CollageBuilderClass() constructor {
 				} else {
 					var _imageInfo = new __CollageImageClass(_spriteStruct, _spriteData.__name, _drawW, _drawH, _spriteData.__tiling, _ratio);
 					// Lets add it to database
-					__setImage(_spriteData.name, _imageInfo);
+					__setImage(_spriteData.__name, _imageInfo);
 					
 					var _subImages = _spriteInfo.num_subimages;
 					owner.__imageCount++;
@@ -874,16 +887,16 @@ function __CollageBuilderClass() constructor {
 					if (__COLLAGE_IMAGES_ARE_PUBLIC) owner.__imageMap[$ _spriteData.__name] = _imageInfo;
 				}
 				for(var _sub = _subStart; _sub < _subImages; ++_sub) {
-						_texPage = new __CollageTexturePageClass(_texWidth, _texHeight);
+						_texPage = new __CollageTexturePageClass(_drawW, _drawH);
 						_texPage.start();
-						__drawImage(_spriteData, _spriteID, _sub, _drawX, _drawY, _drawW, _drawH, _currentPoint, _ratio, _wScale, _hScale);
+						__drawImage(_spriteData, _spriteID, _sub, _drawX, _drawY, _drawW, _drawH, undefined, _ratio, _wScale, _hScale);
 						
 						var _tiling = __CollageExtractTiling(_spriteData.__tiling);
-						var _uvX = _currentPoint.left + ((_tiling[0]) ? 2 : 0); 
-						var _uvY = _currentPoint.top + ((_tiling[1]) ? 2 : 0);
+						var _uvX = ((_tiling[0]) ? 2 : 0); 
+						var _uvY = ((_tiling[1]) ? 2 : 0);
 						var _uvW = _wScale;
 						var _uvH = _hScale;
-						var _uvs = new __CollageImageUVsClass(_texPage, owner.__texPageCount, _uvX, _uvY, _uvW, _uvH, _drawX, _drawY, _ogW, _ogH,/*_sprWidth - _drawW - 2, _sprHeight - _drawH - 2,*/ _imageInfo.xoffset, _imageInfo.yoffset);
+						var _uvs = new __CollageImageUVsClass(_texPage, owner.__texPageCount, _uvX, _uvY, _uvW, _uvH, _drawX, _drawY, _ogW, _ogH,/*_sprWidth - _drawW - 2, _sprHeight - _drawH - 2,*/ _xOffset, _yOffset);
 						_imageInfo.__subImagesArray[_sub] = _uvs;
 						// We declare this finished
 						_texPage.finish();

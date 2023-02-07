@@ -4,13 +4,14 @@
 /* Feather ignore all */
 function CollageImageGetInfo(_identifier) {
 	gml_pragma("forceinline");
+	static __system = __CollageSystem();
 	if (!__COLLAGE_IMAGES_ARE_PUBLIC) {
 		__CollageThrow("__COLLAGE_IMAGES_ARE_PUBLIC is set to false and therefore string names do not work.");
 	}
 	
-	if (!variable_struct_exists(global.__CollageImageMap, _identifier)) {
+	if (!variable_struct_exists(__system.__CollageImageMap, _identifier)) {
 		__CollageThrow("Image " + string(_identifier) + " does not exist!");
 	}
 	
-	return global.__CollageImageMap[$ _identifier];
+	return __system.__CollageImageMap[$ _identifier];
 }

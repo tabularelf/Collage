@@ -3,5 +3,6 @@
 /* Feather ignore all */
 function CollageGet(_identifier) {
 	gml_pragma("forceinline");
-    return global.__CollageTexturePagesMap[$ _identifier];
+	static __system = __CollageSystem();
+    return __system.__CollageTexturePagesMap[$ _identifier];
 }

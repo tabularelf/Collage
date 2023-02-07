@@ -5,6 +5,7 @@
 /* Feather ignore all */
 function CollageImageGetUVsArray(_identifier, _imageIndex) {
 	gml_pragma("forceinline");
+	static __system = __CollageSystem();
     var _uvs;
     if (is_string(_identifier)) {
 		if (!__COLLAGE_IMAGES_ARE_PUBLIC) {
@@ -12,7 +13,7 @@ function CollageImageGetUVsArray(_identifier, _imageIndex) {
 		}
 		
 		if (!CollageImageExists(_identifier)) __CollageThrow(_identifier + " doesn't exist!");
-		_uvs = global.__CollageImageMap[$ _identifier].__InternalGetUvs(_imageIndex);
+		_uvs = __system.__CollageImageMap[$ _identifier].__InternalGetUvs(_imageIndex);
 	} else {
 		if (!CollageImageExists(_identifier)) __CollageThrow(_identifier + " doesn't exist!");
 	    _uvs =_identifier.__InternalGetUvs(_imageIndex);

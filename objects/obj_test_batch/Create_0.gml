@@ -1,4 +1,4 @@
-texPage = new Collage();
+texPage = new Collage(,,,,,false);
 texPage.StartBatch();
 var _file = file_find_first("*.png", 0);
 var _i = 0;
@@ -16,4 +16,4 @@ _i = 0;
 repeat(array_length(_images)) {
 	pos[_i] = {image: _images[_i], x: random(room_width-128), y: random(room_height-128)};
 	++_i;
-}
+}	

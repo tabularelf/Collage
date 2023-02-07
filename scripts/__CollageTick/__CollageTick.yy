@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "__CollageInit",
+  "name": "__CollageTick",
   "isDnD": false,
   "isCompatibility": false,
   "parent": {

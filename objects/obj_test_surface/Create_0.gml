@@ -5,6 +5,16 @@ draw_rectangle_color(0,0, 512, 512, c_red, c_blue, c_green, c_yellow, false);
 surface_reset_target();
 
 texPage.AddSurface(surf, "test");
+
+var _i = 0;
+while(sprite_exists(_i)) {
+	var _num = sprite_get_number(_i);
+	var _j = 0;
+	repeat(_num) {
+		show_debug_message(sprite_get_texture(_i, _j++));
+	}
+	++_i;
+}
 /*
 tempsurf = surface_create(512, 512);
 surface_set_target(tempsurf);

@@ -19,10 +19,11 @@
 function CollageDrawImageGeneral(_imageData, _imageIndex, _left, _top, _width, _height, _x, _y, _xScale, _yScale, _rot, _col1, _col2, _col3, _col4, _alpha) {
 	gml_pragma("forceinline");
 	if (!is_struct(_imageData)) __CollageThrow("Invalid collage_image! Got " + string(_imageData) + " instead!");
-	var _ratio = _imageData.__ratio;
+	var _ratio = (__COLLAGE_SCALE_TO_TEXTURES_ON_PAGE) ? _imageData.__ratio : 1;
 	var _uvs = _imageData.__InternalGetUvs(_imageIndex);
 	
-	_uvs.texturePageStruct.CheckSurface();	
+	if (!_uvs.texturePageStruct.__isLoaded) _uvs.texturePageStruct.CheckSurface();	
+	
 	var _xOffset = _uvs.xPos;
 	var _yOffset = _uvs.yPos;
 	var _xPos = lengthdir_x(_xOffset * _xScale, _rot) + lengthdir_x(_yOffset * _yScale, _rot - 90);

@@ -1,12 +1,13 @@
 /// @func CollageRestoreGPUState()
 /* Feather ignore all */
 function CollageRestoreGPUState() {
+	/* Feather ignore all */
 	gml_pragma("forceinline");
 	var _instance = __CollageGPUStateSingleton();
-	if (!_instance.isSteralized) {
+	if (!_instance.isSterilized) {
 		__CollageThrow("GPU is not sterlized! Please use CollageSterlizeGPUState()!")
 	}
-	_instance.isSteralized = false;
+	_instance.isSterilized = false;
 	// Restore settings
 	gpu_set_blendenable(_instance.gpuBlendEnable);
 	// Feather ignore once GM1020 

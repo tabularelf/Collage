@@ -3,5 +3,5 @@ if keyboard_check_pressed(vk_space) {
 }
 
 if keyboard_check_released(vk_control) {
-	texPage.FreePages();	
+	texPage.Clear();	
 }

@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "__CollageBuildSprite",
+  "name": "__CollageBuildImage",
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
