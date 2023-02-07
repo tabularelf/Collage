@@ -5,7 +5,7 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "System",
-    "path": "folders/Collage/System.yy",
+    "name": "Vertex Buffer",
+    "path": "folders/Collage/System/Vertex Buffer.yy",
   },
 }
