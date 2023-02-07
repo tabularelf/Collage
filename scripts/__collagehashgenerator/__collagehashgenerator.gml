@@ -1,5 +1,7 @@
 /// @ignore
 /* Feather ignore all */
+/// TODO: Preparation for the future of detecting same images and mapping those accordingly
+/*
 function __CollageHashGenerator(_spriteID){
 	var _width = sprite_get_width(_spriteID);
 	var _height = sprite_get_height(_spriteID);

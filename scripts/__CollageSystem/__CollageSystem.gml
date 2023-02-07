@@ -25,7 +25,7 @@ enum CollageRPStatus {
 }
 
 #macro __COLLAGE_CREDITS "@TabularElf - https://tabelf.link/"
-#macro __COLLAGE_VERSION "v0.3.0-preview2"
+#macro __COLLAGE_VERSION "v0.3.0"
 show_debug_message("Collage " + __COLLAGE_VERSION + " Initalized! Created by " + __COLLAGE_CREDITS);
 
 /// @ignore
@@ -51,10 +51,13 @@ function __CollageSystem() {
 					++_i;
 				}
 				_init = true;
-				
-				time_source_start(time_source_create(time_source_global, 1, time_source_units_frames, function() {
-					__CollageTick();
-				}, [], -1));
+				try {
+					time_source_start(time_source_create(time_source_global, 1, time_source_units_frames, function() {
+						__CollageTick();
+					}, [], -1));
+				} catch(_ex) {
+					__CollageThrow("This is running on a version older than 2022.5!");	
+				}
 			}
 		}
 	

@@ -5,6 +5,7 @@
 /// @ignore
 /* Feather ignore all */
 function __CollageBuilderClass() constructor {
+	/* Feather ignore all */
 	static __system = __CollageSystem();
 	owner = other;
 	bboxPoints = [];
