@@ -15,10 +15,10 @@ function __CollageTexturePageClass(_width, _height) constructor {
 		__isAlive = true;
 		__idCount++;
 		
-		static start = function() {
+		static Start = function() {
 			if !(surface_exists(__surface)) {
 				if !(buffer_exists(__buffer)) {
-					__surfaceCreate();
+					__SurfaceCreate();
 					surface_set_target(__surface);
 					draw_clear_alpha(0, 0);
 					surface_reset_target();
@@ -30,21 +30,21 @@ function __CollageTexturePageClass(_width, _height) constructor {
 			surface_set_target(__surface);
 		}
 		
-		static finish = function() {
+		static Finish = function() {
 			surface_reset_target();
 			if !(buffer_exists(__buffer)) {
-				__init();
+				__Init();
 			}
 			
 			buffer_get_surface(__buffer, __surface, 0);
 			__HandleLoad(true);
 		}
 		
-		static __init = function() {
+		static __Init = function() {
 			if !(buffer_exists(__buffer)) {
 				if (buffer_exists(__cacheBuffer)) {
 					// Lets decompress it
-					__restoreFromCache();
+					__RestoreFromCache();
 				} else {
 					__buffer = buffer_create(__width * __height * 4, buffer_fixed, 4);	
 				}
@@ -75,17 +75,17 @@ function __CollageTexturePageClass(_width, _height) constructor {
 		}
 		
 		static CheckSurface = function() {
-			__init();
+			__Init();
 			if (buffer_exists(__buffer)) {
 				if !(surface_exists(__surface)) {
-					__surfaceCreate();
+					__SurfaceCreate();
 					buffer_set_surface(__buffer,__surface,0);
 					__HandleLoad(true);
 				}
 			}
 		}
 			
-		static __surfaceCreate = function() {
+		static __SurfaceCreate = function() {
 			if !(surface_exists(__surface)) {
 				var _depthSetting = surface_get_depth_disable();
 				surface_depth_disable(true);
@@ -110,7 +110,7 @@ function __CollageTexturePageClass(_width, _height) constructor {
 			}
 		}
 			
-		static __cacheTexture = function() {
+		static __CacheTexture = function() {
 			if (!buffer_exists(__cacheBuffer)) {
 				if (buffer_exists(__buffer)) {
 					var _size = __width*__height*4;
@@ -132,7 +132,7 @@ function __CollageTexturePageClass(_width, _height) constructor {
 			}
 		}
 			
-		static __restoreFromCache = function() {
+		static __RestoreFromCache = function() {
 			if (!buffer_exists(__buffer)) && (buffer_exists(__cacheBuffer)) {
 				var _dbuff = buffer_decompress(__cacheBuffer);
 				/* Feather ignore once GM1009 */

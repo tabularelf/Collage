@@ -3,7 +3,7 @@
 /// @param {Real} [width]
 /// @param {Real} [height]
 /// @param {Real} [crop]
-/// @param {Real} [__separation]
+/// @param {Real} [separation]
 /// @param {Bool} [optimize]
 /* Feather ignore all */
 function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DEFAULT_TEXTURE_SIZE, _crop = __COLLAGE_DEFAULT_CROP, _separation = __COLLAGE_DEFAULT_SEPARATION, _optimize = __COLLAGE_DEFAULT_OPTIMIZE) constructor {
@@ -53,6 +53,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		return (is_undefined(__name)) ? "" : __name + " - ";	
 	}
 	
+	#region Batching
 	static StartBatch = function() {
 		if (__state == CollageBuildStates.BATCHING) {
 			__CollageTrace(__getName() + "Currently in batching mode!");
@@ -94,7 +95,9 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		__state = CollageBuildStates.NORMAL;
 		return self;
 	}
+	#endregion
 	
+	#region Image Adding
 	static AddFile = function(_fileName, _identifierString = undefined, _subImage = 1, _removeBack = false, _smooth = false, _xOrigin = 0, _yOrigin = 0, _is3D = false) {
 		if (!__CollageFileFromWeb(_fileName)) && (!file_exists(_fileName)) {
 			// It doesn't exist, obviously!
@@ -330,6 +333,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 			return _imageArray;	
 		}
 	}
+	#endregion
 	
 	static Clear = function() {
 		var _i = 0;
@@ -457,7 +461,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		var _len = __texPageCount;
 		var _i = 0;
 		repeat(_len) {
-			__texPageArray[_i++].__cacheTexture();
+			__texPageArray[_i++].__CacheTexture();
 		}
 	}
 	#endregion 	

@@ -18,7 +18,7 @@ function __CollageOriginValidator(_spriteID, _xOriginValue, _yOriginValue) {
 		case CollageOrigin.TOP: _results[1] = 0; break;
 		case CollageOrigin.BOTTOM: _results[1] = sprite_get_height(_spriteID); break;
 		case CollageOrigin.LEFT: case CollageOrigin.RIGHT: 
-			__CollageThrow("Invalid yorigin set! Can't use " + (_yOriginValue == CollageOrigin.LEFT ? "CollageOrigin.LEFT" : "CollageOrigin.Right") + " as an option!"); 
+			__CollageThrow("Invalid yorigin set! Can't use " + (_yOriginValue == CollageOrigin.LEFT ? "CollageOrigin.LEFT" : "CollageOrigin.RIGHT") + " as an option!"); 
 		break;
 	}
 	
