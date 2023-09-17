@@ -31,6 +31,7 @@
     {"id":{"name":"obj_test_stretched","path":"objects/obj_test_stretched/obj_test_stretched.yy",},"order":10,},
     {"id":{"name":"obj_test_strip","path":"objects/obj_test_strip/obj_test_strip.yy",},"order":5,},
     {"id":{"name":"spr_alphatest_premulti","path":"sprites/spr_alphatest_premulti/spr_alphatest_premulti.yy",},"order":2,},
+    {"id":{"name":"buildVBO","path":"scripts/buildVBO/buildVBO.yy",},"order":19,},
     {"id":{"name":"draw_image_part","path":"scripts/draw_image_part/draw_image_part.yy",},"order":3,},
     {"id":{"name":"CollageDrawImageGeneral","path":"scripts/CollageDrawImageGeneral/CollageDrawImageGeneral.yy",},"order":2,},
     {"id":{"name":"obj_test_blend_property","path":"objects/obj_test_blend_property/obj_test_blend_property.yy",},"order":14,},
@@ -50,6 +51,7 @@
     {"id":{"name":"CollageImageIsLoaded","path":"scripts/CollageImageIsLoaded/CollageImageIsLoaded.yy",},"order":7,},
     {"id":{"name":"CollageImageGetUVs","path":"scripts/CollageImageGetUVs/CollageImageGetUVs.yy",},"order":5,},
     {"id":{"name":"spr_tiletest9","path":"sprites/spr_tiletest9/spr_tiletest9.yy",},"order":10,},
+    {"id":{"name":"obj_test_vbo","path":"objects/obj_test_vbo/obj_test_vbo.yy",},"order":18,},
     {"id":{"name":"CollageDrawImageStretched","path":"scripts/CollageDrawImageStretched/CollageDrawImageStretched.yy",},"order":5,},
     {"id":{"name":"draw_image_tiled","path":"scripts/draw_image_tiled/draw_image_tiled.yy",},"order":7,},
     {"id":{"name":"obj_test_clump_property","path":"objects/obj_test_clump_property/obj_test_clump_property.yy",},"order":12,},
@@ -129,9 +131,9 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"System","folderPath":"folders/Collage/System.yy","order":5,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Classes","folderPath":"folders/Collage/System/Classes.yy","order":1,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Shaders","folderPath":"folders/Collage/System/Shaders.yy","order":2,},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Vertex Buffer","folderPath":"folders/Collage/System/Vertex Buffer.yy","order":16,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Test Cases","folderPath":"folders/Test Cases.yy","order":0,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Assets","folderPath":"folders/Test Cases/Assets.yy","order":13,},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Vertex Buffer","folderPath":"folders/Collage/System/Vertex Buffer.yy","order":16,},
   ],
   "AudioGroups": [
     {"resourceType":"GMAudioGroup","resourceVersion":"1.3","name":"audiogroup_default","targets":-1,},
@@ -224,6 +226,6 @@
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"IMAGE_WITH_SPACE2.png","CopyToMask":-1,"filePath":"datafiles",},
   ],
   "MetaData": {
-    "IDEVersion": "2022.0.0.19",
+    "IDEVersion": "2022.0.1.31",
   },
 }

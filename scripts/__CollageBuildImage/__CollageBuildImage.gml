@@ -7,8 +7,8 @@ function __CollageBuildImage(_vbuffer, _imageData, _index, _x, _y, _z, _widthVal
 	var _left, _right, _top, _bottom, _x1, _y1;
 	_left =			_uvs.normLeft; 
 	_top =			_uvs.normTop;
-	_right =		_left + _uvs.normRight;
-	_bottom =	_top + _uvs.normBottom; 
+	_right =		_uvs.normRight;
+	_bottom =		_uvs.normBottom; 
     var _c = dcos(_angleValue+90);
     var _s = dsin(_angleValue+90);
     

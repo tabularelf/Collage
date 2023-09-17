@@ -26,6 +26,7 @@ function __CollageBuilderClass() constructor {
 			left: 0,
 			top: 0
 		}
+        
 		
 		var _point = _currentPoint ?? __defaultCP;
 		
@@ -924,6 +925,7 @@ function __CollageBuilderClass() constructor {
 			} 
 		}	
 		#endregion
+        
 		
 		#region Final prep
 		// Give texture page + safety check

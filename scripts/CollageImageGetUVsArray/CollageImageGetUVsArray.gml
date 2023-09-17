@@ -19,8 +19,8 @@ function CollageImageGetUVsArray(_identifier, _imageIndex) {
 	    _uvs =_identifier.__InternalGetUvs(_imageIndex);
 	}
 	var _texPage = _uvs.texturePageStruct;
-	var _width = _texPage.width;
-	var _height = _texPage.height;
+	var _width = _texPage.GetWidth();
+	var _height = _texPage.GetHeight();
 	
 	return [
 		_uvs.normLeft, 

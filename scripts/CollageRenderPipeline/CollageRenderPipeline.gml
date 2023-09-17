@@ -52,7 +52,7 @@ function CollageRenderPipeline(_vertexFormat = undefined, _funcStart = undefined
 		var _i = 0;
 		__status = CollageRPStatus.BATCHING;
 		repeat(array_length(__vbArray)) {
-			if (!__vbArray[_i].__locked) __vbArray[_i].Begin(_vFormat);
+			if (!__vbArray[_i].__locked) __vbArray[_i].Begin(__vFormat);
 			++_i;
 		}	
 		return self;

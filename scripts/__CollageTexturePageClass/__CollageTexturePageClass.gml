@@ -40,6 +40,14 @@ function __CollageTexturePageClass(_width, _height) constructor {
 			__HandleLoad(true);
 		}
 		
+		static GetWidth = function() {
+			return __width;	
+		}
+		
+		static GetHeight = function() {
+			return __height;	
+		}
+		
 		static __Init = function() {
 			if !(buffer_exists(__buffer)) {
 				if (buffer_exists(__cacheBuffer)) {
