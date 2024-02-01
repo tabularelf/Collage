@@ -7,6 +7,32 @@ function CollageRenderPipeline(_vertexFormat = undefined, _funcStart = undefined
 	__funcStart = _funcStart;
 	__funcEnd = _funcEnd;
 	__vertexFunc = _vertexFormat;
+	__vertexFuncEntrySize = undefined;
+	
+	/// Calculate the size in bytes of a single entry in the buffer using the given vertex buffer function.
+	/// @param {Function} vertexFunc
+	/// @returns {Real}
+	static __calcVFuncEntrySize = function(vertexFunc) {
+		
+		static dummy_xy = array_create(4, array_create(2, 0));
+		static dummy_colour = array_create(4, 0);
+		static dummy_tex = { __textureID: undefined };
+		
+		var vb = new __CollageVBufferClass(dummy_tex);
+			
+		vb.Begin(__vFormat);
+		vertexFunc(vb.__vbuffer, dummy_xy, 0, 0, 0, 0, 0, dummy_colour, 0);
+		vb.End();
+		
+		var b = buffer_create_from_vertex_buffer(vb.__vbuffer, buffer_fixed, 1);
+		vb.Destroy();
+		
+		var size = buffer_get_size(b);
+		buffer_delete(b);
+		
+		return size;
+		
+	}
 	
 	static __freezeVB = function(_i) {
 		__vbArray[_i].__frozen = true;
@@ -40,6 +66,7 @@ function CollageRenderPipeline(_vertexFormat = undefined, _funcStart = undefined
 	
 	static SetVFormatFunc = function(_func) {
 		__vertexFunc = _func;	
+		__vertexFuncEntrySize = __calcVFuncEntrySize(__vertexFunc ?? __CollageVertexAdd);
 		return self;
 	}
 	
@@ -68,6 +95,64 @@ function CollageRenderPipeline(_vertexFormat = undefined, _funcStart = undefined
 		return self;
 	}
 	
+	/// Remove a Collage image from the buffers given its index.
+	/// @param {Real} _bufferIndex Index of the buffer to remove from.
+	/// @param {Real} _entryIndex Index of the entry within the buffer to remove from.
+	static __removeImageByIndex = function(_bufferIndex, _entryIndex) {
+		
+		if (__status == CollageRPStatus.BATCHING) {
+			__CollageThrow("Cannot remove an image while batching!");
+		}
+		
+		if (_bufferIndex < 0 || _bufferIndex >= array_length(__vbArray)) {
+			__CollageThrow(string("Tried to remove image from buffer index out of bounds {0} (valid bounds are 0 to {1})", _bufferIndex, array_length(__vbArray)));
+		}
+		
+		var vb = __vbArray[_bufferIndex];
+		var offset = __vertexFuncEntrySize * _entryIndex;
+		
+		if (vb.__frozen) {
+			__CollageThrow(string("Tried to remove image from frozen buffer at buffer index {0}", _bufferIndex));
+		}
+		
+		if (vertex_get_number(vb.__vbuffer) == 0) {
+			__CollageThrow(string("Tried to remove image from empty buffer {0}", _bufferIndex));
+		}
+		
+		var b;
+		
+		try {
+			
+			b = buffer_create(__vertexFuncEntrySize, buffer_fixed, 1);
+			buffer_fill(b, 0, buffer_u8, 0, __vertexFuncEntrySize);
+			
+			vertex_update_buffer_from_buffer(vb.__vbuffer, offset, b, 0, __vertexFuncEntrySize);
+			
+			buffer_delete(b);
+			
+			return self;
+			
+		} catch (err) {
+			
+			// Compatibility for before https://github.com/YoYoGames/GameMaker-Bugs/issues/3163
+			
+			buffer_delete(b);
+			
+			b = buffer_create_from_vertex_buffer(vb.__vbuffer, buffer_fixed, 1);
+			buffer_fill(b, offset, buffer_u8, 0, __vertexFuncEntrySize);
+			
+			vertex_delete_buffer(vb.__vbuffer);
+			vb.__vbuffer = vertex_create_buffer_from_buffer(b, __vFormat ?? __CollageVFormat());
+			
+			buffer_delete(b);
+			
+			return self;
+			
+		}
+		
+	}
+	
+	/// Adds a Collage image to the batch, with the specified propreties.
 	static AddImage = function(_imageData, _subImage, _x, _y, _z = 0, _width = 1, _height = 1, _angle = 0, _col = draw_get_color(), _alpha = draw_get_alpha(), _respectOrigin = true) {
 		var _tex = _imageData.GetTexturePage(_subImage);
 		var _index = __findVB(_tex.__textureID);
@@ -161,4 +246,6 @@ function CollageRenderPipeline(_vertexFormat = undefined, _funcStart = undefined
 	static GetBatchCount = function() {
 		return array_length(__vbArray);	
 	}
+	
+	__vertexFuncEntrySize = __calcVFuncEntrySize(__CollageVertexAdd);
 }
