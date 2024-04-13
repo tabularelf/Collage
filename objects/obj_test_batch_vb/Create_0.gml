@@ -43,6 +43,6 @@ repeat(array_length(pos)) {
 batch.Finish();
 
 // Example removing an image
-batch.__removeImageByIndex(0, 0);
+batch.RemoveImageByIndex(0, 0);
 
 batch.Freeze();

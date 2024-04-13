@@ -12,25 +12,25 @@ function CollageRenderPipeline(_vertexFormat = undefined, _funcStart = undefined
 	/// Calculate the size in bytes of a single entry in the buffer using the given vertex buffer function.
 	/// @param {Function} vertexFunc
 	/// @returns {Real}
-	static __calcVFuncEntrySize = function(vertexFunc) {
+	static __calcVFuncEntrySize = function(_vertexFunc) {
 		
 		static dummy_xy = array_create(4, array_create(2, 0));
 		static dummy_colour = array_create(4, 0);
 		static dummy_tex = { __textureID: undefined };
 		
-		var vb = new __CollageVBufferClass(dummy_tex);
+		var _vb = new __CollageVBufferClass(dummy_tex);
 			
-		vb.Begin(__vFormat);
-		vertexFunc(vb.__vbuffer, dummy_xy, 0, 0, 0, 0, 0, dummy_colour, 0);
-		vb.End();
+		_vb.Begin(__vFormat);
+		_vertexFunc(_vb.__vbuffer, dummy_xy, 0, 0, 0, 0, 0, dummy_colour, 0);
+		_vb.End();
 		
-		var b = buffer_create_from_vertex_buffer(vb.__vbuffer, buffer_fixed, 1);
-		vb.Destroy();
+		var _b = buffer_create_from_vertex_buffer(_vb.__vbuffer, buffer_fixed, 1);
+		_vb.Destroy();
 		
-		var size = buffer_get_size(b);
-		buffer_delete(b);
+		var _size = buffer_get_size(_b);
+		buffer_delete(_b);
 		
-		return size;
+		return _size;
 		
 	}
 	
