@@ -16,7 +16,7 @@ Returns: `N/A`.
 |---|---|---|
 |`identifier`|`string` or `Collage Instance`|The Collage Instance name or instance itself.|
 
-Destroys the Collage instance, freeing it's contents.
+Destroys the Collage instance, freeing its contents.
 
 ### `CollageImageAsync()`
 
@@ -26,7 +26,7 @@ Returns: `N/A`.
 |---|---|---|
 |`N/A`|||
 
-For used in the `Async - Image Loaded` event. Allows images to be loaded in asynchronously (such as from the web or on HTML5.)
+Meant to be used in the `Async - Image Loaded` event. Allows images to be loaded in asynchronously (such as from the web or on HTML5.)
 
 ### `CollageIsCollage(value)`
 

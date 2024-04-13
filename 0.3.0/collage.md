@@ -6,14 +6,14 @@ Returns: struct, an instance of `Collage`.
 
 |Name|Datatype|Purpose|
 |---|---|---|
-|`identifier`|`string`|Name of the texture page. Defaults to `undefined` and doesn't register to Collages database.'|
-|`width`|`real`|Width of the texture page. Defaults to [`__COLLAGE_DEFAULT_TEXTURE_SIZE`](configuration.md)|
-|`height`|`real`|Height of the texture page. Defaults to [`__COLLAGE_DEFAULT_TEXTURE_SIZE`](configuration.md)|
-|`crop`|`real`|Level of cropping. Defaults to [`__COLLAGE_DEFAULT_CROP`](configuration.md)|
-|`separation`|`real`|How many pixels should images be spaced apart. Defaults to [`__COLLAGE_DEFAULT_SEPARATION`](configuration.md)|
-|`optimization`|`real`|Level of optimization. Defaults to [`__COLLAGE_DEFAULT_OPTIMIZE`](configuration.md)|
+|`identifier`|`string`|Name of the texture page. (Defaults to `undefined` and doesn't register to Collages database.)'|
+|`width`|`real`|Width of the texture page. (Defaults to [`__COLLAGE_DEFAULT_TEXTURE_SIZE`](configuration.md))|
+|`height`|`real`|Height of the texture page. (Defaults to [`__COLLAGE_DEFAULT_TEXTURE_SIZE`](configuration.md))|
+|`crop`|`real`|Level of cropping. (Defaults to [`__COLLAGE_DEFAULT_CROP`](configuration.md))|
+|`separation`|`real`|How many pixels should images be spaced apart. (Defaults to [`__COLLAGE_DEFAULT_SEPARATION`](configuration.md))|
+|`optimization`|`real`|Level of optimization. (Defaults to [`__COLLAGE_DEFAULT_OPTIMIZE`](configuration.md))|
 
-Constructor, creates a new instance of `Collage` to be used for building texture pages. If `identifier` was passed, Collage will assign itself to a global database and can be used with `CollageGet()` to retrieve said Collage instance.
+Constructor, creates a new instance of `Collage` to be used for building texture pages. If an `identifier` was passed, Collage will assign itself to a global database and can be used with `CollageGet()` to retrieve said Collage instance.
 
 ### `.StartBatch()`
 
@@ -52,15 +52,15 @@ Returns: `N/A`.
 |Name|Datatype|Purpose|
 |---|---|---|
 |`filepath`|`string`|The path to the image.|
-|`identifier`|`string`|The name of the image. By default, uses the filename without the extension.|
-|`subimage`|`real`|Number of subimages. (Default `1`)|
-|`removeback`|`boolean`|Whether to removeback or not. (Default `false`)|
-|`smooth`|`boolean`|Whether to smooth the image or not. (Default `false`)|
-|`xorigin`|`real`|xoffset of image. (Default `0`) You may use [`CollageOrigin`](enums.md#collageorigin) to define your origin instead.|
-|`yorigin`|`real`|yoffset of image.  (Default `0`) You may use [`CollageOrigin`](enums.md#collageorigin) to define your origin instead.|
-|`is3D`|`boolean`|Whether image should have its own texture page, regardless of size. (Default `false`)|
+|`identifier`|`string`|The name of the image. By default, it uses the filename without the extension.|
+|`subimage`|`real`|Number of subimages. (Defaults to`1`)|
+|`removeback`|`boolean`|Whether to removeback or not. (Defaults to`false`)|
+|`smooth`|`boolean`|Whether to smooth the image or not. (Defaults to`false`)|
+|`xorigin`|`real`|xoffset of image. (Defaults to`0`) You may use [`CollageOrigin`](enums.md#collageorigin) to define your origin instead.|
+|`yorigin`|`real`|yoffset of image.  (Defaults to`0`) You may use [`CollageOrigin`](enums.md#collageorigin) to define your origin instead.|
+|`is3D`|`boolean`|Whether image should have its own texture page, regardless of size. (Defaults to`false`)|
 
-Loads a image and adds it to the texture page. (Note: If `.startBatch()` was called, then images are added to a list until `.finishBatch()` is called.)
+Loads an image and adds it to the texture page. (Note: If `.startBatch()` was called, then images are added to a list until `.finishBatch()` is called.)
 
 ### `.AddSprite(spriteID, [identifier], [isCopy], [xOrigin], [yOrigin], [is3D])`
 
@@ -69,11 +69,11 @@ Returns: `N/A`.
 |Name|Datatype|Purpose|
 |---|---|---|
 |`spriteID`|`sprite_index`|The ID of the sprite to add.|
-|`identifier`|`string`|The name of the image. By default, uses the filename without the extension.|
+|`identifier`|`string`|The name of the image. By default, it uses the filename without the extension.|
 |`isCopy`|`boolean`|Whether this image is a copy of another. Hints to collage to auto delete the sprite at the end. (Default: Depends on sprite passed)|
 |`xorigin`|`real`|xoffset of image. (Defaults to sprites xorigin.) You may use [`CollageOrigin`](enums.md#collageorigin) to define your origin instead.|
 |`yorigin`|`real`|yoffset of image.  (Defaults to sprites yorigin.) You may use [`CollageOrigin`](enums.md#collageorigin) to define your origin instead.|
-|`is3D`|`boolean`|Whether to removeback or not. (Default `false`)|
+|`is3D`|`boolean`|Whether to removeback or not. (Defaults to`false`)|
 
 Marks a sprite as an image and adds it to the texture page. (Note: If `.startBatch()` was called, then images are added to a list until `.finishBatch()` is called.)
 
@@ -84,34 +84,34 @@ Returns: `N/A`.
 |Name|Datatype|Purpose|
 |---|---|---|
 |`filepath`|`string`|The path to the image.|
-|`identifier`|`string`|The name of the image. By default, uses the filename without the extension.|
-|`removeback`|`boolean`|Whether to removeback or not. (Default `false`)|
-|`smooth`|`boolean`|Whether to smooth the image or not. (Default `false`)|
-|`xorigin`|`real`|xoffset of image. (Default `0`) You may use [`CollageOrigin`](enums.md#collageorigin) to define your origin instead.|
-|`yorigin`|`real`|yoffset of image.  (Default `0`) You may use [`CollageOrigin`](enums.md#collageorigin) to define your origin instead.|
-|`is3D`|`boolean`|Whether image should have its own texture page, regardless of size. (Default `false`)|
+|`identifier`|`string`|The name of the image. By default, it uses the filename without the extension.|
+|`removeback`|`boolean`|Whether to removeback or not. (Defaults to`false`)|
+|`smooth`|`boolean`|Whether to smooth the image or not. (Defaults to`false`)|
+|`xorigin`|`real`|xoffset of image. (Defaults to`0`) You may use [`CollageOrigin`](enums.md#collageorigin) to define your origin instead.|
+|`yorigin`|`real`|yoffset of image.  (Defaults to`0`) You may use [`CollageOrigin`](enums.md#collageorigin) to define your origin instead.|
+|`is3D`|`boolean`|Whether image should have its own texture page, regardless of size. (Defaults to`false`)|
 
-Loads a image strip and adds it to the texture page. (Note: If `.startBatch()` was called, then images are added to a list until `.finishBatch()` is called.)
+Loads an image strip and adds it to the texture page. (Note: If `.startBatch()` was called, then images are added to a list until `.finishBatch()` is called.)
 
 ### `.AddSurface(surfaceID, [identifier], [x], [y], [width], [height], [removeback], [smooth], [xorigin], [yorigin], [is3D])`
 
-Converts a surface into an image and  adds it to the texture page. (Note: If `.startBatch()` was called, then images are added to a list until `.finishBatch()` is called.)
+Converts a surface into an image and adds it to the texture page. (Note: If `.startBatch()` was called, then images are added to a list until `.finishBatch()` is called.)
 
 Returns: `N/A`.
 
 |Name|Datatype|Purpose|
 |---|---|---|
 |`surfaceID`|`surfaceID`|The ID of the surface.|
-|`identifier`|`string`|The name of the image. By default, uses the filename without the extension.|
-|`x`|`real`|The x position to copy from. (Default `0`)|
-|`y`|`real`|The y position to copy from.  (Default `0`)|
-|`width`|`real`|The width of the area to be copied (from the x position). (Default `surface_width`)|
-|`height`|`real`|The height of the area to be copied (from the y position). (Default `surface_height`)|
-|`removeback`|`boolean`|Whether to removeback or not. (Default `false`)|
-|`smooth`|`boolean`|Whether to smooth the image or not. (Default `false`)|
-|`xorigin`|`real`|xoffset of image. (Default `0`) You may use [`CollageOrigin`](enums.md#collageorigin) to define your origin instead.|
-|`yorigin`|`real`|yoffset of image.  (Default `0`) You may use [`CollageOrigin`](enums.md#collageorigin) to define your origin instead.|
-|`is3D`|`boolean`|Whether image should have its own texture page, regardless of size. (Default `false`)|
+|`identifier`|`string`|The name of the image. By default, it uses the filename without the extension.|
+|`x`|`real`|The x position to copy from. (Defaults to`0`)|
+|`y`|`real`|The y position to copy from.  (Defaults to`0`)|
+|`width`|`real`|The width of the area to be copied (from the x position). (Defaults to`surface_width`)|
+|`height`|`real`|The height of the area to be copied (from the y position). (Defaults to`surface_height`)|
+|`removeback`|`boolean`|Whether to removeback or not. (Defaults to`false`)|
+|`smooth`|`boolean`|Whether to smooth the image or not. (Defaults to`false`)|
+|`xorigin`|`real`|xoffset of image. (Defaults to`0`) You may use [`CollageOrigin`](enums.md#collageorigin) to define your origin instead.|
+|`yorigin`|`real`|yoffset of image.  (Defaults to`0`) You may use [`CollageOrigin`](enums.md#collageorigin) to define your origin instead.|
+|`is3D`|`boolean`|Whether image should have its own texture page, regardless of size. (Defaults to`false`)|
 
 ### `.AddSpriteSheet(spriteID, spriteArray, identifierString, width, height, [removeBack], [smooth], [xorigin], [yorigin], [is3D])`
 
@@ -123,14 +123,14 @@ Returns: `N/A` (or `SpriteData Struct` if Collage Build State is `BATCHING`).
 |---|---|---|
 |`spriteID`|`sprite_index`|The ID of the sprite.|
 |`spriteArray`|`array`|Array of structs as defined via [`CollageDefineSpriteSheet()`](general.md#collagedefinespritesheetsubname-startx-starty-endx-endy) |
-|`identifier`|`string`|The name of the image. By default, uses the filename without the extension.|
-|`width`|`real`|The width of the area to be copied (from the x position). (Default `surface_width`)|
-|`height`|`real`|The height of the area to be copied (from the y position). (Default `surface_height`)|
-|`[removeback]`|`boolean`|Whether to removeback or not. (Default `false`)|
-|`[smooth]`|`boolean`|Whether to smooth the image or not. (Default `false`)|
-|`[xorigin]`|`real`|xoffset of image. (Default `0`) You may use [`CollageOrigin`](enums.md#collageorigin) to define your origin instead.|
-|`[yorigin]`|`real`|yoffset of image.  (Default `0`) You may use [`CollageOrigin`](enums.md#collageorigin) to define your origin instead.|
-|`[is3D]`|`boolean`|Whether image should have its own texture page, regardless of size. (Default `false`)|
+|`identifier`|`string`|The name of the image. By default, it uses the filename without the extension.|
+|`width`|`real`|The width of the area to be copied (from the x position). (Defaults to`surface_width`)|
+|`height`|`real`|The height of the area to be copied (from the y position). (Defaults to`surface_height`)|
+|`[removeback]`|`boolean`|Whether to removeback or not. (Defaults to`false`)|
+|`[smooth]`|`boolean`|Whether to smooth the image or not. (Defaults to`false`)|
+|`[xorigin]`|`real`|xoffset of image. (Defaults to`0`) You may use [`CollageOrigin`](enums.md#collageorigin) to define your origin instead.|
+|`[yorigin]`|`real`|yoffset of image.  (Defaults to`0`) You may use [`CollageOrigin`](enums.md#collageorigin) to define your origin instead.|
+|`[is3D]`|`boolean`|Whether image should have its own texture page, regardless of size. (Defaults to`false`)|
 
 ### `.Clear()`
 

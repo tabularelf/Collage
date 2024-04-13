@@ -1,6 +1,6 @@
 # CollageRenderPipeline()
 
-This covers the `CollageRenderPipeline()` constructor, where mulitple images can be batched together into one or several vertex buffers and drawn all at once, while not having to worry about which image came from which texture page.
+This covers the `CollageRenderPipeline()` constructor, where multiple images can be batched together into one or several vertex buffers and drawn all at once, while not having to worry about which image came from which texture page.
 
 ### `CollageRenderPipeline()`
 
@@ -40,7 +40,7 @@ Returns: `self`
 |---|---|---|
 |`N/A`|||
 
-Similar to `.Start()`, but doesn't clear any frozen vertex buffers.
+Similar to `.Start()`, but it doesn't clear any frozen vertex buffers.
 
 ### `.AddImage(image, subimage, x, y, [z], [width], [height], [angle], [colour], [alpha], [respectOrigin])`
 
@@ -124,7 +124,7 @@ Returns: `self`
 
 Removes an image at the given index from the buffer array.
 
-!> Currently there isn't any helper functions to fetch any specific image info. Use with caution!
+!> Currently there isn't a helper function to fetch any specific image info. Use with caution!
 
 ### `.Clear([frozenOnly])`
 
