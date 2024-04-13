@@ -68,7 +68,7 @@ Returns: `N/A`.
 
 |Name|Datatype|Purpose|
 |---|---|---|
-|`spriteID`|`sprite_index`|The ID of the sprite to add.|
+|`spriteID`|`sprite_index`|The sprite Id you wish to add.|
 |`identifier`|`string`|The name of the image. By default, uses the filename without the extension.|
 |`isCopy`|`boolean`|Whether this image is a copy of another. Hints to collage to auto delete the sprite at the end. (Default: Depends on sprite passed)|
 |`xorigin`|`real`|xoffset of image. (Defaults to sprites xorigin.) You may use [`CollageOrigin`](enums.md#collageorigin) to define your origin instead.|
@@ -121,7 +121,7 @@ Returns: `N/A` (or `SpriteData Struct` if Collage Build State is `BATCHING`).
 
 |Name|Datatype|Purpose|
 |---|---|---|
-|`spriteID`|`sprite_index`|The ID of the sprite.|
+|`spriteID`|`sprite_index`|The ID of the sprite to add.|
 |`spriteArray`|`array`|Array of structs as defined via [`CollageDefineSpriteSheet()`](general.md#collagedefinespritesheetsubname-startx-starty-endx-endy) |
 |`identifier`|`string`|The name of the image. By default, uses the filename without the extension.|
 |`width`|`real`|The width of the area to be copied (from the x position). (Default `surface_width`)|

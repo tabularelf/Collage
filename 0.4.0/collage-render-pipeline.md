@@ -110,6 +110,22 @@ Returns: `self`
 |---|---|---|
 |`N/A`|||
 
+Draws all of the vertex buffers.
+
+### `.RemoveImageByIndex(bufferEntry, imageEntry)`
+
+Returns: `self`
+
+|Name|Datatype|Purpose|
+|---|---|---|
+|`bufferEntry`|`Real`|The index in the buffer array to remove from.|
+|`imageEntry`|`Real`|The index in the buffer to remove the image.|
+|`N/A`|||
+
+Removes an image at the given index from the buffer array.
+
+!> Currently there isn't any helper functions to fetch these. Use with caution!
+
 ### `.Clear([frozenOnly])`
 
 Returns: `self`
