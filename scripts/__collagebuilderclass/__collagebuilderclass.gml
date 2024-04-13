@@ -3,9 +3,9 @@
 //gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_inv_src_alpha);
 
 /// @ignore
-/* Feather ignore all */
+/// feather ignore all
 function __CollageBuilderClass() constructor {
-	/* Feather ignore all */
+	/// feather ignore all
 	static __system = __CollageSystem();
 	owner = other;
 	bboxPoints = [];

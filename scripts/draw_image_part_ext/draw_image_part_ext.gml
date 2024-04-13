@@ -11,14 +11,13 @@
 /// @param {Real} yscale
 /// @param {Real} colour
 /// @param {Real} alpha
-/* Feather ignore all */
+/// feather ignore all
 function draw_image_part_ext(_sprite, _sub, _left, _top, _width, _height, _x, _y, _xscale, _yscale, _col, _alpha) {
 	gml_pragma("forceinline");
-	if (is_real(_sprite)) {
-		if (sprite_exists(_sprite)) {
-			draw_sprite_part_ext(_sprite, _sub, _left, _top, _width, _height, _x, _y, _xscale, _yscale, _col, _alpha);
-		}
-	} else {
-		CollageDrawImagePartExt(_sprite, _sub, _left, _top, _width, _height, _x, _y, _xscale, _yscale, _col, _alpha);
+	if (CollageIsImage(_sprite)) {
+		return CollageDrawImagePartExt(_sprite, _sub, _left, _top, _width, _height, _x, _y, _xscale, _yscale, _col, _alpha);
+		
 	} 
+	
+	draw_sprite_part_ext(_sprite, _sub, _left, _top, _width, _height, _x, _y, _xscale, _yscale, _col, _alpha);
 } 

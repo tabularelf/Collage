@@ -7,14 +7,12 @@
 /// @param {Real} height
 /// @param {Real} x
 /// @param {Real} y
-/* Feather ignore all */
+/// feather ignore all
 function draw_image_part(_sprite, _sub, _left, _top, _width, _height, _x, _y) {
 	gml_pragma("forceinline");
-	if (is_real(_sprite)) {
-		if (sprite_exists(_sprite)) {
-			draw_sprite_part(_sprite, _sub, _left, _top, _width, _height, _x, _y);
-		}
-	} else {
-		CollageDrawImagePart(_sprite, _sub, _left, _top, _width, _height, _x, _y);
+	if (CollageIsImage(_sprite)) {
+		return CollageDrawImagePart(_sprite, _sub, _left, _top, _width, _height, _x, _y);
 	} 
+	
+	draw_sprite_part(_sprite, _sub, _left, _top, _width, _height, _x, _y);
 } 

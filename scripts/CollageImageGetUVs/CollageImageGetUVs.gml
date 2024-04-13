@@ -2,7 +2,7 @@
 /// @param {Struct.__CollageImageClass, String} collage_image_or_name
 /// @param {Real} image_index
 /// @return {Struct.__CollageUVsClass}
-/* Feather ignore all */
+/// feather ignore all
 function CollageGetImageUVs(_identifier, _imageIndex) {
 	gml_pragma("forceinline");
 	static __system = __CollageSystem();

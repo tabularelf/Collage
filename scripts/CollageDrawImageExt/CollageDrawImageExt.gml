@@ -8,7 +8,7 @@
 /// @param {Real} rot
 /// @param {Real} col
 /// @param {Real} alpha
-/* Feather ignore all */
+/// feather ignore all
 function CollageDrawImageExt(_imageData, _imageIndex, _x, _y, _xScale, _yScale, _rot, _col, _alpha) {
 	gml_pragma("forceinline");
 	if (!is_struct(_imageData)) __CollageThrow("Invalid collage_image! Got " + string(_imageData) + " instead!");

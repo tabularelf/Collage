@@ -1,5 +1,5 @@
 /// @ignore
-/* Feather ignore all */
+/// feather ignore all
 function __CollageSpriteFileDataClass(_identifier, _spriteID, _subImage = 1, _isCopy = undefined) constructor {
 	static __system = __CollageSystem();
 	__name = _identifier;

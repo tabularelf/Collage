@@ -1,5 +1,5 @@
 /// @func CollageImageAsync()
-/* Feather ignore all */
+/// feather ignore all
 function CollageImageAsync() {
 	gml_pragma("forceinline");
 	static __system = __CollageSystem();

@@ -3,7 +3,7 @@ if (keyboard_check_released(vk_space)) {
 }
 
 if (keyboard_check_released(vk_control)) {
-	batch.Clear();
+	//batch.Clear();
 	draw_texture_flush();
 	CollageTextureFlush();
 }

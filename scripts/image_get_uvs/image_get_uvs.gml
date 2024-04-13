@@ -2,7 +2,7 @@
 /// @param {Asset.GMSprite, Struct.__CollageImageClass} sprite_index/collage_image
 /// @param {Real} image_index
 /// @return {Array<Real>}
-/* Feather ignore all */
+/// feather ignore all
 function image_get_uvs(_sprite, _sub) {
 	gml_pragma("forceinline");
 	if (CollageIsImage(_sprite)) {

@@ -1,6 +1,6 @@
 /// @func CollageDestroy(collage_instance_or_name)
 /// @param {Any} collage_instance_or_name
-/* Feather ignore all */
+/// feather ignore all
 function CollageDestroy(_identifier) {
 	gml_pragma("forceinline");
 	static __system = __CollageSystem();

@@ -1,7 +1,7 @@
 /// @func CollageImageLoad(collage_image_or_name, image_index)
 /// @param {Struct.__CollageImageClass, String} collage_image_or_name
 /// @param {Real} image_index
-/* Feather ignore all */
+/// feather ignore all
 function CollageImageLoad(_identifier, _subImage) {
 	gml_pragma("forceinline");
 	static __system = __CollageSystem();

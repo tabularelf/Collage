@@ -1,5 +1,5 @@
 /// @ignore
-/* Feather ignore all */
+/// feather ignore all
 function __CollageTexturePageClass(_width, _height) constructor {
 		static __idCount = 0;
 		static __system = __CollageSystem();

@@ -5,7 +5,7 @@
 /// @param {Real} [crop]
 /// @param {Real} [separation]
 /// @param {Bool} [optimize]
-/* Feather ignore all */
+/// feather ignore all
 function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZE, _height = __COLLAGE_DEFAULT_TEXTURE_SIZE, _crop = __COLLAGE_DEFAULT_CROP, _separation = __COLLAGE_DEFAULT_SEPARATION, _optimize = __COLLAGE_DEFAULT_OPTIMIZE) constructor {
 	// Members
 	static __system = __CollageSystem();
@@ -151,7 +151,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		
 		var _identifier = _identifierString ?? sprite_get_name(_spriteID);
 		
-		if (_spriteID <= __system.__CollageGMSpriteCount) {
+		if (real(_spriteID) <= __system.__CollageGMSpriteCount) {
 			_spriteID = sprite_duplicate(_spriteIdentifier);
 			if (__COLLAGE_VERBOSE) __CollageTrace(__getName() + _identifier + " is a GMSprite resource added via the IDE, making a copy...");
 			_isCopyValue = true;

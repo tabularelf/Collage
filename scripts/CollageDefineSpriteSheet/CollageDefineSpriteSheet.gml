@@ -4,7 +4,7 @@
 /// @param {Real} startY
 /// @param {Real} endX
 /// @param {Real} endY
-/* Feather ignore all */
+/// feather ignore all
 function CollageDefineSpriteSheet(_name, _startX, _startY, _endX, _endY) {
 		return [_name, _startX, _startY, _endX, _endY];
 }

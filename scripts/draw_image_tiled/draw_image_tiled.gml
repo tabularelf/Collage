@@ -3,12 +3,12 @@
 /// @param {Real} image_index
 /// @param {Real} x
 /// @param {Real} y
-/* Feather ignore all */
+/// feather ignore all
 function draw_image_tiled(_sprite, _sub, _x, _y) {
 	gml_pragma("forceinline");
-	if (is_real(_sprite)) {
-		draw_sprite_tiled(_sprite, _sub, _x, _y);
-	} else {
-		CollageDrawImageTiled(_sprite, _sub, _x, _y);	
+	if (CollageIsImage(_sprite)) {
+		return CollageDrawImageTiled(_sprite, _sub, _x, _y);
 	} 
+	
+	draw_sprite_tiled(_sprite, _sub, _x, _y);
 } 

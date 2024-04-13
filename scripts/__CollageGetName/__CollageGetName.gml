@@ -1,5 +1,5 @@
 /// @ignore
-/* Feather ignore all */
+/// feather ignore all
 function __CollageGetName(_string) {
 	gml_pragma("forceinline");
 	if (__CollageFileFromWeb(_string)) {

@@ -1,5 +1,5 @@
 /// @ignore
-/* feather ignore all*/
+/// feather ignore all
 function __CollageVertexAdd(_vbuffer, _xy, _z, _left, _top, _right, _bottom, _colour, _alpha) {
 	// Add vertices
 	vertex_position_3d(_vbuffer, _xy[0][0], _xy[0][1], _z);

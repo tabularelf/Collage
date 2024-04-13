@@ -15,14 +15,12 @@
 /// @param {Real} col3
 /// @param {Real} col4
 /// @param {Real} alpha
-/* Feather ignore all */
+/// feather ignore all
 function draw_image_general(_sprite, _sub, _left, _top, _width, _height, _x, _y, _xScale, _yScale, _rot, _col1, _col2, _col3, _col4, _alpha) {
 	gml_pragma("forceinline");
-	if (is_real(_sprite)) {
-		if (sprite_exists(_sprite)) {
-			draw_sprite_general(_sprite, _sub, _left, _top, _width, _height, _x, _y, _xScale, _yScale, _rot, _col1, _col2, _col3, _col4, _alpha);
-		}
-	} else {
-		CollageDrawImageGeneral(_sprite, _sub, _left, _top, _width, _height, _x, _y, _xScale, _yScale, _rot, _col1, _col2, _col3, _col4, _alpha);	
+	if (CollageIsImage(_sprite)) {
+		return CollageDrawImageGeneral(_sprite, _sub, _left, _top, _width, _height, _x, _y, _xScale, _yScale, _rot, _col1, _col2, _col3, _col4, _alpha);	
 	} 
+	
+	draw_sprite_general(_sprite, _sub, _left, _top, _width, _height, _x, _y, _xScale, _yScale, _rot, _col1, _col2, _col3, _col4, _alpha);
 } 

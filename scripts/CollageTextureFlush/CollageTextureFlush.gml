@@ -1,4 +1,4 @@
-/* feather ignore all*/
+/// feather ignore all
 function CollageTextureFlush() {
 	static __tpList = __CollageSystem().__CollageTPLoadedList;
 	repeat(ds_list_size(__tpList)) {

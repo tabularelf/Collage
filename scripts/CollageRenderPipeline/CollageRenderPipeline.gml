@@ -1,6 +1,6 @@
+//// feather ignore all
 /// @func CollageRenderPipeline()
 function CollageRenderPipeline(_vertexFormat = undefined, _funcStart = undefined, _funcEnd = undefined) constructor {
-	/* feather ignore all*/
 	__vbArray = [];
 	__status = CollageRPStatus.EMPTY;
 	__vFormat = undefined;
@@ -40,7 +40,7 @@ function CollageRenderPipeline(_vertexFormat = undefined, _funcStart = undefined
 	}
 	
 	static __findVB = function(_texID) {
-		/* feather ignore all*/
+		/// feather ignore all
 		var _i = 0;
 		repeat(array_length(__vbArray)) {
 			if (__vbArray[_i].__textureID == _texID) && (!__vbArray[_i].__frozen) && (!__vbArray[_i].__locked) {
@@ -96,9 +96,9 @@ function CollageRenderPipeline(_vertexFormat = undefined, _funcStart = undefined
 	}
 	
 	/// Remove a Collage image from the buffers given its index.
-	/// @param {Real} _bufferIndex Index of the buffer to remove from.
-	/// @param {Real} _entryIndex Index of the entry within the buffer to remove from.
-	static __removeImageByIndex = function(_bufferIndex, _entryIndex) {
+	/// @param {Real} bufferIndex Index of the buffer to remove from.
+	/// @param {Real} entryIndex Index of the entry within the buffer to remove from.
+	static RemoveImageByIndex = function(_bufferIndex, _entryIndex) {
 		
 		if (__status == CollageRPStatus.BATCHING) {
 			__CollageThrow("Cannot remove an image while batching!");

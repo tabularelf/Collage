@@ -3,7 +3,7 @@
 /// @param {Real} image_index
 /// @param {Real} x
 /// @param {Real} y
-/* Feather ignore all */
+/// feather ignore all
 function CollageDrawImageTiled(_imageData, _imageIndex, _x, _y) {
 	gml_pragma("forceinline");
 	if (!is_struct(_imageData)) __CollageThrow("Invalid collage_image! Got " + string(_imageData) + " instead!");

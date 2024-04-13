@@ -1,5 +1,5 @@
 /// @ignore
-// feather ignore all
+/// feather ignore all
 function __CollageTick() {
 	static _tp_list = __CollageSystem().__CollageTPLoadedList;
 	var _i = 0;

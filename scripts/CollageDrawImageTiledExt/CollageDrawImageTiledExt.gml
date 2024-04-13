@@ -7,7 +7,7 @@
 /// @param {Real} yscale
 /// @param {Real} colour
 /// @param {Real} alpha
-/* Feather ignore all */
+/// feather ignore all
 function CollageDrawImageTiledExt(_imageData, _imageIndex, _x, _y, _xScale, _yScale, _col, _alpha) {
 	gml_pragma("forceinline");
 	if (!is_struct(_imageData)) __CollageThrow("Invalid collage_image! Got " + string(_imageData) + " instead!");

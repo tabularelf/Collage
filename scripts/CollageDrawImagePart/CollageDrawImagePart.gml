@@ -7,7 +7,7 @@
 /// @param {Real} height
 /// @param {Real} x
 /// @param {Real} y
-/* Feather ignore all */
+/// feather ignore all
 function CollageDrawImagePart(_imageData, _imageIndex, _left, _top, _width, _height, _x, _y) {
 	gml_pragma("forceinline");
 	if (!is_struct(_imageData)) __CollageThrow("Invalid collage_image! Got " + string(_imageData) + " instead!");

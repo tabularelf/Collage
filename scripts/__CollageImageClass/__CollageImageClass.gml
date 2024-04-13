@@ -1,5 +1,5 @@
 /// @ignore
-/* Feather ignore all */
+/// feather ignore all
 function __CollageImageClass(_spriteStruct, _name, _cropW, _cropH, _tiling, _ratio, _xOffset, _yOffset) constructor {
 	__width = _spriteStruct.spriteInfo.width;
 	__height  = _spriteStruct.spriteInfo.height;

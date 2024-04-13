@@ -1,5 +1,5 @@
 /// @ignore
-/* Feather ignore all */
+/// feather ignore all
 function __CollageBuildImage(_vbuffer, _imageData, _index, _x, _y, _z, _widthValue, _heightValue, _angleValue, _colourValue, _alpha, _respectOrigin, _func = __CollageVertexAdd){
 	var _uvs = _imageData.GetUVs(_index);
 	

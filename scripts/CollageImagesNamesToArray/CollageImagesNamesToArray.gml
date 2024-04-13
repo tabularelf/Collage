@@ -1,7 +1,7 @@
 /// @func CollageImagesNamesToArray(collage_or_name)
 /// @param {Struct.Collage, String} collage_or_name
 /// @return {Array<String>}
-/* Feather ignore all */
+/// feather ignore all
 function CollageImagesNamesToArray(_identifier) {
 	gml_pragma("forceinline");
 	static __system = __CollageSystem();

@@ -1,7 +1,7 @@
 /// @func CollageRestoreGPUState()
-/* Feather ignore all */
+/// feather ignore all
 function CollageRestoreGPUState() {
-	/* Feather ignore all */
+	/// feather ignore all
 	gml_pragma("forceinline");
 	var _instance = __CollageGPUStateSingleton();
 	if (!_instance.isSterilized) {

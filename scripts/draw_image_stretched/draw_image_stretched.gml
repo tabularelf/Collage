@@ -5,12 +5,12 @@
 /// @param {Real} y
 /// @param {Real} width
 /// @param {Real} height
-/* Feather ignore all */
+/// feather ignore all
 function draw_image_stretched(_sprite, _sub, _x, _y, _width, _height) {
 	gml_pragma("forceinline");
-	if (is_real(_sprite)) {
-		draw_sprite_stretched(_sprite, _sub, _x, _y, _width, _height);	
-	} else {
-		CollageDrawImageStretched(_sprite, _sub, _x, _y, _width, _height);	
+	if (CollageIsImage(_sprite)) {
+		return CollageDrawImageStretched(_sprite, _sub, _x, _y, _width, _height);	
 	} 
+	
+	draw_sprite_stretched(_sprite, _sub, _x, _y, _width, _height);	
 } 

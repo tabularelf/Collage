@@ -1,5 +1,5 @@
 /// @ignore
-/* feather ignore all*/
+/// feather ignore all
 function __CollageVBufferClass(_tex, _vb = undefined) constructor{
 	static __vFormat = __CollageVFormat();
 	__texturePage = _tex;

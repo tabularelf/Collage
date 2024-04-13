@@ -1,5 +1,5 @@
 /// @ignore
-/* Feather ignore all */
+/// feather ignore all
 function __CollageVFormat() {
 	static _vFormat = undefined;
 	if (is_undefined(_vFormat)) {

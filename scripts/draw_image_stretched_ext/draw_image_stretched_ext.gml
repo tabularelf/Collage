@@ -7,12 +7,12 @@
 /// @param {Real} height
 /// @param {Real} color
 /// @param {Real} alpha
-/* Feather ignore all */
+/// feather ignore all
 function draw_image_stretched_ext(_sprite, _sub, _x, _y, _width, _height, _col, _alpha) {
 	gml_pragma("forceinline");
-	if (is_real(_sprite)) {
-		draw_sprite_stretched_ext(_sprite, _sub, _x, _y, _width, _height, _col, _alpha);	
-	} else {
-		CollageDrawImageStretchedExt(_sprite, _sub, _x, _y, _width, _height, _col, _alpha);	
+	if (CollageIsImage(_sprite)) {
+		return CollageDrawImageStretchedExt(_sprite, _sub, _x, _y, _width, _height, _col, _alpha);	
 	} 
+	
+	draw_sprite_stretched_ext(_sprite, _sub, _x, _y, _width, _height, _col, _alpha);	
 } 

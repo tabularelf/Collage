@@ -1,5 +1,5 @@
 /// @ignore
-/* Feather ignore all */
+/// feather ignore all
 /// TODO: Preparation for the future of detecting same images and mapping those accordingly
 /*
 function __CollageHashGenerator(_spriteID){

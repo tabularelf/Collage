@@ -7,7 +7,7 @@
 /// @param {Real} height
 /// @param {Real} color
 /// @param {Real} alpha
-/* Feather ignore all */
+/// feather ignore all
 function CollageDrawImageStretchedExt(_imageData, _imageIndex, _x, _y, _width, _height, _color, _alpha) {
 	gml_pragma("forceinline");
 	if (!is_struct(_imageData)) __CollageThrow("Invalid collage_image! Got " + string(_imageData) + " instead!");

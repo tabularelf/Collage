@@ -1,7 +1,7 @@
 /// @func CollageImageExists(collage_image_or_name)
 /// @param {Struct.__CollageImageClass, String} collage_image_or_name
 /// @return {Bool}
-/* Feather ignore all */
+/// feather ignore all
 function CollageImageExists(_identifier) {
 	gml_pragma("forceinline");
 	static __system = __CollageSystem();

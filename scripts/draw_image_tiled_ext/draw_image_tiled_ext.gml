@@ -7,14 +7,13 @@
 /// @param {Real} yscale
 /// @param {Real} col
 /// @param {Real} alpha
-/* Feather ignore all */
+/// feather ignore all
 function draw_image_tiled_ext(_sprite, _sub, _x, _y, _xscale, _yscale, _col, _alpha) {
 	gml_pragma("forceinline");
-	if (is_real(_sprite)) {
-		if (sprite_exists(_sprite)) {
-			draw_sprite_tiled_ext(_sprite, _sub, _x, _y, _xscale, _yscale, _col, _alpha);
-		}
-	} else {
-		CollageDrawImageTiledExt(_sprite, _sub, _x, _y, _xscale, _yscale, _col, _alpha);	
-	} 
+	if (CollageIsImage(_sprite)) {
+		return CollageDrawImageTiledExt(_sprite, _sub, _x, _y, _xscale, _yscale, _col, _alpha);
+			
+	}
+
+	draw_sprite_tiled_ext(_sprite, _sub, _x, _y, _xscale, _yscale, _col, _alpha);
 } 
