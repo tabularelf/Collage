@@ -45,10 +45,11 @@ function __CollageSystem() {
 				var _i = 0;
 				while(sprite_exists(_i)) {
 					// Skip sprites created/added on the fly
-					if (string_count("__newsprite", sprite_get_name(_i)) == 0) {
-						__CollageGMSpriteCount = _i;
+					if (string_count("__newsprite", sprite_get_name(_i)) > 0) {
+						break;
 					}
-					++_i;
+					
+					__CollageGMSpriteCount = _i++;
 				}
 				_init = true;
 				try {
