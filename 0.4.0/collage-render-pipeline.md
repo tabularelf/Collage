@@ -124,7 +124,7 @@ Returns: `self`
 
 Removes an image at the given index from the buffer array.
 
-!> Currently there isn't any helper functions to fetch these. Use with caution!
+!> Currently there isn't any helper functions to fetch any specific image info. Use with caution!
 
 ### `.Clear([frozenOnly])`
 
