@@ -29,8 +29,8 @@ Returns: `boolean`.
 
 |Name|Datatype|Purpose|
 |---|---|---|
-|`identifier`|string/image|Name of image.|
-|`subImage`|real|Subimage of image.|
+|`identifier`|`string` or `image`|Name of image.|
+|`subImage`|`real`|Subimage of image.|
 
 Checks whether the image is loaded or not.
 
@@ -40,8 +40,8 @@ Returns: `struct`.
 
 |Name|Datatype|Purpose|
 |---|---|---|
-|`identifier`|string/image|Name of image.|
-|`subImage`|real|Subimage of image.|
+|`identifier`|`string` or `image`|Name of image.|
+|`subImage`|`real`|Subimage of image.|
 
 Loads in an image from cache memory.
 
@@ -51,8 +51,8 @@ Returns: instance of `__CollageImageUVsClass`.
 
 |Name|Datatype|Purpose|
 |---|---|---|
-|`identifier`|string/image|Name of image|
-|`image_index`|real|subimage of image|
+|`identifier`|`string` or `image`|Name of image|
+|`image_index`|`real`|subimage of image|
 
 Returns the UV struct of an image.
 
@@ -62,8 +62,8 @@ Returns: `texturePointer`.
 
 |Name|Datatype|Purpose|
 |---|---|---|
-|`identifier`|string/image|Name of image.|
-|`subImage`|real|Subimage of image.|
+|`identifier`|`string` or `image`|Name of image.|
+|`subImage`|`real`|Subimage of image.|
 
 Gets the texture pointer of an image.
 
@@ -73,8 +73,8 @@ Returns: `__CollageTexturePageClass`.
 
 |Name|Datatype|Purpose|
 |---|---|---|
-|`identifier`|string/image|Name of image.|
-|`subImage`|real|Subimage of image.|
+|`identifier`|`string` or `image`|Name of image.|
+|`subImage`|`real`|Subimage of image.|
 
 Gets the `__CollageTexturePageClass` of an image.
 
@@ -84,10 +84,10 @@ Returns: `surfaceID`.
 
 |Name|Datatype|Purpose|
 |---|---|---|
-|`identifier`|string/image|Name of image.|
-|`subImage`|real|Subimage of image.|
+|`identifier`|`string` or `image`|Name of image.|
+|`subImage`|`real`|Subimage of image.|
 
-Gets the surfaceID of an images texture page.
+Gets the surfaceID of an image's texture page.
 
 ### `CollageImageExists(identifier)`
 

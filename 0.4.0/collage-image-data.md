@@ -34,7 +34,7 @@ Returns: `self`.
 |`x`|`real` or `CollageOrigin enum`|Same as using the `.Add*` xorigin arguments.|
 |`y`|`real` or `CollageOrigin enum`|Same as using the `.Add*` yorigin arguments.|
 
-This tells Collage where the image origin is located. If using the `CollageOrigin enum`, it will setup the origin for you. For example, using `CollageOrigin.CENTER` for both xorigin and yorigin will set it to the middle of the image.
+This tells Collage where the image origin is located. If using the `CollageOrigin enum`, it will set up the origin for you. For example, using `CollageOrigin.CENTER` for both xorigin and yorigin will be set to the middle of the image.
 
 ### `.Set3D(bool)`
 
@@ -42,9 +42,9 @@ Returns: `self`.
 
 |Name|Datatype|Purpose|
 |---|---|---|
-|`bool`|`boolean`|Whether each sub image should be on it's own separate page or not.|
+|`bool`|`boolean`|Whether each subimage should be on its own separate page or not.|
 
-This tells Collage whether each sub image should be on it's own separate page or not.
+This tells Collage whether each subimage should be on its own separate page or not.
 
 ?> This will ignore `.SetClump()` if set to `true`.
 
@@ -56,7 +56,7 @@ Returns: `self`.
 |---|---|---|
 |`bool`|`boolean`|Whether to premultiply alpha or not.|
 
-This tells Collage whether each sub image will be premulitiplied or not. Just like how the premultiply check in sprites works.
+This tells Collage whether each subimage will be premultiplied or not. Just like how the premultiply check-in sprites work.
 
 ### `.SetBlend(colour, alpha)`
 
@@ -80,7 +80,7 @@ Returns: `self`.
 |`horizontal_tile`|`boolean`|Whether to tile horizontally or not.|
 |`vertical_tile`|`boolean`|Whether to tile vertically or not.|
 
-This tells Collage whether sub images should tile horizontally or vertically or not.
+This tells Collage whether subimages should tile horizontally or vertically or not.
 
 ### `.SetPriority(priority)`
 
@@ -90,4 +90,4 @@ Returns: `self`.
 |---|---|---|
 |`priority`|`real`|How high or low the image priority is.|
 
-This tells Collage how much priority does this image, and it's sub images, have in the batch queue. Overriding the biggest to smallest sorting. By default the value is `-1` for no priority.
+This tells Collage how much priority this image, and its subimages, have in the batch queue. Overriding the biggest to smallest sorting. By default, the value is `-1` for no priority.

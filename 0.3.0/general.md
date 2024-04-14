@@ -16,7 +16,7 @@ Returns: `N/A`.
 |---|---|---|
 |`identifier`|`string` or `Collage Instance`|The Collage Instance name or instance itself.|
 
-Destroys the Collage instance, freeing it's contents.
+Destroys the Collage instance, freeing its contents.
 
 ### `CollageImageAsync()`
 
@@ -26,7 +26,7 @@ Returns: `N/A`.
 |---|---|---|
 |`N/A`|||
 
-For used in the `Async - Image Loaded` event. Allows images to be loaded in asynchronously (such as from the web or on HTML5.)
+Meant to be used in the `Async - Image Loaded` event. Allows images to be loaded asynchronously (such as from the web or on HTML5.)
 
 ### `CollageIsCollage(value)`
 
@@ -54,7 +54,7 @@ Returns: `array`.
 
 |Name|Datatype|Purpose|
 |---|---|---|
-|`subname`|`string`|Subname of sprite to make from sprite sheet.|
+|`subname`|`string`|Subname of the sprite to make from sprite sheet.|
 |`startX`|`real`|startX of sprite.|
 |`startY`|`real`|startY of sprite.|
 |`endX`|`real`|endX of sprite.|

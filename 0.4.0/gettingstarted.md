@@ -2,8 +2,8 @@
 
 ## What are texture pages?
 
-Texture pages (also known as texture atlases) are essentially one big image that contains multiple smaller images. As your GPU can only hold onto so much information at a time, things are swapped out whenever needed. The intended use with texture pages, is to reduce the amount of memory swap needed by storing as much images as possible, onto as little texture pages as possible.
-Computers back in the old day worked with only power of two image sizes. But today texture pages can be any size. Though it's still common to see power of two texture pages. (Power of two as in 512x512, 1024x1024, 2048x2048, 4196x4196, etc.)
+Texture pages (also known as texture atlases) are essentially one big image that contains multiple smaller images. As your GPU can only hold onto so much information at a time, things are swapped out whenever needed. The intended use of texture pages is to reduce the amount of memory swap needed by storing as many images as possible, onto as few texture pages as possible.
+Computers back in the old days worked with only power of two image sizes. But today texture pages can be any size. Though it's still common to see power of two texture pages. (Power of two as in 512x512, 1024x1024, 2048x2048, 4196x4196, etc.)
 
 While GameMaker does make and use texture pages, there's currently no way to create them on the fly via code. This is where Collage comes in.
 
@@ -20,7 +20,7 @@ While GameMaker does make and use texture pages, there's currently no way to cre
 3. Reimport your [`__CollageConfig`](configuration.md) (if changes were made)
 
 ## Using Collage
-Collage includes a variety of ways to adding images onto its texture pages. We can begin by creating a new [`Collage`](collage.md#collageidentifier-width-height-crop-separation-optimization) instance.<br>
+Collage includes a variety of ways to add images onto its texture pages. We can begin by creating a new [`Collage`](collage.md#collageidentifier-width-height-crop-separation-optimization) instance.<br>
 ```gml
 texPage = new Collage();
 ```
@@ -31,7 +31,7 @@ texPage = new Collage();
 - `__COLLAGE_DEFAULT_OPTIMIZE`
 
 The only one that's not included within the config is the `identifier` argument, which defaults to `undefined`. If declared, it can be used with [`CollageGet()`](general.md#collageget). In most cases, you do not need to specify any of these arguments.
-However you're free to include arguments if you need to either give it a name, or override the default values. (Such in cases where the game is moddable.) Giving us:
+However, you're free to include arguments if you need to either give it a name or override the default values. (Such in cases where the game is moddable.) Giving us:
 ```gml
 texPage = new Collage("Characters", 2048, 2048, false, 0, true);
 ```
@@ -48,7 +48,7 @@ texPage = new Collage();
 texPage.AddSprite(spr_soldier);
 ```
 
-?> Unless otherwise specified by `isCopy`, Collage will auto assign all sprites to be copies (including ones added via the IDE, though those ones will be duplicated.)
+?> Unless otherwise specified by `isCopy`, Collage will auto-assign all sprites to be copies (including ones added via the IDE, though those will be duplicated.)
 
 #### **.AddSurface**
 
@@ -102,8 +102,7 @@ sprite_delete(_batSprite);
 
 <!-- tabs:end -->
 
-?> Each `.Add*` method has some additional parameters, which most are entirely optional. You can see more by reading their specific documentation under [Collage](collage.md).
-
+?> Each `.Add*` method has some additional parameters, most are entirely optional. You can see more by reading their specific documentation under [Collage](collage.md).
 
 Once you've added your images, you can get their info via [`CollageImageGetInfo()`](image.md#collageimagegetinfoidentifier) or [`.ImageGetInfo()`](collage.md#imagegetinfoidentifier). Which you can then use to render the image.
 ```gml
