@@ -18,7 +18,7 @@ Returns: `struct` or `undefined`.
 
 |Name|Datatype|Purpose|
 |---|---|---|
-|`identifier`|string|Name of image.|
+|`identifier`|`string`|Name of image.|
 
 Gets the image information (if any exists) or returns `undefined`.
 ?> If `COLLAGE_IMAGES_MAKE_PUBLIC` is set to false, this function will not work!

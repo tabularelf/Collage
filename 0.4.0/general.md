@@ -82,7 +82,7 @@ Returns: `real`.
 
 Converts a number to the nearest power of two.
 
-### `CollageIsGPUStateSterlized()`
+### `CollageIsGPUStateSterilized()`
 
 Returns: `boolean`.
 
@@ -90,9 +90,9 @@ Returns: `boolean`.
 |---|---|---|
 |`N/A`|||
 
-Checks whether the GPU state has been sterlized or not.
+Checks whether the GPU state has been sterilized or not.
 
-### `CollageSterlizeGPUState()`
+### `CollageSterilizeGPUState()`
 
 Returns: `N/A`.
 
@@ -100,7 +100,7 @@ Returns: `N/A`.
 |---|---|---|
 |`N/A`|||
 
-Sterlizes the GPU states, matrices and shader, preparing for adding onto a texture page as is.
+Sterilizes the GPU states, matrices and shader, preparing for adding onto a texture page as is.
 
 ### `CollageRestoreGPUState()`
 
@@ -110,4 +110,4 @@ Returns: `N/A`.
 |---|---|---|
 |`N/A`|||
 
-Restores the GPU states, matrices and shader from `CollageSterlizeGPUState()`.
+Restores the GPU states, matrices and shader from `CollageSterilizeGPUState()`.
