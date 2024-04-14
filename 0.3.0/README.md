@@ -27,7 +27,7 @@ Collage is a texture page builder/packer and image manager, built from the groun
 
 ## **Why was Collage made?**
 
-Collage was designed in mind to work around the limitations of `sprite_add`()` adding an entire texture page just for each, and every, sprite sub-image, per sprite.
+Collage was designed in mind to work around the limitations of `sprite_add()` adding an entire texture page just for each, and every, sprite sub-image, per sprite.
 While also enabling the creation of texture pages on the fly. Collage is specifically designed to mimic GameMaker's texture page system, and thus works in much the same logic as GameMakers.
 
 ## **What could I use Collage for?**
