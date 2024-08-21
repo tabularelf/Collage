@@ -52,13 +52,13 @@ Returns: `self`
 |`subimage`|`Real`|Sub image of Collage Image you want to use.|
 |`x`|`Real`|X position of where you want to bake.|
 |`y`|`Real`|Y position of where you want to bake.|
-|`[z]`|`Real`|Optional: Z position of where you want to bake. Defaults to `0`|
-|`[width]`|`Real`|Optional: Width of image. Defaults to `1`|
-|`[height]`|`Real`|Optional: Height of image. Defaults to `1`|
-|`[angle]`|`Real`|Optional: Angle of image. Defaults to `0`|
-|`[colour]`|`Real`|Optional: Colour of image. Defaults to `draw_set_colour()`|
+|`[z]`|`Real`|Optional: Z position of where you want to bake. (Defaults to `0`)|
+|`[width]`|`Real`|Optional: Width of image. (Defaults to `1`)|
+|`[height]`|`Real`|Optional: Height of image. (Defaults to `1`)|
+|`[angle]`|`Real`|Optional: Angle of image. (Defaults to `0`)|
+|`[colour]`|`Real`|Optional: Colour of image. (Defaults to `draw_set_colour()`)|
 |`[alpha]`|`Real`|Optional: Alpha of image. `draw_set_alpha()`|
-|`[respectOrigin]`|`Boolean`|Optional: Whether to respect image origin or not. Defaults to `true`|
+|`[respectOrigin]`|`Boolean`|Optional: Whether to respect image origin or not. (Defaults to `true`)|
 
 Adds a Collage image to the batch, with the specified properties.
 
@@ -132,7 +132,7 @@ Returns: `self`
 
 |Name|Datatype|Purpose|
 |---|---|---|
-|`[frozenOnly]`|`Boolean`|Whether to clear all or just frozen vertex buffers. Defaults to `false`|
+|`[frozenOnly]`|`Boolean`|Whether to clear all or just frozen vertex buffers. (Defaults to `false`)|
 
 Clears all vertex buffers. If `[frozenOnly]` is set to `true`, then this will only clear frozen vertex buffers.
 
