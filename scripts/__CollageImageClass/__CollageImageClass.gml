@@ -66,7 +66,7 @@ function __CollageImageClass(_spriteStruct, _name, _cropW, _cropH, _tiling, _rat
 		
 		var _i = 1;
 		repeat(GetCount()-1) {
-			_uvs = _data.image.GetUVs(_i);
+			_uvs = GetUVs(_i);
 			sprite_add_from_surface(_sprite, _uvs.texturePageStruct.GetSurface(), _uvs.left, _uvs.top, _uvs.right, _uvs.bottom, false, false);	
 			++_i;
 		}	
