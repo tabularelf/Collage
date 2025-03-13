@@ -59,4 +59,17 @@ function __CollageImageClass(_spriteStruct, _name, _cropW, _cropH, _tiling, _rat
 	static GetCount = function() {
 		return __subImagesCount;	
 	}
+	
+	static ToSprite = function() {
+		var _uvs = GetUVs(0);
+		var _sprite = sprite_create_from_surface(_uvs.texturePageStruct.GetSurface(), _uvs.left, _uvs.top, _uvs.right, _uvs.bottom, false, false, 0, 0);
+		
+		var _i = 1;
+		repeat(GetCount()-1) {
+			_uvs = GetUVs(_i);
+			sprite_add_from_surface(_sprite, _uvs.texturePageStruct.GetSurface(), _uvs.left, _uvs.top, _uvs.right, _uvs.bottom, false, false);	
+			++_i;
+		}	
+		return _sprite;
+	}
 }
