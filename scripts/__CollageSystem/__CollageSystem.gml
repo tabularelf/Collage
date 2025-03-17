@@ -25,7 +25,7 @@ enum CollageRPStatus {
 }
 
 #macro __COLLAGE_CREDITS "@TabularElf - https://tabelf.link/"
-#macro __COLLAGE_VERSION "v0.4.1"
+#macro __COLLAGE_VERSION "v0.4.2"
 show_debug_message("Collage " + __COLLAGE_VERSION + " Initalized! Created by " + __COLLAGE_CREDITS);
 
 /// @ignore

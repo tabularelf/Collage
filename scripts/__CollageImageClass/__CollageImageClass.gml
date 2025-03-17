@@ -17,6 +17,22 @@ function __CollageImageClass(_spriteStruct, _name, _cropW, _cropH, _tiling, _rat
 	static __InternalGetUvs = function(_imageIndex) {
 		return __subImagesArray[_imageIndex % __subImagesCount];
 	}
+    
+    static SetXOffset = function(_value) {
+        __xoffset = _value;
+        return self;
+    }
+    
+    static SetYOffset = function(_value) {
+        __yoffset = _value;
+        return self;
+    }
+    
+    static SetXYOffset = function(_x, _y) {
+        __xoffset = _x;
+        __yoffset = _y;
+        return self;
+    }
 	
 	static GetName = function() {
 		return __name;	
