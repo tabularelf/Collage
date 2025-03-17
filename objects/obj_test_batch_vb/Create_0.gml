@@ -1,6 +1,7 @@
 texPage = new Collage(,,,,,false);
 texPage.StartBatch();
 
+
 var _file = file_find_first("*.png", 0);
 var _i = 0;
 
@@ -46,3 +47,5 @@ batch.Finish();
 batch.RemoveImageByIndex(0, 0);
 
 batch.Freeze();
+
+sprite_index = texPage.GetImageInfo("test").ToSprite();

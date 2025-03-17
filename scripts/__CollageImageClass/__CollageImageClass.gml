@@ -20,17 +20,29 @@ function __CollageImageClass(_spriteStruct, _name, _cropW, _cropH, _tiling, _rat
     
     static SetXOffset = function(_value) {
         __xoffset = _value;
+        var _i = 0;
+        repeat(GetCount()) {
+            var _uvs = GetUVs(_i);
+                _uvs.xPos = __xoffset-_uvs.trimLeft;
+            ++_i;
+        }
         return self;
     }
     
     static SetYOffset = function(_value) {
         __yoffset = _value;
+        var _i = 0;
+        repeat(GetCount()) {
+            var _uvs = GetUVs(_i);
+                _uvs.yPos = __yoffset-_uvs.trimTop;
+            ++_i;
+        }
         return self;
     }
     
     static SetXYOffset = function(_x, _y) {
-        __xoffset = _x;
-        __yoffset = _y;
+        SetXOffset(_x);
+        SetYOffset(_y);
         return self;
     }
 	

@@ -20,6 +20,7 @@
     {"id":{"name":"CollageIsPowerTwo","path":"scripts/CollageIsPowerTwo/CollageIsPowerTwo.yy",},"order":11,},
     {"id":{"name":"CollageSterlizeGPUState","path":"scripts/CollageSterlizeGPUState/CollageSterlizeGPUState.yy",},"order":13,},
     {"id":{"name":"spr_coloured_cubes4","path":"sprites/spr_coloured_cubes4/spr_coloured_cubes4.yy",},"order":5,},
+    {"id":{"name":"obj_test_origin","path":"objects/obj_test_origin/obj_test_origin.yy",},"order":20,},
     {"id":{"name":"__CollageVFormat","path":"scripts/__CollageVFormat/__CollageVFormat.yy",},"order":2,},
     {"id":{"name":"__CollageImageUVsClass","path":"scripts/__CollageImageUVsClass/__CollageImageUVsClass.yy",},"order":2,},
     {"id":{"name":"CollageIsCollage","path":"scripts/CollageIsCollage/CollageIsCollage.yy",},"order":8,},
@@ -226,6 +227,6 @@
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"IMAGE_WITH_SPACE2.png","CopyToMask":-1,"filePath":"datafiles",},
   ],
   "MetaData": {
-    "IDEVersion": "2022.0.2.51",
+    "IDEVersion": "2022.0.3.85",
   },
 }

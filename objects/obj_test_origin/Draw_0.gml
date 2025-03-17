@@ -1,0 +1,1 @@
+draw_image(texPage.GetImageInfo("spr_soldier"), 0, 0, 0);
