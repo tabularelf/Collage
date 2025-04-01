@@ -202,7 +202,7 @@ Returns: `N/A`.
 |Name|Datatype|Purpose|
 |---|---|---|
 |`image_index`|`Real`|`image_index` you wish to save.|
-|`filename`|`String`|Name of file you wish to save as. Defaults to name of Collage Image instance + `image_index`, with an underscore in between and `.png`. (`GetName() + $"_{image_index}.png")|
+|`filename`|`String`|Name of file you wish to save as. Defaults to name of Collage Image instance + `image_index`, with an underscore in between and `.png`.|
 
 Saves a collage image frame to disk. Same as [`sprite_save()`](https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Asset_Management/Sprites/Sprite_Manipulation/sprite_save_strip.htm).
 
@@ -212,6 +212,6 @@ Returns: `N/A`.
 
 |Name|Datatype|Purpose|
 |---|---|---|
-|`filename`|`String`|Name of file you wish to save as. Defaults to name of Collage Image instance + `image_index`, with an underscore in between and `.png`. (`GetName() + $"_{image_index}.png")|
+|`filename`|`String`|Name of file you wish to save as. Defaults to name of Collage Image instance, `"_strip"`, the number of frames total and `.png`.|
 
 Saves a collage image strip to disk. Same as [`sprite_save_strip()`](https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Asset_Management/Sprites/Sprite_Manipulation/sprite_save_strip.htm).
