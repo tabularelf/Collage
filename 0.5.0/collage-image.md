@@ -184,3 +184,34 @@ Returns: `Sprite Speed Constant type`.
 |`N/A`|||
 
 Returns the Collage Image instance speed type.
+
+### `.ToSprite()`
+
+Returns: `Sprite Index`.
+
+|Name|Datatype|Purpose|
+|---|---|---|
+|`N/A`|||
+
+Creates and returns a sprite index based off the Collage Image instance.
+
+### `.SaveToFile(image_index, [filename])`
+
+Returns: `N/A`.
+
+|Name|Datatype|Purpose|
+|---|---|---|
+|`image_index`|`Real`|`image_index` you wish to save.|
+|`filename`|`String`|Name of file you wish to save as. Defaults to name of Collage Image instance + `image_index`, with an underscore in between and `.png`. (`GetName() + $"_{image_index}.png")|
+
+Saves a collage image frame to disk. Same as [`sprite_save()`](https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Asset_Management/Sprites/Sprite_Manipulation/sprite_save_strip.htm).
+
+### `.SaveStripToFile([filename])`
+
+Returns: `N/A`.
+
+|Name|Datatype|Purpose|
+|---|---|---|
+|`filename`|`String`|Name of file you wish to save as. Defaults to name of Collage Image instance + `image_index`, with an underscore in between and `.png`. (`GetName() + $"_{image_index}.png")|
+
+Saves a collage image strip to disk. Same as [`sprite_save_strip()`](https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Asset_Management/Sprites/Sprite_Manipulation/sprite_save_strip.htm).
