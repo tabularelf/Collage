@@ -25,7 +25,7 @@ enum CollageRPStatus {
 }
 
 #macro __COLLAGE_CREDITS "@TabularElf - https://tabelf.link/"
-#macro __COLLAGE_VERSION "v0.4.2"
+#macro __COLLAGE_VERSION "v0.5.0"
 show_debug_message("Collage " + __COLLAGE_VERSION + " Initalized! Created by " + __COLLAGE_CREDITS);
 
 /// @ignore
@@ -43,13 +43,25 @@ function __CollageSystem() {
 				__CollageTPLoadedList = ds_list_create();
 				
 				var _i = 0;
-				while(sprite_exists(_i)) {
-					// Skip sprites created/added on the fly
-					if (string_count("__newsprite", sprite_get_name(_i)) > 0) {
-						break;
+				try {
+					// Needed as newer versions of GameMaker now break with "unused assets" checked.
+					var _sprites = asset_get_ids(asset_sprite);
+					repeat(array_length(_sprites)) {
+						// Skip sprites created/added on the fly
+						if (!string_count("__newsprite", sprite_get_name(_sprites[_i])) > 0) {
+							__CollageGMSpriteCount++;	
+						}
+						_i++;
 					}
-					
-					__CollageGMSpriteCount = _i++;
+				} catch(_) {
+					while(sprite_exists(_i)) {
+						// Skip sprites created/added on the fly
+						if (string_count("__newsprite", sprite_get_name(_i)) > 0) {
+							break;
+						}
+						
+						__CollageGMSpriteCount = _i++;
+					}
 				}
 				_init = true;
 				try {

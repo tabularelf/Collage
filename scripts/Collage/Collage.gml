@@ -158,7 +158,11 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		}
 		
 		// Add sprite data
-		var _spriteData = new __CollageSpriteFileDataClass(_identifier, _spriteID, sprite_get_number(_spriteID), _isCopyValue).SetOrigin(_xOrigin, _yOrigin).Set3D(_is3D);
+		var _spriteData = new __CollageSpriteFileDataClass(_identifier, _spriteID, sprite_get_number(_spriteID), _isCopyValue)
+			.SetOrigin(_xOrigin, _yOrigin)
+			.Set3D(_is3D)
+			.SetSpeed(sprite_get_speed(_spriteIdentifier))
+			.SetSpeedType(sprite_get_speed_type(_spriteIdentifier));
 		
 		array_push(__batchImageList, _spriteData);
 		

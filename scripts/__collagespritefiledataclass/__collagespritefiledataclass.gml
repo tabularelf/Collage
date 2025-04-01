@@ -18,6 +18,8 @@ function __CollageSpriteFileDataClass(_identifier, _spriteID, _subImage = 1, _is
 	__colour = c_white;
 	__alpha = 1;
 	__priority = -1;
+	__speed = 0;
+	__speedType = 0;
 	
 	static SetClump = function(_bool) {
 		__keepTogether = _bool;
@@ -54,6 +56,16 @@ function __CollageSpriteFileDataClass(_identifier, _spriteID, _subImage = 1, _is
 	
 	static SetPriority = function(_num) {
 		__priority = _num;
+		return self;
+	}
+	
+	static SetSpeed = function(_value) {
+		__speed = _value;
+		return self;
+	}
+	
+	static SetSpeedType = function(_value) {
+		__speedType = _value;
 		return self;
 	}
 }

@@ -4,7 +4,6 @@
 /// @return {Array<Real>}
 /// feather ignore all
 function CollageImageGetUVsArray(_identifier, _imageIndex) {
-	gml_pragma("forceinline");
 	static __system = __CollageSystem();
     var _uvs;
     if (is_string(_identifier)) {

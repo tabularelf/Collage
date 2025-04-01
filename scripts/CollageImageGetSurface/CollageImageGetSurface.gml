@@ -4,7 +4,6 @@
 /// @return {Id.Surface}
 /// feather ignore all
 function CollageGetImageSurface(_identifier, _imageIndex) {
-	gml_pragma("forceinline");
 	static __system = __CollageSystem();
 	if (is_string(_identifier)) {
 		if (!__COLLAGE_IMAGES_ARE_PUBLIC) {

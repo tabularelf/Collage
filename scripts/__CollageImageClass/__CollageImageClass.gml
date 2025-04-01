@@ -13,6 +13,8 @@ function __CollageImageClass(_spriteStruct, _name, _cropW, _cropH, _tiling, _rat
 	__ratio = _ratio;
     __scaled = 1/_ratio;
 	__tiling = _tiling;
+	__speed = _spriteStruct.spriteData.__speed;
+	__speedType = _spriteStruct.spriteData.__speedType;
 	
 	static __InternalGetUvs = function(_imageIndex) {
 		return __subImagesArray[_imageIndex % __subImagesCount];
@@ -45,6 +47,30 @@ function __CollageImageClass(_spriteStruct, _name, _cropW, _cropH, _tiling, _rat
         SetYOffset(_y);
         return self;
     }
+	
+	static SetSpeed = function(_value) {
+		__speed = _value;
+		return self;
+	}
+	
+	static SetSpeedType = function(_value) {
+		__speedType = _value;
+		return self;
+	}
+	
+	static CalcImageIndex = function(_index = 0, _speed = 1, _fps = game_get_speed(gamespeed_fps)) {
+		return (__speedType == spritespeed_framespergameframe ? 
+		(_index + (1 * GetSpeed() * _speed)):
+		(_index + (1 * (GetSpeed()/_fps) * _speed))) % GetCount();
+	}
+	
+	static GetSpeed = function() {
+		return __speed;	
+	}
+	
+	static GetSpeedType = function() {
+		return __speedType;	
+	}
 	
 	static GetName = function() {
 		return __name;	
@@ -86,6 +112,18 @@ function __CollageImageClass(_spriteStruct, _name, _cropW, _cropH, _tiling, _rat
 	
 	static GetCount = function() {
 		return __subImagesCount;	
+	}
+	
+	static SaveToFile = function(_index, _filename = GetName() + "_" + string(_index) + ".png") {
+		var _sprite = ToSprite();
+		sprite_save(_sprite, _index, _filename);
+		sprite_delete(_sprite);
+	}
+	
+	static SaveStripToFile = function(_filename = GetName() + "_strip" + string(GetCount()) + ".png") {
+		var _sprite = ToSprite();
+		sprite_save_strip(_sprite, _filename);
+		sprite_delete(_sprite);
 	}
 	
 	static ToSprite = function() {

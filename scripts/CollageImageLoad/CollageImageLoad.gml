@@ -3,7 +3,6 @@
 /// @param {Real} image_index
 /// feather ignore all
 function CollageImageLoad(_identifier, _subImage) {
-	gml_pragma("forceinline");
 	static __system = __CollageSystem();
 	var _image;
 	

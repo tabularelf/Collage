@@ -4,7 +4,6 @@
 /// @return {Bool}
 /// feather ignore all
 function CollageImageIsLoaded(_identifier, _subImage) {
-	gml_pragma("forceinline");
 	static __system = __CollageSystem();
 	var _image;
 	

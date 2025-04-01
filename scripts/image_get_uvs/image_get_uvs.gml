@@ -4,7 +4,6 @@
 /// @return {Array<Real>}
 /// feather ignore all
 function image_get_uvs(_sprite, _sub) {
-	gml_pragma("forceinline");
 	if (CollageIsImage(_sprite)) {
 		return CollageImageGetUVsArray(_sprite, _sub);	
 	}
