@@ -7,6 +7,8 @@ A sprite strip (or also known as a file strip) is an image with separate frames.
 
 ![](https://raw.githubusercontent.com/tabularelf/Collage/refs/heads/main/datafiles/spr_soldier.png)
 
+GameMaker already provides some support via filenames ending with `_stripX`, but there may be times where knowing the number of frames isn't doable. Highly suggested to use [`.AddFileStrip()`](collage.md?id=addfilestripfilepath-identifier-removeback-smooth-xorigin-yorigin-separatetexture) in those cases.
+
 ## What is a sprite sheet?
 A sprite sheet is an image similar to a sprite strip, except with multiple sprite strips in one. Such as this bats sprite sheet by [`bagzie from opengameart.org`](https://opengameart.org/content/bat-sprite). 
 
