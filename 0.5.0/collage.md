@@ -144,25 +144,25 @@ Returns: `N/A`.
 
 Frees the texture pages (and images). Allowing for this Collage instance to be reused.
 
-### `.GetPage()`
+### `.GetTexturePage(index)`
 
-Returns: `N/A`.
+Returns: `Collage Texture Page Instance`.
+
+|Name|Datatype|Purpose|
+|---|---|---|
+|`index`|`Real`|The page index you wish to get.|
+
+Fetches and returns a Collage texture page instance.
+
+### `.GetCount()`
+
+Returns: `Real`.
 
 |Name|Datatype|Purpose|
 |---|---|---|
 |`N/A`|||
 
-Frees the texture pages (and images).
-
-### `.GetPageCount()`
-
-Returns: `N/A`.
-
-|Name|Datatype|Purpose|
-|---|---|---|
-|`N/A`|||
-
-Frees the texture pages (and images).
+Returns the number of texture pages in general
 
 ### `.FlushPages()`
 
@@ -174,13 +174,13 @@ Returns: `N/A`.
 
 Flushes all texture pages to cached memory.
 
-### `.FlushPage()`
+### `.FlushPage(index)`
 
 Returns: `N/A`.
 
 |Name|Datatype|Purpose|
 |---|---|---|
-|`N/A`|||
+|`index`|`Real`|The page index you wish to flush to cache memory.|
 
 Flushes a texture page to cached memory.
 
