@@ -299,17 +299,32 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		var _imageArray = [];
 		
 		CollageSterlizeGPUState();
+		
 		repeat(array_length(_spriteArray)) {
-			var _imageStruct = _spriteArray[_i];
-			var _xSize = _imageStruct[3];
-			var _ySize = _imageStruct[4];
-			var _subImages = max((_xSize >= _ySize ? (_xSize div _ySize) : (_ySize div _xSize)) - 1, 1);
-			var _j = 1;
+			var _imageStruct		= _spriteArray[_i];
+			
+			var _xSize				= _imageStruct[3] - _imageStruct[1] + 1;
+			var _ySize				= _imageStruct[4] - _imageStruct[2] + 1;
+			var _alignedHorizontal	= _xSize >= _ySize;
+			
+			var _startPosX			= _imageStruct[1];
+			var _startPosY			= _imageStruct[2];
+			
+			var _subImages			= max(_alignedHorizontal ? (_xSize) div _width : (_ySize) div _height, 1); 
+
+			var _j					= 0;
 			repeat(_subImages) {
 				surface_set_target(_surf);
 				draw_clear_alpha(0, 0);
-				var _xPos = _subImages > 1 ? (_xSize >= _ySize ? (_j*_width) : (_imageStruct[1])) : _imageStruct[1];
-				var _yPos = _subImages > 1 ? (_xSize >= _ySize ? (_imageStruct[2]) : (_j*_height))  : _imageStruct[2];
+				
+				var _xPos = _imageStruct[1];
+				var _yPos = _imageStruct[2];
+				
+				if (_subImages > 1) {
+					if (_alignedHorizontal)	_xPos = _j * _width  + _startPosX;
+					else			_yPos = _j * _height + _startPosY;
+				}
+				
 				draw_sprite_part(_spriteID, 0, _xPos, _yPos, _width, _height, 0, 0);
 				surface_reset_target();
 				if (!sprite_exists(_newSprite)) {
@@ -319,7 +334,8 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 				}
 				++_j;
 			}
-			var _name = (string_count("{{name}}", _imageStruct[0]) > 0) ? string_replace_all(_imageStruct[0], "{{name}}", _identifierString) : _identifierString + _imageStruct[0];
+			
+			var _name = (string_count("{{name}}", _imageStruct[0]) > 0) ? string_replace_all(_imageStruct[0], "{{name}}", _identifierString) : _imageStruct[0];
 			var _spriteData = new __CollageSpriteFileDataClass(_name, _newSprite, _subImages).SetOrigin(_xOrigin, _yOrigin).Set3D(_is3D);
 			array_push(__batchImageList, _spriteData);
 			array_push(_imageArray, _spriteData);
