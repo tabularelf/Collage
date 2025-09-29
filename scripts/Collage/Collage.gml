@@ -618,11 +618,11 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		var _paths = array_create(_texturePagesCount);
 		// Save Pages
 		for(var _i = 0; _i < _texturePagesCount; ++_i) {
-			var _filepath = $"{__COLLAGE_DEFAULT_SAVE_FILEPATH}{_name}_{_i}.png";
-			_paths[_i] = _filepath;
-			_texturePages[_i].CheckSurface();
-			var _surf = _texturePages[_i].GetSurface();
-			surface_save(_surf, _filepath);
+			//var _filepath = $"{__COLLAGE_DEFAULT_SAVE_FILEPATH}{_name}_{_i}.png";
+			_paths[_i] = _texturePages[_i].ToQOIF();
+			//_texturePages[_i].CheckSurface();
+			//var _surf = _texturePages[_i].GetSurface();
+			//surface_save(_surf, _filepath);
 		}
 	
 		var _element = new __CollageStaticGroupClass(self, _paths, _texturePagesCount, _prefetch, _removeSelf);

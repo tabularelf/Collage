@@ -78,5 +78,9 @@
 // The default state of a Collage instance with hashing, if hashes are on
 #macro __COLAGE_DEFAULT_HASH_STATE true
 
-// What filepath Collage should save to by default for .ToStatic()
-#macro __COLLAGE_DEFAULT_SAVE_FILEPATH (temp_directory + ".collage/")
+// Whether Collage should track instances of __CollageStaticGroupClass to ensure that their data is cleared up properly.
+// Beneficial for when you don't need the struct, but would like Collage to still handle cleanup.
+#macro __COLLAGE_WEAKREF_TEXTUREGROUPS true
+
+// How long between seconds before Collage should loop through texture groups again
+#macro __COLLAGE_WEAKREF_TEXTUREGROUPS_NEXT_ITERATION 5

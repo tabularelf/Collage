@@ -92,13 +92,12 @@ function __CollageSpriteFileDataClass(_identifier, _spriteID, _subImage = 1, _is
 		return self;
 	}
 	
-	static SetSize = function(_width, _height, _linear = false) {
+	static SetSize = function(_width, _height) {
 		var _surf = surface_create(_width, _height);
 		var _oldSprite = __spriteID;
 		__spriteID = undefined;
 		CollageSterlizeGPUState();
 		var _i = 0;
-		gpu_set_tex_filter(_linear);
 		repeat(sprite_get_number(_oldSprite)) {
 			surface_set_target(_surf);
 			draw_clear_alpha(c_black, 0);
@@ -123,8 +122,45 @@ function __CollageSpriteFileDataClass(_identifier, _spriteID, _subImage = 1, _is
 		return self;
 	}
 	
-	static SetScale = function(_xScale, _yScale, _linear = false) {
-		SetSize(GetWidth() * _xScale, GetHeight() * _yScale, _linear);
+	static SetScale = function(_xScale, _yScale) {
+		SetSize(GetWidth() * _xScale, GetHeight() * _yScale);
+		return self;
+	}
+	
+	static ApplyEffect = function(_startFunc, _endFunc) {
+		var _surf = surface_create(__width, __height);
+		var _oldSprite = __spriteID;
+		__spriteID = undefined;
+		CollageSterlizeGPUState();
+		var _i = 0;
+		repeat(sprite_get_number(_oldSprite)) {
+			surface_set_target(_surf);
+			draw_clear_alpha(c_black, 0);
+			_startFunc();
+			draw_sprite(_oldSprite, 0, 0, 0);
+			_endFunc();
+			surface_reset_target();
+			if (is_undefined(__spriteID)) {
+				__spriteID = sprite_create_from_surface(_surf, 0, 0, __width, __height, false, false, __xOrigin, __yOrigin);
+			} else {
+				sprite_add_from_surface(__spriteID, _surf, 0, 0, __width, __height, false, false);
+			}
+			++_i;
+		}
+		CollageRestoreGPUState();
+		if (__isCopy) {
+			sprite_delete(_oldSprite);
+		} 
+			
+		__isCopy = true;
+		return self;
+	}
+	
+	static ApplyShader = function(_shader) {
+		var _ctx = {_shader};
+		ApplyEffect(method(_ctx, function() {
+			shader_set(_shader);
+		}), method(undefined, shader_reset));
 		return self;
 	}
 	

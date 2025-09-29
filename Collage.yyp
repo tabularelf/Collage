@@ -113,7 +113,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.1400.0.849",
+    "IDEVersion":"2024.1400.0.901",
   },
   "name":"Collage",
   "resources":[
@@ -218,6 +218,7 @@
     {"id":{"name":"image_get_xoffset","path":"scripts/image_get_xoffset/image_get_xoffset.yy",},},
     {"id":{"name":"image_get_yoffset","path":"scripts/image_get_yoffset/image_get_yoffset.yy",},},
     {"id":{"name":"__ShdCollagePremultiply","path":"shaders/__ShdCollagePremultiply/__ShdCollagePremultiply.yy",},},
+    {"id":{"name":"shd_test","path":"shaders/shd_test/shd_test.yy",},},
     {"id":{"name":"spr_alphatest_premulti","path":"sprites/spr_alphatest_premulti/spr_alphatest_premulti.yy",},},
     {"id":{"name":"spr_alphatest","path":"sprites/spr_alphatest/spr_alphatest.yy",},},
     {"id":{"name":"spr_coloured_cubes_far_too_many","path":"sprites/spr_coloured_cubes_far_too_many/spr_coloured_cubes_far_too_many.yy",},},

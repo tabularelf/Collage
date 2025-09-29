@@ -9,28 +9,28 @@ function CollageSterlizeGPUState() {
 	_instance.isSterilized = true;
 	// Get GPU state
 	_instance.gpuBlendEnable =			gpu_get_blendenable();
-	_instance.gpuBlendMode =			gpu_get_blendmode_ext_sepalpha();
+	_instance.gpuBlendMode =				gpu_get_blendmode_ext_sepalpha();
 	_instance.gpuColourWrite =			gpu_get_colourwriteenable();
-	_instance.gpuAlphaTest =			gpu_get_alphatestenable();
-	_instance.gpuTexFilter =			gpu_get_texfilter();
+	_instance.gpuAlphaTest =				gpu_get_alphatestenable();
+	_instance.gpuTexFilter =				gpu_get_texfilter();
 	_instance.gpuFog =					gpu_get_fog();
 	_instance.gpuLighting =				draw_get_lighting();
 	_instance.gpuColour =				draw_get_color();
-	_instance.gpuAlpha =				draw_get_alpha();
+	_instance.gpuAlpha =					draw_get_alpha();
 	_instance.gpuZWrite =				gpu_get_zwriteenable();
-	_instance.gpuZTest =				gpu_get_ztestenable();
+	_instance.gpuZTest =					gpu_get_ztestenable();
 	_instance.gpuCullmode =				gpu_get_cullmode();
-	_instance.gpuZFunc =				gpu_get_zfunc();
-	_instance.gpuFiltering =			gpu_get_tex_filter();
+	_instance.gpuZFunc =					gpu_get_zfunc();
+	_instance.gpuFiltering =				gpu_get_tex_filter();
 	_instance.gpuMipEnabled =			gpu_get_tex_mip_enable();
 	_instance.matrixWorld =				matrix_get(matrix_world);
 	_instance.matrixView =				matrix_get(matrix_view);
 	_instance.matrixProj =				matrix_get(matrix_projection);
 	_instance.shader =					shader_current();
-	_instance.blendEquation =			gpu_get_blendequation_sepalpha();
+	_instance.blendEquation =			gpu_get_blendequation();
 	_instance.stencilEnable	=			gpu_get_stencil_enable();
-	_instance.depth 		=			gpu_get_depth();
-	_instance.spriteCull	=			gpu_get_sprite_cull();
+	_instance.depth 		=				gpu_get_depth();
+	_instance.spriteCull	=				gpu_get_sprite_cull();
 	
 	// Change GPU settings
 	static _matrixDefault = matrix_build_identity();

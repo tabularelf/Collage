@@ -23,30 +23,29 @@ repeat(array_length(_images)) {
 	++_i;
 }	
 
-texPageStatic = texPage.ToStaticBuilder();
-var _path = $".collage/{texPageStatic.GetName()}_0.png";
-surface_save(texPageStatic.NextPage().GetSurface(), _path);
-texPageStatic.AddPath(_path);
-texPageStatic = texPageStatic.Finalize();
-sprites = texPageStatic.GetSprites();
+//texPageStatic = texPage.ToStaticBuilder();
+//var _path = $".collage/{texPageStatic.GetName()}_0.png";
+//surface_save(texPageStatic.NextPage().GetSurface(), _path);
+//texPageStatic.AddPath(_path);
+//texPageStatic = texPageStatic.Finalize();
+//sprites = texPageStatic.GetSprites();
 show_debug_overlay(true, true);
 //texPage.SaveAsPNGs("data/");
 
 //show_debug_message(json_stringify(texPage.ExportData(), true));
 //show_debug_message(texPage.ToJSON(true));
 //texPage.SaveAsPNGs("TestFolder");
-/*call_later(5, time_source_units_seconds, function() {
-	texPageStatic = texPage.ToStatic(true);
+texPageStatic = texPage.ToStatic(true);
 	sprites = texPageStatic.GetSprites();
-	sprite_index = sprites[0];
-	show_debug_message("Static page generated!");
-	call_later(5, time_source_units_seconds, function() {
-		show_debug_message("Dynamic page destroyed!");
-		texPage.Destroy();
+			sprite_index = sprites[0];
+		show_debug_message("Static page generated!");
+	call_later(1, time_source_units_seconds, function() {
+		//show_debug_message("Dynamic page destroyed!");
+		//texPageStatic.Destroy();
+		//texturegroup_delete("Test");
 	});
-});
 show_debug_overlay(true);
-/*
+
 var _i = 0;
 repeat(array_length(sprites)) {
 	show_debug_message($"{sprite_get_name(sprites[_i])} {sprite_get_xoffset(sprites[_i])} {sprite_get_yoffset(sprites[_i])}");

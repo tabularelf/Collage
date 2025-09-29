@@ -45,6 +45,23 @@ function __CollageSystem() {
 				__CollageGMSpriteCount = 0;
 				__CollageAsyncList = [];
 				__CollageTPLoadedList = ds_list_create();
+				__CollageSTPWeakRef = [];
+				
+				if (__COLLAGE_WEAKREF_TEXTUREGROUPS) {
+					time_source_start(time_source_create(time_source_global, __COLLAGE_WEAKREF_TEXTUREGROUPS_NEXT_ITERATION, time_source_units_seconds, function() {
+						static _list = __CollageSystem().__CollageSTPWeakRef;
+						var _size = array_filter_ext(_list, function(_elm) {
+							if (!texturegroup_exists(_elm.GetName())) {
+								_elm.__Destroy();
+								return false;
+							}
+							
+							return true;
+						});
+						
+						array_resize(_list, _size);
+					}, [], -1));
+				}
 				
 				var _i = 0;
 				try {

@@ -5,7 +5,7 @@ function buildVBO(_vbuff, _format, _uvs, _x = 0, _y = 0) {
 	var _x2 = _x1 + sprite_get_width(spr_soldier);
 	var _y2 = _y1 + sprite_get_height(spr_soldier);
 	
-	// Triangle 1
+	// Triangle 1 
 	vertex_position(_vbuff, _x1, _y1);
 	vertex_texcoord(_vbuff, _uvs[0], _uvs[1]);
 	vertex_color(_vbuff, c_white, 1);

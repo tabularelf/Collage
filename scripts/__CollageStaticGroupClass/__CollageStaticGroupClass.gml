@@ -1,6 +1,9 @@
 function __CollageStaticGroupClass(_collageInstance, _paths, _texturePagesCount, _prefetch = false, _removeSelf = false) constructor {
 	static _global = __CollageSystem();
-
+	if (__COLLAGE_WEAKREF_TEXTUREGROUPS) {
+		array_push(_global.__CollageSTPWeakRef, self);
+	}
+	
 	#region Processing
 	var _images = _collageInstance.ImagesToArray();
 	var _name = _collageInstance.GetName();
@@ -122,6 +125,23 @@ function __CollageStaticGroupClass(_collageInstance, _paths, _texturePagesCount,
 		__group = undefined;
 		__name = undefined;
 		__destroyed = true;
+		__Destroy();
+		if (__COLLAGE_WEAKREF_TEXTUREGROUPS) {
+			var _pos = array_get_index(_global.__CollageSTPWeakRef, self);
+			if (_pos >= 0) {
+				array_delete(_global.__CollageSTPWeakRef, _pos, 1);
+			}
+		}
+	}
+	
+	static __Destroy = function() {
+		array_foreach(__paths, function(_elm) {
+			if (!is_string(_elm)) {
+				if (buffer_exists(_elm)) {
+					buffer_delete(_elm);
+				}
+			}
+		});	
 	}
 	
 	static GetSprites = function() {

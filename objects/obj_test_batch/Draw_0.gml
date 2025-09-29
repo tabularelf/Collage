@@ -5,8 +5,11 @@ repeat(array_length(pos)) {
 	++_i;
 }
 */
+
 var _i = 0;
 repeat(array_length(sprites)) {
-	draw_image(sprites[_i], 0, pos[_i].x, pos[_i].y);
+	if (sprite_exists(sprites[_i])) {
+		draw_image(sprites[_i], 0, pos[_i].x, pos[_i].y);
+	}
 	++_i;
 }

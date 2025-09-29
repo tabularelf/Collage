@@ -93,6 +93,7 @@
     {"name":"image_get_width","order":12,"path":"scripts/image_get_width/image_get_width.yy",},
     {"name":"image_get_xoffset","order":10,"path":"scripts/image_get_xoffset/image_get_xoffset.yy",},
     {"name":"image_get_yoffset","order":11,"path":"scripts/image_get_yoffset/image_get_yoffset.yy",},
+    {"name":"shd_test","order":13,"path":"shaders/shd_test/shd_test.yy",},
     {"name":"spr_alphatest_premulti","order":2,"path":"sprites/spr_alphatest_premulti/spr_alphatest_premulti.yy",},
     {"name":"spr_alphatest","order":1,"path":"sprites/spr_alphatest/spr_alphatest.yy",},
     {"name":"spr_coloured_cubes_far_too_many","order":11,"path":"sprites/spr_coloured_cubes_far_too_many/spr_coloured_cubes_far_too_many.yy",},
