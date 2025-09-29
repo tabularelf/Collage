@@ -16,7 +16,7 @@ function __CollageBuildImage(_vbuffer, _imageData, _index, _x, _y, _z, _widthVal
 	static _colArray = array_create(4);
 	if (is_array(_colourValue)) {
 		_colour = _colourValue;	
-	} else if (is_real(_colourValue)) {
+	} else if (is_numeric(_colourValue)) {
 		_colArray[0] =_colourValue;
 		_colArray[1] =_colourValue;
 		_colArray[2] =_colourValue;
