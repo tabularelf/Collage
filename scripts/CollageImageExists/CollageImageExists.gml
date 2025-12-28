@@ -12,5 +12,5 @@ function CollageImageExists(_identifier) {
 		return variable_struct_exists(__system.__CollageImageMap, _identifier);		
 	} 
 	
-	return ((instanceof(_identifier) == "__CollageImageClass") && (variable_struct_exists(__system.__CollageImageMap, _identifier.__name)));
+	return (is_instanceof(_identifier, __CollageImageClass)) && (variable_struct_exists(__system.__CollageImageMap, _identifier.__name)));
 }

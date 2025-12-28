@@ -31,6 +31,7 @@
     {"$GMIncludedFile":"","%Name":"bus_school.png","CopyToMask":-1,"filePath":"datafiles","name":"bus_school.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"bus.png","CopyToMask":-1,"filePath":"datafiles","name":"bus.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"clearlynotanimage.txt","CopyToMask":-1,"filePath":"datafiles","name":"clearlynotanimage.txt","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"collage_license.txt","CopyToMask":-1,"filePath":"datafiles","name":"collage_license.txt","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"convertible.png","CopyToMask":-1,"filePath":"datafiles","name":"convertible.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"cycle_low.png","CopyToMask":-1,"filePath":"datafiles","name":"cycle_low.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"cycle.png","CopyToMask":-1,"filePath":"datafiles","name":"cycle.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
@@ -113,7 +114,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.1400.0.901",
+    "IDEVersion":"2024.14.2.213",
   },
   "name":"Collage",
   "resources":[
