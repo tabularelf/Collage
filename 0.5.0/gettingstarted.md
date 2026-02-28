@@ -104,7 +104,7 @@ sprite_delete(_batSprite);
 
 ?> Each `.Add*` method has some additional parameters, most are entirely optional. You can see more by reading their specific documentation under [Collage](collage.md).
 
-Once you've added your images, you can get their info via [`CollageImageGetInfo()`](image.md#collageimagegetinfoidentifier) or [`.ImageGetInfo()`](collage.md#imagegetinfoidentifier). Which you can then use to render the image.
+Once you've added your images, you can get their info via [`CollageImageGetInfo()`](image.md#collageimagegetinfoidentifier) or [`.GetImageInfo()`](collage.md#getimageinfoidentifier). Which you can then use to render the image.
 ```gml
 // Getting image info
 image = texPage.GetImageInfo("test");
