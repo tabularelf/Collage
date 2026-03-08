@@ -14,5 +14,4 @@ function CollageImageGetTexture(_identifier, _imageIndex) {
 	} 
 	
 	return _identifier.GetTexture(_imageIndex);	
-Image
 }
