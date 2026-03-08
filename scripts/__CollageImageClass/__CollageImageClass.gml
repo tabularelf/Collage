@@ -1,20 +1,20 @@
 /// @ignore
 /// feather ignore all
-function __CollageImageClass(_spriteStruct, _name, _cropW, _cropH, _tiling, _ratio, _xOffset, _yOffset, _hashes) constructor {
-	__width = _spriteStruct.spriteInfo.width;
-	__height  = _spriteStruct.spriteInfo.height;
+function __CollageImageClass(_name, _width, _height, _subImages, _speed, _speedType, _cropW, _cropH, _tiling, _ratio, _xOffset, _yOffset, _hashes) constructor {
+	__width = _width;
+	__height  = _height;
 	__cropWidth = _cropW;
 	__cropHeight = _cropH;
 	__xoffset = _xOffset;
 	__yoffset = _yOffset;
 	__name = _name;
-	__subImagesCount = _spriteStruct.spriteInfo.num_subimages;
+	__subImagesCount = _subImages;
 	__subImagesArray = array_create(__subImagesCount, undefined);
 	__ratio = _ratio;
     __scaled = 1/_ratio;
 	__tiling = _tiling;
-	__speed = _spriteStruct.spriteData.__speed;
-	__speedType = _spriteStruct.spriteData.__speedType;
+	__speed = _speed;
+	__speedType = _speedType;
 	__hashes = _hashes;
 	
 	static __InternalGetUvs = function(_imageIndex) {

@@ -304,7 +304,7 @@ function __CollageBuilderClass() constructor {
 		#region Image parsing
 		var _sterlized = CollageIsGPUStateSterlized();
 	
-		// Force sterlizing and restoring, in case something was altered)
+		// Force sterlizing and restoring, in case something was altered.
 		if (_sterlized) {
 			CollageRestoreGPUState();	
 		}
@@ -392,7 +392,7 @@ function __CollageBuilderClass() constructor {
 						originalHeight: _sprHeight,
 						tiling: _tiling,
 						hashes: (__COLLAGE_USE_HASHES && owner.GetHashing() ? __CollageHashGenerator(_spriteID) : undefined),
-					}
+					};
 					_spriteList[_i] = _newSpriteData;
 				}
 				++_i;
@@ -421,6 +421,7 @@ function __CollageBuilderClass() constructor {
 		
 		_i = 0;
 		
+		var _t2 = get_timer();
 		// Separate sprites into two groups
 		repeat(_len) {
 			if (_spriteList[_i].spriteData.__is3D) {
@@ -505,7 +506,13 @@ function __CollageBuilderClass() constructor {
 								__CollageTrace(_collageName + _spriteData.__name + " already exists! Reidentified as " + _name);
 								_spriteData.name = _name;
 								
-								var _imageInfo = new __CollageImageClass(_spriteStruct, _spriteData.__name, _drawW, _drawH, _spriteData.__tiling, _ratio, _xOffset, _yOffset, _hashes);
+								var _imageInfo = new __CollageImageClass(_spriteData.__name, 
+									_spriteStruct.spriteInfo.width,
+									_spriteStruct.spriteInfo.height,
+									_spriteStruct.spriteInfo.num_subimages,
+									_spriteStruct.spriteData.__speed,
+									_spriteStruct.spriteData.__speedType,
+									_drawW, _drawH, _spriteData.__tiling, _ratio, _xOffset, _yOffset, _hashes);
 								// Lets add it to database
 								__setImage(_spriteData.__name, _imageInfo);
 								_imageRegistered = true;
@@ -563,7 +570,13 @@ function __CollageBuilderClass() constructor {
 							__CollageTrace(_collageName + _spriteData.__name + " already exists! Reidentified as " + _name);
 							_spriteData.__name = _name;
 							
-							var _imageInfo = new __CollageImageClass(_spriteStruct, _spriteData.__name, _drawW, _drawH, _spriteData.__tiling, _ratio, _xOffset, _yOffset, _hashes);
+							var _imageInfo = new __CollageImageClass(_spriteData.__name, 
+									_spriteStruct.spriteInfo.width,
+									_spriteStruct.spriteInfo.height,
+									_spriteStruct.spriteInfo.num_subimages,
+									_spriteStruct.spriteData.__speed,
+									_spriteStruct.spriteData.__speedType,
+_drawW, _drawH, _spriteData.__tiling, _ratio, _xOffset, _yOffset, _hashes);
 							// Lets add it to database
 							__setImage(_spriteData.__name, _imageInfo);
 							owner.__imageCount++;
@@ -646,7 +659,13 @@ function __CollageBuilderClass() constructor {
 				}
 				
 				if (!_imageRegistered) {
-					var _imageInfo = new __CollageImageClass(_spriteStruct, _spriteData.__name, _drawW, _drawH, _spriteData.__tiling, _ratio, _xOffset, _yOffset, _hashes);
+					var _imageInfo = new __CollageImageClass(_spriteData.__name, 
+									_spriteStruct.spriteInfo.width,
+									_spriteStruct.spriteInfo.height,
+									_spriteStruct.spriteInfo.num_subimages,
+									_spriteStruct.spriteData.__speed,
+									_spriteStruct.spriteData.__speedType,
+					_drawW, _drawH, _spriteData.__tiling, _ratio, _xOffset, _yOffset, _hashes);
 					// Lets add it to database
 					__setImage(_spriteData.__name, _imageInfo);
 					
@@ -866,7 +885,13 @@ function __CollageBuilderClass() constructor {
 							__CollageTrace(_collageName + "\"" + _spriteData.__name + "\"" + " already exists! Reidentified as " + _name);
 							_spriteData.__name = _name;
 							
-							var _imageInfo = new __CollageImageClass(_spriteStruct, _spriteData.__name, _drawW, _drawH, _spriteData.__tiling, _ratio, _xOffset, _yOffset, _hashes);
+							var _imageInfo = new __CollageImageClass(_spriteStruct, 
+									_spriteStruct.spriteInfo.width,
+									_spriteStruct.spriteInfo.height,
+									_spriteStruct.spriteInfo.num_subimages,
+									_spriteStruct.spriteData.__speed,
+									_spriteStruct.spriteData.__speedType,
+							_spriteData.__name, _drawW, _drawH, _spriteData.__tiling, _ratio, _xOffset, _yOffset, _hashes);
 							// Lets add it to database
 							__setImage(_spriteData.__name, _imageInfo);
 							
@@ -917,14 +942,26 @@ function __CollageBuilderClass() constructor {
 						__CollageTrace(_collageName + "\"" + _spriteData.__name + "\"" + " already exists! Reidentified as " + _name);
 						_spriteData.name = _name;
 						
-						var _imageInfo = new __CollageImageClass(_spriteStruct, _spriteData.__name, _drawW, _drawH, _spriteData.__tiling, _ratio, _xOffset, _yOffset, _hashes);
+						var _imageInfo = new __CollageImageClass(_spriteData.__name, 
+									_spriteStruct.spriteInfo.width,
+									_spriteStruct.spriteInfo.height,
+									_spriteStruct.spriteInfo.num_subimages,
+									_spriteStruct.spriteData.__speed,
+									_spriteStruct.spriteData.__speedType,
+						_drawW, _drawH, _spriteData.__tiling, _ratio, _xOffset, _yOffset, _hashes);
 						// Lets add it to database
 						__setImage(_spriteData.__name, _imageInfo);
 						var _subImages = _spriteInfo.num_subimages;
 					break;
 				}
 			} else {
-				var _imageInfo = new __CollageImageClass(_spriteStruct, _spriteData.__name, _drawW, _drawH, _spriteData.__tiling, _ratio, _xOffset, _yOffset, _hashes);
+				var _imageInfo = new __CollageImageClass(_spriteData.__name, 
+					_spriteStruct.spriteInfo.width,
+					_spriteStruct.spriteInfo.height,
+					_spriteStruct.spriteInfo.num_subimages,
+					_spriteStruct.spriteData.__speed,
+					_spriteStruct.spriteData.__speedType,
+				_drawW, _drawH, _spriteData.__tiling, _ratio, _xOffset, _yOffset, _hashes);
 				// Lets add it to database
 				__setImage(_spriteData.__name, _imageInfo);
 				

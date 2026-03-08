@@ -15,6 +15,8 @@ while (_file != "") {
 file_find_close();
 texPage.FinishBatch();
 
+//texPage.AddFile("https://media1.tenor.com/m/9eeQ9LmAexsAAAAd/shaking-cat-shaking.gif",, 1, false, false, 0, 0, 0);
+
 var _images = texPage.ImagesToArray();
 pos = array_create(array_length(_images));
 _i = 0;
@@ -22,6 +24,8 @@ repeat(array_length(_images)) {
 	pos[_i] = {image: _images[_i], x: random(room_width-128), y: random(room_height-128)};
 	++_i;
 }	
+
+var _buff = texPage.Export();
 
 //texPageStatic = texPage.ToStaticBuilder();
 //var _path = $".collage/{texPageStatic.GetName()}_0.png";
@@ -46,8 +50,8 @@ texPageStatic = texPage.ToStatic(true);
 	});
 show_debug_overlay(true);
 
-var _i = 0;
-repeat(array_length(sprites)) {
-	show_debug_message($"{sprite_get_name(sprites[_i])} {sprite_get_xoffset(sprites[_i])} {sprite_get_yoffset(sprites[_i])}");
-	++_i;	
-}
+//var _i = 0;
+//repeat(array_length(sprites)) {
+//	show_debug_message($"{sprite_get_name(sprites[_i])} {sprite_get_xoffset(sprites[_i])} {sprite_get_yoffset(sprites[_i])}");
+//	++_i;	
+//}

@@ -119,6 +119,7 @@
   "name":"Collage",
   "resources":[
     {"id":{"name":"fnt_main","path":"fonts/fnt_main/fnt_main.yy",},},
+    {"id":{"name":"__CollageAsyncManager","path":"objects/__CollageAsyncManager/__CollageAsyncManager.yy",},},
     {"id":{"name":"obj_test_batch_vb","path":"objects/obj_test_batch_vb/obj_test_batch_vb.yy",},},
     {"id":{"name":"obj_test_batch","path":"objects/obj_test_batch/obj_test_batch.yy",},},
     {"id":{"name":"obj_test_blend_property","path":"objects/obj_test_blend_property/obj_test_blend_property.yy",},},

@@ -108,7 +108,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		}
 	}
 	
-	static FinishBatch = function(_crop = true) {
+	static FinishBatch = function() {
 		if (__state != CollageBuildStates.BATCHING) {
 			__CollageTrace(__getName() + "Is not in batching mode!");
 			return self;
@@ -157,6 +157,12 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 			array_push(__asyncList, [_spriteData, undefined]);
 		} else {
 			array_push(__batchImageList, _spriteData);
+		}
+
+		if (__COLLAGE_AUTO_ASYNC_IMAGE) {
+			if (!instance_exists(__CollageAsyncManager)) {
+				instance_create_depth(0, 0, 0, __CollageAsyncManager);
+			}
 		}
 		
 		if (__state == CollageBuildStates.NORMAL) {
@@ -234,6 +240,12 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 			array_push(__asyncList, [_spriteData, method_get_index(__InternalAddFileStrip), [_spriteData, _removeBack, _smooth, _xOrigin, _yOrigin, _is3D]]);
 		} else {
 			__InternalAddFileStrip(_spriteData, _removeBack, _smooth, _xOrigin, _yOrigin, _is3D);
+		}
+
+		if (__COLLAGE_AUTO_ASYNC_IMAGE) {
+			if (!instance_exists(__CollageAsyncManager)) {
+				instance_create_depth(0, 0, 0, __CollageAsyncManager);
+			}
 		}
 		
 		if (__state == CollageBuildStates.NORMAL) && (__status == CollageStatus.READY) {
@@ -655,11 +667,11 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		}
 		
 		return _data;
-	}
+	};
 	
 	static GetRecent = function() {
 		return __recent;
-	}
+	};
 	
 	static ToJSON = function(_pretty = false) {
 		return json_stringify(ExportData(), _pretty);
@@ -690,85 +702,48 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	
 	#region UNUSED
 	/// TODO: Add saving/loading properly.
-	//static savePageToBuffer = function() {
-	//	var ___texPageCount = __texPageCount;
-	//	var ___imageCount =	__imageCount;
-	//	var _bboxPointsCount = array_length(__builder.bboxPoints);
-	//	var _stringByte = 0;
-	//	var _subImagesCount = 0;
-	//	
-	//	// Get image names
-	//	var _i = 0;
-	//	repeat(___imageCount) {
-	//		_stringByte += string_byte_length(__imageList[_i].name) + 1;
-	//		_subImagesCount += __imageList[_i]. subImagesCount;
-	//		++_i;
-	//	}
-	//	
-	//	/*#macro __TGM_HEADER_FORMAT 13
-	//	#macro __TGM_SPRITE_FORMAT 12
-	//	#macro __TGM_UV_FORMAT 20 + 8 // 8 for 4byte float
-	//	#macro __TGM_SPACEPOINTS_FORMAT 8
-	//	var _headerSize = __TGM_HEADER_FORMAT + _stringByte + (__TGM_SPRITE_FORMAT * ___imageCount) + (__TGM_UV_FORMAT * _subImagesCount) + __TGM_SPACEPOINTS_FORMAT;*/
-	//	
-	//	// Create buffer
-	//	var _groupBuffer = buffer_create(1, buffer_grow, 1);
-	//	
-	//	// Write Header
-	//	buffer_write(_groupBuffer, buffer_u16, width); // 2 Bytes
-	//	buffer_write(_groupBuffer, buffer_u16, height); // 2 Bytes
-	//	buffer_write(_groupBuffer, buffer_u8, _bboxPointsCount); // 1 Bytes
-	//	buffer_write(_groupBuffer, buffer_u32, __imageCount); // 4 Bytes
-	//	buffer_write(_groupBuffer, buffer_u32, __texPageCount); // 4 Bytes
-	//	
-	//	// Write Image Format
-	//	var _i = 0;
-	//	repeat(___imageCount) {
-	//		buffer_write(_groupBuffer, buffer_string, imageList[_i].name); // String byte length + null
-	//		buffer_write(_groupBuffer, buffer_u16, imageList[_i].width); // 2 byte
-	//		buffer_write(_groupBuffer, buffer_u16, imageList[_i].height);  // 2 byte
-	//		buffer_write(_groupBuffer, buffer_u16, imageList[_i].cropWidth); // 2 byte
-	//		buffer_write(_groupBuffer, buffer_u16, imageList[_i].cropHeight);  // 2 byte
-	//		buffer_write(_groupBuffer, buffer_u16, imageList[_i].xoffset); // 2 byte
-	//		buffer_write(_groupBuffer, buffer_u16, imageList[_i].yoffset); // 2 byte
-	//		buffer_write(_groupBuffer, buffer_u16, imageList[_i].subImagesCount); // 2 byte
-	//		buffer_write(_groupBuffer, buffer_f32, imageList[_i].ratio); // 4 byte
-	//		
-	//		// Write UV format
-	//		var _imageSub__imageCount = imageList[_i].subImagesCount;
-	//		var _j = 0;
-	//		var _subImages = imageList[_i].subImagesArray;
-	//		repeat(_imageSub__imageCount) {
-	//			buffer_write(_groupBuffer, buffer_u16, _subImages[_j].texturePageNum); // 2 Byte
-	//			buffer_write(_groupBuffer, buffer_u16, _subImages[_j].left); // 2 Byte
-	//			buffer_write(_groupBuffer, buffer_u16, _subImages[_j].right); // 2 Byte
-	//			buffer_write(_groupBuffer, buffer_u16, _subImages[_j].top); // 2 Byte
-	//			buffer_write(_groupBuffer, buffer_u16, _subImages[_j].bottom); // 2 Byte
-	//			buffer_write(_groupBuffer, buffer_u16, _subImages[_j].trimLeft); // 2 Byte
-	//			buffer_write(_groupBuffer, buffer_u16, _subImages[_j].trimTop); // 2 Byte
-	//			buffer_write(_groupBuffer, buffer_u16, _subImages[_j].xPos); // 2 Byte
-	//			buffer_write(_groupBuffer, buffer_u16, _subImages[_j].yPos); // 2 Byte
-	//			buffer_write(_groupBuffer, buffer_f32, _subImages[_j].normTop); // 4 Byte
-	//			buffer_write(_groupBuffer, buffer_f32, _subImages[_j].normLeft); // 4 Byte
-	//			buffer_write(_groupBuffer, buffer_f32, _subImages[_j].normRight); // 4 Byte
-	//			buffer_write(_groupBuffer, buffer_f32, _subImages[_j].normBottom); // 4 Byte
-	//			++_j;
-	//		}
-	//		++_i;
-	//	}
-	//	
-	//	// Save texture page data	
-	//_i = 0;
-	//repeat(__texPageCount) {
-	//	var _size = width*height*4;
-	//	var _texBuffer = buffer_create(_size, buffer_fixed, 4);
-	//	buffer_get_surface(_texBuffer, _surf, 0);
-	//	//var _comTexBuffer = buffer_compress(_texBuffer, 0, _size);
-	//	buffer_resize(_groupBuffer, buffer_get_size(_groupBuffer) + _size);
-	//	buffer_copy(_texBuffer, 0, _size, _groupBuffer, buffer_get_size(_groupBuffer));
-	//	buffer_delete(_texBuffer);
-	//}
-	//	return _groupBuffer;
-	//}
+	static Export = function(_compress = true) {
+		var _buff = buffer_create(1024, buffer_grow, 1);
+		buffer_write(_buff, buffer_u8, 0x43);
+		buffer_write(_buff, buffer_u8, 0x4F);
+		buffer_write(_buff, buffer_u8, 0x4C);
+		buffer_write(_buff, buffer_u8, 0x4C);
+		buffer_write(_buff, buffer_u8, 0x41);
+		buffer_write(_buff, buffer_u8, 0x47);
+		buffer_write(_buff, buffer_u8, 0x45);
+
+		buffer_write(_buff, buffer_string, __name);
+		buffer_write(_buff, buffer_u16, __width);
+		buffer_write(_buff, buffer_u16, __height);
+		buffer_write(_buff, buffer_bool, __crop);
+		buffer_write(_buff, buffer_bool, __optimize);
+		buffer_write(_buff, buffer_bool, __useHash);
+		buffer_write(_buff, buffer_u64, array_length(__imageList));
+		buffer_write(_buff, buffer_u64, __texPageCount);
+		buffer_write(_buff, buffer_bool, _compress);
+
+		var _data = [];
+		for(var _i = array_length(__imageList)-1; _i >= 0; --_i) {
+			array_push(_data, __imageList[_i].ExportData());
+		}
+		buffer_write(_buff, buffer_string, json_stringify(_data));
+
+		for(var _i = __texPageCount-1; _i >= 0; --_i) {
+			var _texPageBuff = __texPageArray[_i].ToQOIF();
+			if (_compress) {
+				var _cBuff = buffer_compress(_texPageBuff, 0, buffer_get_size(_texPageBuff));
+				buffer_delete(_texPageBuff);
+				_texPageBuff = _cBuff;
+			}
+
+			buffer_resize(_buff, buffer_get_size(_buff) + buffer_get_size(_texPageBuff));
+			buffer_copy(_texPageBuff, 0, buffer_get_size(_texPageBuff), _buff, buffer_tell(_buff));
+			buffer_seek(_buff, buffer_seek_end, 0);
+			buffer_delete(_texPageBuff);
+		}
+
+		buffer_seek(_buff, buffer_seek_start, 0);
+		return _buff;
+	};
 	#endregion
 }

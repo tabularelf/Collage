@@ -84,3 +84,6 @@
 
 // How long between seconds before Collage should loop through texture groups again
 #macro __COLLAGE_WEAKREF_TEXTUREGROUPS_NEXT_ITERATION 5
+
+// Whether Collage should handle image async loading or not.
+#macro __COLLAGE_AUTO_ASYNC_IMAGE true

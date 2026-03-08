@@ -1,6 +1,7 @@
 {
   "FolderOrderSettings":[],
   "ResourceOrderSettings":[
+    {"name":"__CollageAsyncManager","order":16,"path":"objects/__CollageAsyncManager/__CollageAsyncManager.yy",},
     {"name":"obj_test_batch_vb","order":16,"path":"objects/obj_test_batch_vb/obj_test_batch_vb.yy",},
     {"name":"obj_test_blend_property","order":14,"path":"objects/obj_test_blend_property/obj_test_blend_property.yy",},
     {"name":"obj_test_clump_property","order":12,"path":"objects/obj_test_clump_property/obj_test_clump_property.yy",},
