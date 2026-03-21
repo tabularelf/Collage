@@ -14,7 +14,6 @@ Collage is a texture page builder/packer and image manager, built from the groun
 
 - Packing images together onto multiple texture pages.
 - Matching power of two constraints, to ensure that you're not making odd texture page sizes.
-- On the fly sprite live-reloading. (With some catches.)
 - Lots of configurability!
 
 # Supported Platforms
