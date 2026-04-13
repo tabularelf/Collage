@@ -300,13 +300,15 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		var _spriteSheet = _spriteData.__spriteID;
 		var _width = sprite_get_width(_spriteSheet);
 		var _height = sprite_get_height(_spriteSheet);
+		var _num;
 		var _surf = -1;
 		var _subImages = 1;
-		var _offset = _width > _height ? round(_width / _height) : round(_height / _width);
+		var _offset = _width > _height ? ceil(_width / _height) : ceil(_height / _width);
 		
 		if (_offset > 1) {
 			if (_width > _height) {
-				_width = _height;
+				_width = _width div _offset;
+				//_width = _height;
 			
 				_subImages = _offset;
 				var _i = 0;
@@ -328,7 +330,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 				}
 				CollageRestoreGPUState();	
 			} else {
-				_height = _width;
+				_height = _height div _offset;
 			
 				_subImages = _offset;
 				var _i = 0;
