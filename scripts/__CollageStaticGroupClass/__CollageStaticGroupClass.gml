@@ -7,6 +7,14 @@ function __CollageStaticGroupClass(_collageInstance, _paths, _texturePagesCount,
 	#region Processing
 	var _images = _collageInstance.ImagesToArray();
 	var _name = _collageInstance.GetName();
+
+	if (is_undefined(_name)) {
+		__CollageThrow("Collage group name cannot be undefined!");
+	}
+
+	if (is_undefined(_name)) {
+		__CollageThrow("Collage group name cannot be undefined!");
+	}
 	
 	// Generate sprite metadata
 	var _spriteData = {};
@@ -35,7 +43,9 @@ function __CollageStaticGroupClass(_collageInstance, _paths, _texturePagesCount,
 				original_width: _uvs.originalWidth,
 				original_height: _uvs.originalHeight,
 				crop_width: _imageData.__cropWidth,
-				crop_height: _imageData.__cropHeight
+				crop_height: _imageData.__cropHeight,
+				x_offset: -_uvs.xPos,
+				y_offset: -_uvs.yPos,
 			};
 		}
 		_spriteData[$ _imageData.GetName()] = _data;

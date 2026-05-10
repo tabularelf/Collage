@@ -22,6 +22,7 @@
     {"name":"obj_test_tiled","order":7,"path":"objects/obj_test_tiled/obj_test_tiled.yy",},
     {"name":"obj_test_url","order":8,"path":"objects/obj_test_url/obj_test_url.yy",},
     {"name":"obj_test_vbo","order":18,"path":"objects/obj_test_vbo/obj_test_vbo.yy",},
+    {"name":"obj_texturegroup_test","order":24,"path":"objects/obj_texturegroup_test/obj_texturegroup_test.yy",},
     {"name":"rm_test","order":9,"path":"rooms/rm_test/rm_test.yy",},
     {"name":"__CollageBBoxClass","order":7,"path":"scripts/__CollageBBoxClass/__CollageBBoxClass.yy",},
     {"name":"__CollageConfig","order":6,"path":"scripts/__CollageConfig/__CollageConfig.yy",},

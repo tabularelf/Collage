@@ -141,6 +141,7 @@
     {"id":{"name":"obj_test_tiled","path":"objects/obj_test_tiled/obj_test_tiled.yy",},},
     {"id":{"name":"obj_test_url","path":"objects/obj_test_url/obj_test_url.yy",},},
     {"id":{"name":"obj_test_vbo","path":"objects/obj_test_vbo/obj_test_vbo.yy",},},
+    {"id":{"name":"obj_texturegroup_test","path":"objects/obj_texturegroup_test/obj_texturegroup_test.yy",},},
     {"id":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
     {"id":{"name":"__CollageBBoxClass","path":"scripts/__CollageBBoxClass/__CollageBBoxClass.yy",},},
     {"id":{"name":"__CollageBuilderClass","path":"scripts/__CollageBuilderClass/__CollageBuilderClass.yy",},},
