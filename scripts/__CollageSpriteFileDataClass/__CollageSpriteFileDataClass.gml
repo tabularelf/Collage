@@ -39,7 +39,7 @@ function __CollageSpriteFileDataClass(_identifier, _spriteID, _subImage = 1, _is
 	
 	static AddSurfaceAsFrame = function(_surf, _x, _y, _width, _height, _removeBack = false, _smooth = false) {
 			if (!sprite_exists(__spriteID)) {
-				__spriteID = sprite_create_from_surface(_surf, _x, _y, _width, _height, _removeBack, _smooth,__xOrigin, __yOrigin);
+				__spriteID = sprite_create_from_surface(_surf, _x, _y, _width, _height, _removeBack, _smooth, __xOrigin, __yOrigin);
 				__width = _width;
 				__height = _height;
 				return self;
