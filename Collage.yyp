@@ -114,7 +114,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.14.2.213",
+    "IDEVersion":"2024.14.4.222",
   },
   "name":"Collage",
   "resources":[
@@ -126,6 +126,7 @@
     {"id":{"name":"obj_test_clump_property","path":"objects/obj_test_clump_property/obj_test_clump_property.yy",},},
     {"id":{"name":"obj_test_dupe","path":"objects/obj_test_dupe/obj_test_dupe.yy",},},
     {"id":{"name":"obj_test_general","path":"objects/obj_test_general/obj_test_general.yy",},},
+    {"id":{"name":"obj_test_image_add","path":"objects/obj_test_image_add/obj_test_image_add.yy",},},
     {"id":{"name":"obj_test_origin","path":"objects/obj_test_origin/obj_test_origin.yy",},},
     {"id":{"name":"obj_test_part","path":"objects/obj_test_part/obj_test_part.yy",},},
     {"id":{"name":"obj_test_premultiply_property","path":"objects/obj_test_premultiply_property/obj_test_premultiply_property.yy",},},

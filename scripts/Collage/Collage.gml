@@ -121,6 +121,18 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	#endregion
 	
 	#region Image Adding
+	/// @param {String} identifier
+	static AddEmptyImage = function(_identifier) {
+		static _ref = handle_parse("ref sprite -1");
+		if (__state != CollageBuildStates.BATCHING) {
+			__CollageThrow($"\".{nameof(AddEmptyImage)}\" is only available during batch mode!");
+		}
+
+		var _spriteData = new __CollageSpriteFileDataClass(_identifier, _ref, 0, true, true);
+		array_push(__batchImageList, _spriteData);
+		return _spriteData;
+	};
+
 	static AddFile = function(_fileName, _identifierString = undefined, _subImage = 1, _removeBack = false, _smooth = false, _xOrigin = 0, _yOrigin = 0, _is3D = false) {
 		if (!__CollageFileFromWeb(_fileName)) && (!file_exists(_fileName)) {
 			// It doesn't exist, obviously!
@@ -708,6 +720,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		return _data;
 	};
 	
+	/// @return {Array<Struct.__CollageImageClass>}
 	static GetRecent = function() {
 		return __recent;
 	};

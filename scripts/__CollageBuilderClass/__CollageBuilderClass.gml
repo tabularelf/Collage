@@ -320,6 +320,13 @@ function __CollageBuilderClass() constructor {
 				_isRejected = false;
 				var _spriteData = _spriteList[_i];
 				var _spriteID = _spriteData.__spriteID;
+				if (!sprite_exists(_spriteID)) {
+					__CollageTrace($"Image \"{_spriteData.__name}\" contains no sprite data! Skipping...");
+					// Normally I wouldn't call array_delete here, but there is no sprite, therefore cleanup isn't important...
+					array_delete(_spriteList, _i, 1);
+					continue;
+				}
+
 				var _spriteInfo = sprite_get_info(_spriteID);
 				var _sprWidth = _spriteInfo.width;
 				var _sprHeight = _spriteInfo.height;
@@ -576,7 +583,14 @@ function __CollageBuilderClass() constructor {
 									_spriteStruct.spriteInfo.num_subimages,
 									_spriteStruct.spriteData.__speed,
 									_spriteStruct.spriteData.__speedType,
-_drawW, _drawH, _spriteData.__tiling, _ratio, _xOffset, _yOffset, _hashes);
+									_drawW, 
+									_drawH, 
+									_spriteData.__tiling, 
+									_ratio, 
+								_xOffset, 
+								_yOffset, 
+								_hashes
+							);
 							// Lets add it to database
 							__setImage(_spriteData.__name, _imageInfo);
 							owner.__imageCount++;
