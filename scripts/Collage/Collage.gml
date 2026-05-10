@@ -223,12 +223,13 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 			return -1;
 		}
 		
-		var _identifier = _identifierString ?? __CollageGetName(_fileName);	
+		var _identifier;
 		
 		if (string_pos("_strip", _fileName) > 0) {
 			var _num = string_digits(string_delete(__CollageGetName(_fileName), 1, string_pos("_strip", _fileName)+string_length("strip")));
 			if (_num != "") {
 				_num = real(_num);
+				_identifier = _identifierString ?? string_copy(__CollageGetName(_fileName) , 1, string_pos("_strip", __CollageGetName(_fileName))-1);
 				var _spriteSheet = sprite_add(_fileName, _num, false, false, _xOrigin, _yOrigin);
 				var _spriteData = new __CollageSpriteFileDataClass(_identifier, _spriteSheet).SetSeparateTexture(_is3D);
 				
@@ -255,6 +256,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 
 				if (__state == CollageBuildStates.NORMAL) && (__status == CollageStatus.READY) {
 					__builder.__build();
+					return;
 				}
 				
 				if (__state == CollageBuildStates.BATCHING) {
@@ -262,6 +264,8 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 				}
 			}
 		}
+
+		_identifier = _identifierString ?? __CollageGetName(_fileName);	
 
 		var _spriteSheet = sprite_add(_fileName, 1, _removeBack, _smooth, _xOrigin, _yOrigin);
 		if (_spriteSheet == -1) {
