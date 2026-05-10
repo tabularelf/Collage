@@ -41,11 +41,11 @@ function __CollageSpriteFileDataClass(_identifier, _spriteID, _subImage = 1, _is
 	static AddSpriteAsFrame = function(_sprite, _removeBack = false, _smooth = false) {
 		var _width = sprite_get_width(_sprite);
 		var _height = sprite_get_height(_sprite);
-		var _surf = surface_create();
+		var _surf = surface_create(_width, _height);
 		CollageSterlizeGPUState();
 		var _i = 0;
 		repeat(sprite_get_number(_sprite)) {
-			surface_set_target(_sprite);
+			surface_set_target(_surf);
 			draw_clear_alpha(c_black, 0);
 			draw_sprite(_sprite, _i, 0, 0);
 			surface_reset_target();
