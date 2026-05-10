@@ -29,7 +29,7 @@ enum CollageRPStatus {
 #macro __COLLAGE_IS_CONSOLE ((os_type == os_switch) || (os_type == os_xboxseriesxs) || (os_type == os_ps4) || (os_type == os_ps5))
 
 #macro __COLLAGE_CREDITS "@TabularElf - https://tabelf.link/"
-#macro __COLLAGE_VERSION "v1.0.3-alpha"
+#macro __COLLAGE_VERSION "v1.0.2-alpha"
 show_debug_message("Collage " + __COLLAGE_VERSION + " Initalized! Created by " + __COLLAGE_CREDITS);
 
 /// @ignore
