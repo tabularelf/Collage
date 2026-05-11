@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"__CollageBboxRequest",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"__CollageBboxRequest",
+  "parent":{
+    "name":"System",
+    "path":"folders/Collage/System.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

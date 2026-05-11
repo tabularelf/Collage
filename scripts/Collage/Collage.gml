@@ -54,9 +54,13 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	
 	#region Methods
 	
-	static __getName = function() {
-		return (is_undefined(__name)) ? "" : __name + " - ";	
+	static __GetName = function() {
+		return (is_undefined(__name)) ? "" : __name + " -";	
 	}
+
+	static GetName = function() {
+		return __name;
+	};
 	
 	static SetHashing = function(_value) {
 		if (!__COLLAGE_USE_HASHES) return __CollageThrow("Hashing is not enabled! Please ensure that \"__COLLAGE_USE_HASHES\" is checked in \"__CollageConfig\"!");
@@ -79,7 +83,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	#region Batching
 	static StartBatch = function() {
 		if (__state == CollageBuildStates.BATCHING) {
-			__CollageTrace(__getName() + "Currently in batching mode!");
+			__CollageTrace(__GetName() + "Currently in batching mode!");
 			return self;
 		}
 		
@@ -92,9 +96,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 			var _len = array_length(__batchImageList);
 			var _i = 0;
 			repeat(_len) {
-				if (__batchImageList[_i].__isCopy) {
-					sprite_delete(__batchImageList[_i].__spriteID);	
-				}
+				__batchImageList[_i].__CleanUp();
 				++_i;
 			} 	
 			
@@ -103,18 +105,18 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 			return self;
 			
 		} else {
-			__CollageTrace(__getName() + "Is not in batching mode!");	
+			__CollageTrace(__GetName() + "Is not in batching mode!");	
 			return self;
 		}
 	}
 	
-	static FinishBatch = function() {
+	static FinishBatch = function(_async = false) {
 		if (__state != CollageBuildStates.BATCHING) {
-			__CollageTrace(__getName() + "Is not in batching mode!");
+			__CollageTrace(__GetName() + "Is not in batching mode!");
 			return self;
 		} 
 		
-		if (!__isWaitingOnAsync) __builder.__build();
+		if (!__isWaitingOnAsync) __builder.__Build(_async);
 		__state = CollageBuildStates.NORMAL;
 		return self;
 	}
@@ -136,7 +138,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	static AddFile = function(_fileName, _identifierString = undefined, _subImage = 1, _removeBack = false, _smooth = false, _xOrigin = 0, _yOrigin = 0, _is3D = false) {
 		if (!__CollageFileFromWeb(_fileName)) && (!file_exists(_fileName)) {
 			// It doesn't exist, obviously!
-			__CollageTrace(__getName() + "File " + string(_fileName) + " doesn't exist!");
+			__CollageTrace(__GetName() + "File " + string(_fileName) + " doesn't exist!");
 			exit;
 		}
 		
@@ -144,7 +146,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		
 		var _spriteID = sprite_add(_fileName, _subImage, _removeBack, _smooth, _xOrigin, _yOrigin);
 		if (_spriteID == -1) {
-			__CollageTrace(__getName() + "File " + string(_fileName) + " has an invalid formatting!");
+			__CollageTrace(__GetName() + "File " + string(_fileName) + " has an invalid formatting!");
 			exit;
 		}
 		
@@ -178,7 +180,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		}
 		
 		if (__state == CollageBuildStates.NORMAL) {
-			if (!__isWaitingOnAsync) __builder.__build();
+			if (!__isWaitingOnAsync) __builder.__Build();
 		}
 		
 		if (__state == CollageBuildStates.BATCHING) {
@@ -194,7 +196,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		
 		if (real(_spriteID) <= __system.__CollageGMSpriteCount) {
 			_spriteID = sprite_duplicate(_spriteIdentifier);
-			if (__COLLAGE_VERBOSE) __CollageTrace(__getName() + _identifier + " is a GMSprite resource added via the IDE, making a copy...");
+			if (__COLLAGE_VERBOSE) __CollageTrace(__GetName() + _identifier + " is a GMSprite resource added via the IDE, making a copy...");
 			_isCopyValue = true;
 		}
 		
@@ -208,7 +210,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		array_push(__batchImageList, _spriteData);
 		
 		if (__state == CollageBuildStates.NORMAL) && (__status == CollageStatus.READY) {
-			__builder.__build();
+			__builder.__Build();
 		}
 		
 		if (__state == CollageBuildStates.BATCHING) {
@@ -219,7 +221,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	static AddFileStrip = function(_fileName, _identifierString = undefined, _removeBack = false, _smooth = false, _xOrigin = 0, _yOrigin = 0, _is3D = false) {
 		if (!__CollageFileFromWeb(_fileName)) && (!file_exists(_fileName)) {
 			// It doesn't exist, obviously!
-			__CollageTrace(__getName() + "File " + string(_fileName) + " doesn't exist!");
+			__CollageTrace(__GetName() + "File " + string(_fileName) + " doesn't exist!");
 			return -1;
 		}
 		
@@ -255,7 +257,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 				}
 
 				if (__state == CollageBuildStates.NORMAL) && (__status == CollageStatus.READY) {
-					__builder.__build();
+					__builder.__Build();
 					return;
 				}
 				
@@ -269,7 +271,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 
 		var _spriteSheet = sprite_add(_fileName, 1, _removeBack, _smooth, _xOrigin, _yOrigin);
 		if (_spriteSheet == -1) {
-			__CollageTrace(__getName() + "File " + string(_fileName) + " has an invalid formatting!");
+			__CollageTrace(__GetName() + "File " + string(_fileName) + " has an invalid formatting!");
 			exit;
 		}
 		
@@ -304,7 +306,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		}
 		
 		if (__state == CollageBuildStates.NORMAL) && (__status == CollageStatus.READY) {
-			__builder.__build();
+			__builder.__Build();
 		}
 		
 		if (__state == CollageBuildStates.BATCHING) {
@@ -391,7 +393,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		array_push(__batchImageList, _spriteData);
 		
 		if (__state == CollageBuildStates.NORMAL) && (__status == CollageStatus.READY) {
-			__builder.__build();
+			__builder.__Build();
 		}
 		
 		if (__state == CollageBuildStates.BATCHING) {
@@ -445,7 +447,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		CollageRestoreGPUState();
 		
 		if (__state == CollageBuildStates.NORMAL) {
-			__builder.__build();
+			__builder.__Build();
 		}
 		surface_free(_surf);
 		
@@ -499,7 +501,7 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 		CollageRestoreGPUState();
 		
 		if (__state == CollageBuildStates.NORMAL) {
-			__builder.__build();
+			__builder.__Build();
 		}
 		surface_free(_surf);
 		
@@ -678,21 +680,14 @@ function Collage(_identifier = undefined, _width = __COLLAGE_DEFAULT_TEXTURE_SIZ
 	
 	static ToStatic = function(_prefetch = false, _removeSelf = false) {
 		// This function is mainly used for 
-		var _texturePages = TexturePagesToArray();
-		var _texturePagesCount = GetTextureCount();
+
 		var _name = GetName();
 		
-		var _paths = array_create(_texturePagesCount);
-		// Save Pages
-		for(var _i = 0; _i < _texturePagesCount; ++_i) {
-			//var _filepath = $"{__COLLAGE_DEFAULT_SAVE_FILEPATH}{_name}_{_i}.png";
-			_paths[_i] = _texturePages[_i].ToQOIF();
-			//_texturePages[_i].CheckSurface();
-			//var _surf = _texturePages[_i].GetSurface();
-			//surface_save(_surf, _filepath);
-		}
+		var _paths = array_map(__texPageArray, function(_texPage) {
+			return _texPage.ToQOIF();
+		});
 	
-		var _element = new __CollageStaticGroupClass(self, _paths, _texturePagesCount, _prefetch, _removeSelf);
+		var _element = new __CollageStaticGroupClass(self, _paths, __texPageCount, _prefetch, _removeSelf);
 		return _element;
 	}
 	

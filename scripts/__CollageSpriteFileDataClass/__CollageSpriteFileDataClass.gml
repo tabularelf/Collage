@@ -1,6 +1,6 @@
 /// @ignore
 /// feather ignore all
-function __CollageSpriteFileDataClass(_identifier, _spriteID, _subImage = 1, _isCopy = undefined, _bypassErrors = false) constructor {
+function __CollageSpriteFileDataClass(_identifier, _spriteID, _subImage = 1, _isCopy = undefined, _bypassErrors = false, _owner = undefined) constructor {
 	static __system = __CollageSystem();
 	__name = _identifier;
 	__subImages = _subImage;
@@ -22,6 +22,18 @@ function __CollageSpriteFileDataClass(_identifier, _spriteID, _subImage = 1, _is
 	__speedType = 0;
 	__width = _bypassErrors ? 0 : sprite_get_width(__spriteID);
 	__height = _bypassErrors ? 0 : sprite_get_height(__spriteID);
+	__externalFrames = [];
+	__owner = _owner;
+
+	static __CleanUp = function() {
+		if (__isCopy) {
+			sprite_delete(__spriteID);
+		}      
+		array_foreach(__externalFrames, function(_spriteClass) {
+			sprite_delete(_spriteClass.__spriteID);
+		});
+		delete __externalFrames;
+	};
 
 	static ClearImage = function() {
 		if (__isCopy && sprite_exists(__spriteID)) sprite_delete(__spriteID);
@@ -45,7 +57,7 @@ function __CollageSpriteFileDataClass(_identifier, _spriteID, _subImage = 1, _is
 				return self;
 			}
 			__HandleCopy();
-			sprite_add_from_surface(__spriteID, _surf, _x, _y, _width, _height, _removeBack, _smooth);
+			__AddSprite(sprite_create_from_surface(_surf, _x, _y, _width, _height, _removeBack, _smooth, __xOrigin, __yOrigin));
 			return self;
 	}
 	
@@ -59,9 +71,23 @@ function __CollageSpriteFileDataClass(_identifier, _spriteID, _subImage = 1, _is
 			return self;
 		}
 		__HandleCopy();
-		sprite_merge(__spriteID, _sprite);
+		__AddSprite(_sprite);
 
 		return self;
+	};
+
+	static __AddSprite = function(_sprite) {
+		_sprite = (__spriteID > __system.__CollageGMSpriteCount) ? sprite_duplicate(_sprite) : _sprite;
+		array_push(__externalFrames, new __CollageSpriteFileDataClass(
+			__name, 
+			_sprite, 
+			sprite_get_number(_sprite), 
+			(__spriteID > __system.__CollageGMSpriteCount),
+			false,
+			self
+			)
+			.SetOrigin(__xOrigin, __yOrigin)
+		);
 	};
 
 	static AddSpriteAsFrameExt = function(_spriteArray) {
@@ -79,7 +105,7 @@ function __CollageSpriteFileDataClass(_identifier, _spriteID, _subImage = 1, _is
 				continue;
 			}
 
-			sprite_merge(__spriteID, _sprite);
+			__AddSprite(_sprite);
 		}
 
 		return self;
@@ -97,6 +123,10 @@ function __CollageSpriteFileDataClass(_identifier, _spriteID, _subImage = 1, _is
 		if (sprite_exists(__spriteID)) {
 			sprite_set_offset(__spriteID, __xOrigin, __yOrigin);
 		}
+
+		array_foreach(__externalFrames, function(_spriteClass) {
+			_spriteClass.SetOrigin(__xOrigin, __yOrigin);
+		});
 		return self;
 	}
 	
@@ -148,6 +178,11 @@ function __CollageSpriteFileDataClass(_identifier, _spriteID, _subImage = 1, _is
 		} 
 			
 		__isCopy = true;
+		if (array_length(__externalFrames) > 0) {
+			with({_width, _height, __externalFrames}) array_foreach(__externalFrames, function(_spriteClass) {
+				_spriteClass.SetSize(_width, _height);
+			});
+		}
 		return self;
 	}
 	
@@ -182,6 +217,12 @@ function __CollageSpriteFileDataClass(_identifier, _spriteID, _subImage = 1, _is
 		} 
 			
 		__isCopy = true;
+
+		if (array_length(__externalFrames) > 0) {
+			with({_startFunc, _endFunc, __externalFrames}) array_foreach(__externalFrames, function(_spriteClass) {
+				_spriteClass.ApplyEffect(_startFunc, _endFunc);
+			});
+		}
 		return self;
 	}
 	
@@ -204,6 +245,11 @@ function __CollageSpriteFileDataClass(_identifier, _spriteID, _subImage = 1, _is
 	static SetBlend = function(_col, _alpha) {
 		__colour = _col;
 		__alpha = _alpha;
+		if (array_length(__externalFrames) > 0) {
+			with({_col, _alpha, __externalFrames}) array_foreach(__externalFrames, function(_spriteClass) {
+				_spriteClass.SetBlend(_col, _alpha);
+			});
+		}
 		return self;
 	}
 	

@@ -1,7 +1,7 @@
 /// @ignore
 /// feather ignore all
 function __CollageOriginValidator(_spriteID, _xOriginValue, _yOriginValue) {
-	var _results = [_xOriginValue, _yOriginValue];
+	static _results = [_xOriginValue, _yOriginValue];
 	// X Origin
 	switch(_xOriginValue) {
 		case CollageOrigin.CENTER: _results[0] = sprite_get_width(_spriteID) div 2; break;

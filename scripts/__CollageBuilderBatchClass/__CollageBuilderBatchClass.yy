@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"__CollageBuilderBatchClass",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"__CollageBuilderBatchClass",
+  "parent":{
+    "name":"Classes",
+    "path":"folders/Collage/System/Classes.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -32,7 +32,7 @@ function __CollageTexturePageClass(_width, _height) constructor {
 		
 		static Finish = function() {
 			surface_reset_target();
-			if !(buffer_exists(__buffer)) {
+			if (!buffer_exists(__buffer)) {
 				__Init();
 			}
 			

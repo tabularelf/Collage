@@ -11,10 +11,6 @@ function __CollageStaticGroupClass(_collageInstance, _paths, _texturePagesCount,
 	if (is_undefined(_name)) {
 		__CollageThrow("Collage group name cannot be undefined!");
 	}
-
-	if (is_undefined(_name)) {
-		__CollageThrow("Collage group name cannot be undefined!");
-	}
 	
 	// Generate sprite metadata
 	var _spriteData = {};
@@ -36,10 +32,10 @@ function __CollageStaticGroupClass(_collageInstance, _paths, _texturePagesCount,
 			var _uvs = _imageData.GetUVs(_j);
 			_data.frames[_j] = {
 				tp: _uvs.texturePageNum,
-				x: _uvs.left,
-				y: _uvs.top,
-				w: _uvs.right,
-				h: _uvs.bottom,
+				x: 0,//_uvs.left,
+				y: 0,//_uvs.top,
+				w: 2048,//_uvs.right,
+				h: 2048,//_uvs.bottom,
 				original_width: _uvs.originalWidth,
 				original_height: _uvs.originalHeight,
 				crop_width: _imageData.__cropWidth,
@@ -95,6 +91,7 @@ function __CollageStaticGroupClass(_collageInstance, _paths, _texturePagesCount,
 	static Load = function(_prefetch = true) {
 		if (__destroyed) return;
 		texturegroup_load(GetName(), _prefetch);
+		sprite_prefetch_multi(texturegroup_get_sprites(GetName()));
 		return self;
 	}
 	

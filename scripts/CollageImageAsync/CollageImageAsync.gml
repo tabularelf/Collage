@@ -23,9 +23,9 @@ function CollageImageAsync() {
 						if (__COLLAGE_VERBOSE) __CollageTrace("Async: Pushing " + _asyncList[_j][0].__name + " straight to batchlist!");
 						array_push(__system.__CollageAsyncList[_i].__batchImageList, _asyncList[_j][0]);	
 					}
-					__CollageTrace(__system.__CollageAsyncList[_i].__getName() + _asyncList[_j][0].__name + " loaded from the internet (" + _fileName + ")!");
+					__CollageTrace(__system.__CollageAsyncList[_i].__GetName() + _asyncList[_j][0].__name + " loaded from the internet (" + _fileName + ")!");
                 } else {
-                    __CollageTrace(__system.__CollageAsyncList[_i].__getName() + _asyncList[_j][0].__name + " failed to load from (" + _fileName + ")! Error status: " + string(_status));
+                    __CollageTrace(__system.__CollageAsyncList[_i].__GetName() + _asyncList[_j][0].__name + " failed to load from (" + _fileName + ")! Error status: " + string(_status));
                 }
                 array_delete(_asyncList, _j, 1);
                 
@@ -34,7 +34,7 @@ function CollageImageAsync() {
                     _texPage.__isWaitingOnAsync = false;
 					_texPage.__status = CollageStatus.READY;
                     if (_texPage.__state == CollageBuildStates.NORMAL) {
-						_texPage.__builder.__build();
+						_texPage.__builder.__Build();
 					}
                     array_delete(__system.__CollageAsyncList, _i, 1);
                     --_i;
