@@ -20,7 +20,7 @@ Collage is a texture page builder/packer and image manager, built from the groun
 
 |  Windows  |  MacOSX  |  Linux  |  iOS  |  Android  |  HTML5  |  Opera GX  |  Console  |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| ✔ | ✔ | ✔ | ✔ | ✔ | ✔ | ✔ | ✔ |
+| ✔ | ✔ | ✔ | ✔ | ✔ | ❌ | ✔ | ✔ |
 
 # FAQ
 
